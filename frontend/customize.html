@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customize Your Box - SportBox</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .size-btn { width: 42px; height: 42px; border-radius: 10px; border: 2px solid var(--border-color); background: white; font-weight: 600; font-size: .85rem; cursor: pointer; transition: var(--transition); color: #6b7280; }
+        .size-btn.active, .size-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(16,185,129,.06); }
+        .pref-btn { padding: 8px 16px; border-radius: 20px; border: 2px solid var(--border-color); background: white; font-weight: 500; font-size: .85rem; cursor: pointer; transition: var(--transition); color: #6b7280; }
+        .pref-btn.active, .pref-btn:hover { border-color: var(--primary); color: var(--primary); background: rgba(16,185,129,.06); }
+        .add-item-chip { padding: 8px 14px; border-radius: 20px; border: 2px dashed var(--border-color); background: transparent; font-size: .85rem; cursor: pointer; transition: var(--transition); color: #9ca3af; }
+        .add-item-chip:hover { border-color: var(--primary); color: var(--primary); }
+        .summary-card { background: white; border-radius: var(--radius-lg); box-shadow: var(--card-shadow-md); padding: 24px; position: sticky; top: 90px; }
+        body.dark-mode .size-btn, body.dark-mode .pref-btn { background: #1e293b; border-color: #334155; color: #94a3b8; }
+        body.dark-mode .add-item-chip { background: transparent; border-color: #334155; color: #64748b; }
+        body.dark-mode .summary-card { background: #1e293b; color: #e2e8f0; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index.html"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link px-3" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="sports.html">Sports</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="plans.html">Subscriptions</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="reward.html">Rewards</a></li>
+                    <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2" href="auth.html" id="authActionLink">Login</a></li>
+                    <li class="nav-item ms-lg-1">
+                        <button class="btn btn-sm btn-outline-secondary px-3" id="darkModeToggle" onclick="toggleDarkMode()"><i class="bi bi-moon-stars-fill"></i></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="hero-section-sm">
+        <div class="container position-relative">
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <a href="boxes.html" class="btn btn-sm btn-outline-light px-3"><i class="bi bi-arrow-left me-1"></i>Back to Boxes</a>
+                <a href="cart.html" class="btn btn-sm btn-light px-3"><i class="bi bi-cart3 me-1"></i>View Cart</a>
+            </div>
+            <h1 class="display-6 fw-bold mb-1" id="boxTitle">Customize Your Box</h1>
+            <p class="lead mb-0" style="opacity:.85;" id="boxSubtitle">Swap, remove, or add items to match your preferences</p>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Left: Items -->
+                <div class="col-lg-7">
+                    <!-- Current Items -->
+                    <div class="card border-0 rounded-4 shadow-sm mb-4">
+                        <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="fw-bold mb-0"><i class="bi bi-box-seam text-primary me-2"></i>Box Items</h6>
+                                <span class="badge rounded-pill" style="background:var(--gradient);" id="itemCount">0 items</span>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="text-muted small mb-3">Drag to reorder, or remove items you don't want.</p>
+                            <div class="d-flex flex-column gap-2" id="itemsList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Add Items -->
+                    <div class="card border-0 rounded-4 shadow-sm mb-4">
+                        <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
+                            <h6 class="fw-bold mb-0"><i class="bi bi-plus-circle text-primary me-2"></i>Add More Items</h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <p class="text-muted small mb-3">Click any item below to add it to your box.</p>
+                            <div class="d-flex flex-wrap gap-2" id="availableItems"></div>
+                        </div>
+                    </div>
+
+                    <!-- Preferences -->
+                    <div class="card border-0 rounded-4 shadow-sm">
+                        <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
+                            <h6 class="fw-bold mb-0"><i class="bi bi-sliders text-primary me-2"></i>Preferences</h6>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="fw-semibold small mb-3 d-block">Clothing Size</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="size-btn" onclick="selectSize(this)">XS</button>
+                                        <button class="size-btn" onclick="selectSize(this)">S</button>
+                                        <button class="size-btn active" onclick="selectSize(this)">M</button>
+                                        <button class="size-btn" onclick="selectSize(this)">L</button>
+                                        <button class="size-btn" onclick="selectSize(this)">XL</button>
+                                        <button class="size-btn" onclick="selectSize(this)">XXL</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-semibold small mb-3 d-block">Diet Preference</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="pref-btn active" onclick="selectPref('diet', this)">Standard</button>
+                                        <button class="pref-btn" onclick="selectPref('diet', this)">Keto</button>
+                                        <button class="pref-btn" onclick="selectPref('diet', this)">Vegan</button>
+                                        <button class="pref-btn" onclick="selectPref('diet', this)">High Protein</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-semibold small mb-3 d-block">Skill Level</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="pref-btn" onclick="selectPref('skill', this)">Beginner</button>
+                                        <button class="pref-btn active" onclick="selectPref('skill', this)">Intermediate</button>
+                                        <button class="pref-btn" onclick="selectPref('skill', this)">Pro</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-semibold small mb-3 d-block">Delivery Frequency</label>
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <button class="pref-btn active" onclick="selectPref('freq', this)">Monthly</button>
+                                        <button class="pref-btn" onclick="selectPref('freq', this)">Bi-Monthly</button>
+                                        <button class="pref-btn" onclick="selectPref('freq', this)">Quarterly</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Summary -->
+                <div class="col-lg-5">
+                    <div class="summary-card">
+                        <div class="mb-3">
+                            <div class="overflow-hidden rounded-3 mb-3" style="height:160px;">
+                                <img id="summaryImg" src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box" class="w-100 h-100" style="object-fit:cover;">
+                            </div>
+                            <h5 class="fw-bold mb-1" id="summaryTitle">Football Clothing Box</h5>
+                            <p class="text-muted small" id="summaryType">Clothing Box</p>
+                        </div>
+
+                        <hr>
+
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Items in box:</span>
+                                <span class="fw-semibold small" id="summaryCount">4 items</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Clothing size:</span>
+                                <span class="fw-semibold small" id="summarySize">M</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Diet preference:</span>
+                                <span class="fw-semibold small" id="summaryDiet">Standard</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted small">Delivery:</span>
+                                <span class="fw-semibold small" id="summaryFreq">Monthly</span>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <span class="fw-bold">Total</span>
+                            <span class="fw-bold text-primary fs-4" id="summaryPrice">$49.99</span>
+                        </div>
+
+                        <!-- Swaps indicator -->
+                        <div class="p-3 rounded-3 mb-4" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-arrow-repeat text-primary"></i>
+                                <span class="small fw-semibold">Swaps Used</span>
+                            </div>
+                            <div class="progress mb-1" style="height:6px;border-radius:3px;">
+                                <div class="progress-bar" id="swapBar" style="width:40%;background:var(--gradient);border-radius:3px;"></div>
+                            </div>
+                            <div class="small text-muted" id="swapText">2 of 5 swaps used (Pro plan: unlimited)</div>
+                        </div>
+
+                        <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" onclick="confirmSelection()">
+                            <i class="bi bi-cart-check me-2"></i>Save to Cart
+                        </button>
+                        <a href="boxes.html" class="btn btn-outline-secondary w-100 py-2">
+                            <i class="bi bi-arrow-left me-1"></i>Back to Boxes
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0">
+                <div class="modal-body p-5 text-center">
+                    <div style="width:80px;height:80px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+                        <i class="bi bi-check-circle-fill text-primary" style="font-size:2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Box Customized! 🎉</h4>
+                    <p class="text-muted mb-4">Your selections are saved in the cart. Review everything there and confirm shipping when ready.</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a href="cart.html" class="btn btn-primary px-4"><i class="bi bi-cart3 me-1"></i>View Cart</a>
+                        <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Continue Editing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
+        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer py-5 mt-3">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p><div class="social-links d-flex gap-2"><a href="#"><i class="bi bi-facebook"></i></a><a href="#"><i class="bi bi-instagram"></i></a><a href="#"><i class="bi bi-twitter-x"></i></a><a href="#"><i class="bi bi-youtube"></i></a></div></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="sports.html">Sports</a></li><li><a href="plans.html">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="dashboard.html">Dashboard</a></li><li><a href="auth.html" id="footerAuthLink">Login</a></li></ul></div>
+                <div class="col-lg-4"><h6 class="fw-bold mb-3">Contact</h6><p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com</p><p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p></div>
+            </div>
+            <hr class="my-4" style="border-color:#1e293b;">
+            <p class="text-center mb-0" style="font-size:.85rem;">© 2024 SportBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('sportbox-dark', isDark ? '1' : '0');
+            const icon = document.getElementById('darkModeToggle')?.querySelector('i');
+            if (icon) icon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+        }
+        (function () {
+            if (localStorage.getItem('sportbox-dark') === '1') {
+                document.body.classList.add('dark-mode');
+                window.addEventListener('DOMContentLoaded', () => {
+                    const icon = document.getElementById('darkModeToggle')?.querySelector('i');
+                    if (icon) icon.className = 'bi bi-sun-fill';
+                });
+            }
+        })();
+        function getPortalSession() {
+            const raw = localStorage.getItem('sportbox-session');
+            return raw ? JSON.parse(raw) : null;
+        }
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.removeItem('sportbox-session');
+            window.location.href = 'index.html';
+        }
+        function updateAuthUI() {
+            const session = getPortalSession();
+            const rewardNavItem = document.getElementById('rewardNavItem');
+            const authActionLink = document.getElementById('authActionLink');
+            const footerAuthLink = document.getElementById('footerAuthLink');
+            const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
+            if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
+            adminOnlyHiddenLinks.forEach((link) => {
+                link.closest('.nav-item').style.display = session?.role === 'admin' ? 'none' : '';
+            });
+            if (session) {
+                if (authActionLink) {
+                    authActionLink.textContent = 'Logout';
+                    authActionLink.href = '#';
+                    authActionLink.onclick = handleLogout;
+                }
+                if (footerAuthLink) {
+                    footerAuthLink.textContent = 'Logout';
+                    footerAuthLink.href = '#';
+                    footerAuthLink.onclick = handleLogout;
+                }
+            }
+        }
+        function getCustomerCart() {
+            const session = getPortalSession();
+            if (!session || session.role !== 'customer') return [];
+            const allCarts = JSON.parse(localStorage.getItem('sportbox-cart-store') || '{}');
+            return allCarts[session.id] || [];
+        }
+        function saveCustomerCart(cart) {
+            const session = getPortalSession();
+            if (!session || session.role !== 'customer') return false;
+            const allCarts = JSON.parse(localStorage.getItem('sportbox-cart-store') || '{}');
+            allCarts[session.id] = cart;
+            localStorage.setItem('sportbox-cart-store', JSON.stringify(allCarts));
+            return true;
+        }
+        function upsertCartItem(item) {
+            const cart = getCustomerCart();
+            const index = cart.findIndex((entry) => entry.cartId === item.cartId);
+            if (index >= 0) cart[index] = item;
+            else cart.push(item);
+            return saveCustomerCart(cart);
+        }
+        function showToast(msg, type = 'success') {
+            const el = document.getElementById('mainToast');
+            const msgEl = document.getElementById('toastMsg');
+            if (msgEl) msgEl.textContent = msg;
+            if (el) { el.className = `toast align-items-center border-0 text-bg-${type}`; new bootstrap.Toast(el, { delay: 3000 }).show(); }
+        }
+
+        // Mock box data
+        const boxes = {
+            1: { title: 'Football Clothing Box', type: 'Clothing', image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800', price: 49.99, items: ['Jersey (M)', 'Training Shorts', 'Socks', 'Cap'] },
+            2: { title: 'Equipment Essentials', type: 'Equipment', image: 'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=800', price: 69.99, items: ['Soccer Ball', 'Shin Guards', 'Training Cones', 'Water Bottle'] },
+            3: { title: 'Diet & Recovery', type: 'Diet', image: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800', price: 39.99, items: ['Protein Powder', 'Energy Bars', 'Recovery Drink', 'Vitamin Pack'] },
+        };
+        const extras = {
+            clothing: ['Extra Jersey', 'Compression Shorts', 'Sports Headband', 'Grip Gloves', 'Athletic Tape'],
+            equipment: ['Resistance Band', 'Training Whistle', 'Speed Ladder', 'Foam Roller', 'Gym Bag'],
+            diet: ['Multivitamins', 'Omega-3 Capsules', 'Electrolyte Sachets', 'Collagen Powder', 'Sleep Support'],
+        };
+
+        const boxId = parseInt(new URLSearchParams(window.location.search).get('box')) || 1;
+        const box = boxes[boxId] || boxes[1];
+        let currentItems = [...box.items];
+        let selectedSize = 'M', selectedDiet = 'Standard', selectedFreq = 'Monthly';
+        const allergyProfile = ['peanuts'];
+        const preferenceProfile = ['no spicy foods'];
+        const surpriseHistory = ['Mystery Item'];
+
+        function isSwapLocked(hoursUntilShip) { return hoursUntilShip <= 48; }
+        function hasAllergyConflict(itemIngredients, profile) {
+            const text = itemIngredients.join(' ').toLowerCase();
+            return profile.some((allergy) => text.includes(allergy));
+        }
+        function validateSwap(data) {
+            if (data.itemWeight > data.maxWeight) return { ok: false, reason: 'Swap exceeds shipment weight cap' };
+            if (!data.compatibilityTags.includes('allowed')) return { ok: false, reason: 'Swap dependency invalid' };
+            return { ok: true };
+        }
+        function pickPersonalizedSurprise(candidates, preferences, history) {
+            const filtered = candidates.filter((item) => !preferences.some((p) => item.toLowerCase().includes(p.replace('no ', ''))));
+            return filtered.find((item) => !history.includes(item)) || filtered[0] || 'Surprise Sampler';
+        }
+        function addOnToNextBox(itemName, price) { return { itemName, price }; }
+
+        function init() {
+            document.getElementById('boxTitle').textContent = 'Customize: ' + box.title;
+            document.getElementById('boxSubtitle').textContent = box.type + ' Box — $' + box.price;
+            document.getElementById('summaryTitle').textContent = box.title;
+            document.getElementById('summaryType').textContent = box.type + ' Box';
+            document.getElementById('summaryImg').src = box.image;
+            document.getElementById('summaryPrice').textContent = '$' + box.price;
+            renderItems();
+            renderAvailable();
+        }
+
+        function renderItems() {
+            const list = document.getElementById('itemsList');
+            const count = document.getElementById('itemCount');
+            const sumCount = document.getElementById('summaryCount');
+            list.innerHTML = '';
+            count.textContent = currentItems.length + ' item' + (currentItems.length !== 1 ? 's' : '');
+            sumCount.textContent = currentItems.length + ' item' + (currentItems.length !== 1 ? 's' : '');
+
+            currentItems.forEach((item, i) => {
+                const div = document.createElement('div');
+                div.className = 'item-row';
+                div.draggable = true;
+                div.innerHTML = `
+                    <i class="bi bi-grip-vertical item-drag fs-5"></i>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold small">${item}</div>
+                        <div class="text-muted" style="font-size:.75rem;">Included in your box</div>
+                    </div>
+                    <button class="btn btn-sm px-2" style="color:#ef4444;border:none;background:transparent;" onclick="removeItem(${i})" title="Remove">
+                        <i class="bi bi-x-circle fs-5"></i>
+                    </button>`;
+                list.appendChild(div);
+            });
+
+            if (currentItems.length === 0) {
+                list.innerHTML = '<div class="text-center py-4 text-muted"><i class="bi bi-inbox display-5 d-block mb-2"></i><span class="small">No items in box. Add some below!</span></div>';
+            }
+            renderAvailable();
+        }
+
+        function renderAvailable() {
+            const avail = document.getElementById('availableItems');
+            avail.innerHTML = '';
+            const typeKey = box.type.toLowerCase();
+            const pool = extras[typeKey] || extras.clothing;
+            pool.filter(e => !currentItems.includes(e)).forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'add-item-chip';
+                btn.innerHTML = `<i class="bi bi-plus me-1"></i>${item}`;
+                btn.onclick = () => addItem(item);
+                avail.appendChild(btn);
+            });
+            if (avail.children.length === 0) {
+                avail.innerHTML = '<span class="text-muted small">All available items added!</span>';
+            }
+        }
+
+        function removeItem(i) {
+            const removed = currentItems.splice(i, 1)[0];
+            showToast(`"${removed}" removed from box`, 'warning');
+            renderItems();
+        }
+
+        function addItem(item) {
+            const lockIn = isSwapLocked(72);
+            if (lockIn) {
+                showToast('Swaps are locked 48 hours before shipping.', 'warning');
+                return;
+            }
+            currentItems.push(item);
+            showToast(`"${item}" added to box! 📦`, 'success');
+            renderItems();
+        }
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedSize = btn.textContent.trim();
+            document.getElementById('summarySize').textContent = selectedSize;
+        }
+
+        function selectPref(group, btn) {
+            btn.closest('.d-flex').querySelectorAll('.pref-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const val = btn.textContent.trim();
+            if (group === 'diet') { selectedDiet = val; document.getElementById('summaryDiet').textContent = val; }
+            if (group === 'freq') { selectedFreq = val; document.getElementById('summaryFreq').textContent = val; }
+        }
+
+        function confirmSelection() {
+            const session = getPortalSession();
+            if (!session || session.role !== 'customer') {
+                showToast('Please log in as a customer to save this box to your cart.', 'warning');
+                setTimeout(() => { window.location.href = 'auth.html'; }, 900);
+                return;
+            }
+            if (currentItems.length === 0) { showToast('Please add at least one item to your box!', 'warning'); return; }
+            const allergyConflict = hasAllergyConflict(['coffee beans', 'peanuts'], allergyProfile);
+            if (allergyConflict) {
+                showToast('Allergy profile conflict detected. Please remove restricted items.', 'danger');
+                return;
+            }
+            const swapCheck = validateSwap({
+                boxSize: 'medium',
+                itemWeight: 1.5,
+                maxWeight: 5,
+                compatibilityTags: ['allowed']
+            });
+            if (!swapCheck.ok) {
+                showToast(swapCheck.reason, 'danger');
+                return;
+            }
+            const surprise = pickPersonalizedSurprise(
+                ['Citrus Roast', 'Mystery Item', 'No Spicy Blend'],
+                preferenceProfile,
+                surpriseHistory
+            );
+            const addOn = addOnToNextBox('Reusable Filter Set', 9.99);
+            upsertCartItem({
+                cartId: `box-${boxId}`,
+                boxId,
+                title: box.title,
+                type: box.type,
+                image: box.image,
+                price: Number(box.price),
+                items: [...currentItems],
+                size: selectedSize,
+                diet: selectedDiet,
+                frequency: selectedFreq,
+                addOns: [addOn.itemName],
+                shippingStatus: 'Pending Confirmation',
+                surprise
+            });
+            showToast('Saved to cart. Your add-on will ship with the same box at no extra shipping fee.', 'success');
+            new bootstrap.Modal(document.getElementById('successModal')).show();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            init();
+        });
+    </script>
+</body>
+</html>

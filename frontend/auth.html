@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - SportBox</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-4" href="index.html">
+                <i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                    <li class="nav-item"><a class="nav-link px-3" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="sports.html">Sports</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="plans.html">Subscriptions</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="reward.html">Rewards</a></li>
+                    <li class="nav-item ms-lg-1">
+                        <button class="btn btn-sm btn-outline-secondary px-3" id="darkModeToggle" onclick="toggleDarkMode()">
+                            <i class="bi bi-moon-stars-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main style="padding-top: 76px; min-height: 100vh;" class="d-flex align-items-center py-5">
+        <div class="container">
+            <div class="row align-items-stretch g-4 justify-content-center">
+                <div class="col-lg-5 d-none d-lg-flex">
+                    <div class="auth-hero w-100">
+                        <div class="position-relative" style="z-index:1;">
+                            <div class="mb-4"><i class="bi bi-box-seam-fill" style="font-size:3.5rem;"></i></div>
+                            <h2 class="display-6 fw-bold mb-3">Subscription Box<br>Portal Access</h2>
+                            <p class="lead mb-5" style="opacity:.88;">Customers manage recurring boxes here, and admins can sign in to review orders, returns, inventory, and themes.</p>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div style="width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <i class="bi bi-check-lg"></i>
+                                    </div>
+                                    <span>Role-based access for customers and admins</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div style="width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <i class="bi bi-check-lg"></i>
+                                    </div>
+                                    <span>Tiered subscriptions, swaps, and delivery visibility</span>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div style="width:36px;height:36px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                        <i class="bi bi-check-lg"></i>
+                                    </div>
+                                    <span>Admin controls for stock thresholds, returns, and monthly themes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5 col-md-7 col-sm-10">
+                    <div class="auth-card">
+                        <div class="auth-tab-nav" id="authPageTabs">
+                            <button class="auth-tab-btn active" onclick="switchTab('login', this)">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                            </button>
+                            <button class="auth-tab-btn" onclick="switchTab('register', this)">
+                                <i class="bi bi-person-plus me-2"></i>Register
+                            </button>
+                        </div>
+
+                        <div id="loginForm">
+                            <h5 class="fw-bold mb-1">Welcome back!</h5>
+                            <p class="text-muted small mb-4">Choose a role and sign in with an account saved in the app database.</p>
+                            <form onsubmit="handleLogin(event)">
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Login As</label>
+                                    <div class="auth-tab-nav mb-0">
+                                        <button type="button" class="auth-tab-btn active" data-role-btn="customer" onclick="selectLoginRole('customer', this)">
+                                            <i class="bi bi-person me-2"></i>Customer
+                                        </button>
+                                        <button type="button" class="auth-tab-btn" data-role-btn="admin" onclick="selectLoginRole('admin', this)">
+                                            <i class="bi bi-shield-lock me-2"></i>Admin
+                                        </button>
+                                    </div>
+                                    <input type="hidden" id="loginRole" value="customer">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i class="bi bi-envelope text-muted"></i></span>
+                                        <input type="email" class="form-control" id="loginEmail" placeholder="you@example.com" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <label class="form-label fw-semibold small mb-0">Password</label>
+                                        <a href="#" class="text-primary text-decoration-none small">Forgot password?</a>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i class="bi bi-lock text-muted"></i></span>
+                                        <input type="password" class="form-control" id="loginPwd" placeholder="Enter your password" required>
+                                        <button class="input-group-text bg-transparent border-start-0" type="button" onclick="togglePwd('loginPwd', this)">
+                                            <i class="bi bi-eye text-muted"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label text-muted small" for="rememberMe">Remember me for 30 days</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold mb-4">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i>Login to SportBox
+                                </button>
+                                <div class="p-3 rounded-4 border mb-4" style="background:rgba(16,185,129,.06); border-color:rgba(16,185,129,.2)!important;">
+                                    <div class="small fw-semibold text-primary mb-2">Demo database accounts</div>
+                                    <div class="small text-muted mb-1">Admin: admin@sportbox.com / Admin123!</div>
+                                    <div class="small text-muted">Customer: alex@sportbox.com / User123!</div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="registerForm" style="display:none;">
+                            <h5 class="fw-bold mb-1">Create your account</h5>
+                            <p class="text-muted small mb-4">New registrations create customer accounts in the mock database for now.</p>
+                            <form onsubmit="handleRegister(event)">
+                                <div class="row g-3 mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold small">First Name</label>
+                                        <input type="text" class="form-control" placeholder="John" id="regFirstName" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold small">Last Name</label>
+                                        <input type="text" class="form-control" placeholder="Doe" id="regLastName" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Email Address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i class="bi bi-envelope text-muted"></i></span>
+                                        <input type="email" class="form-control" placeholder="you@example.com" id="regEmail" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent"><i class="bi bi-lock text-muted"></i></span>
+                                        <input type="password" class="form-control" placeholder="Min. 8 characters" id="regPwd" required>
+                                        <button class="input-group-text bg-transparent border-start-0" type="button" onclick="togglePwd('regPwd', this)">
+                                            <i class="bi bi-eye text-muted"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Favorite Theme</label>
+                                    <select class="form-select" id="regFavoriteSport">
+                                        <option value="">Select your theme...</option>
+                                        <option>Football</option>
+                                        <option>Basketball</option>
+                                        <option>Fitness</option>
+                                        <option>Tennis</option>
+                                        <option>Coffee</option>
+                                        <option>Books</option>
+                                        <option>Electronics</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Referral Code <span class="text-muted fw-normal">(optional)</span></label>
+                                    <input type="text" class="form-control" placeholder="Enter referral code" id="regReferralCode">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">State Code (service zone check)</label>
+                                    <input type="text" class="form-control" placeholder="NY" id="regStateCode" maxlength="2" required>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                    <label class="form-check-label text-muted small" for="termsCheck">
+                                        I agree to the <a href="#" class="text-primary">Terms &amp; Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold">
+                                    <i class="bi bi-person-check me-2"></i>Create My Account
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
+                    <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
+                    <div class="social-links d-flex gap-2">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3">Quick Links</h6>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="sports.html">Sports</a></li>
+                        <li><a href="plans.html">Subscriptions</a></li>
+                        <li id="footerRewardItem"><a href="reward.html">Rewards</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h6 class="fw-bold mb-3">Account</h6>
+                    <ul class="footer-links">
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="auth.html" id="footerAuthLink">Login</a></li>
+                        <li id="footerRegisterItem"><a href="auth.html">Register</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h6 class="fw-bold mb-3">Contact</h6>
+                    <p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com</p>
+                    <p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p>
+                    <p style="font-size:.9rem;"><i class="bi bi-geo-alt me-2 text-primary"></i>123 Sport Lane, NY 10001</p>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color:#1e293b;">
+            <p class="text-center mb-0" style="font-size:.85rem;">&copy; 2026 SportBox. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
+        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const SportBoxPortal = (() => {
+            const DB_KEY = 'sportbox-db';
+            const SESSION_KEY = 'sportbox-session';
+            const seedDatabase = {
+                admins: [
+                    { id: 'admin-1', name: 'Maya Carter', email: 'admin@sportbox.com', password: 'Admin123!', role: 'admin', title: 'Operations Admin' }
+                ],
+                customers: [
+                    {
+                        id: 'cust-1',
+                        name: 'Alex Johnson',
+                        email: 'alex@sportbox.com',
+                        password: 'User123!',
+                        role: 'customer',
+                        tier: 'Pro',
+                        favoriteTheme: 'Football',
+                        points: 1240,
+                        memberSince: 'Aug 2023',
+                        nextBillingDate: '2026-04-27',
+                        nextDeliveryDate: '2026-04-28',
+                        boxCount: 8,
+                        daysToNextBox: 5,
+                        boxItems: ['Single-Origin Beans', 'Dark Roast', 'Filter Papers', 'Ceramic Mug', 'Mystery Item'],
+                        orderHistory: [
+                            { title: 'Football Pro Box', date: 'Mar 20, 2026', status: 'Delivered', amount: '$49.99' },
+                            { title: 'Gym Starter Box', date: 'Feb 25, 2026', status: 'Delivered', amount: '$39.99' },
+                            { title: 'Basketball Gear Pack', date: 'Jan 28, 2026', status: 'Returned', amount: '$59.99' },
+                            { title: 'Tennis Pro Kit', date: 'Dec 30, 2025', status: 'Delivered', amount: '$64.99' }
+                        ],
+                        delivery: { state: 'Shipped', trackingCode: 'SPX-789-XYZ', stopsAway: 9 },
+                        subscriptions: [
+                            { id: 'sub-1', name: 'Football Pro Box', status: 'active', nextBillingDate: '2026-04-27', price: '$49 / month' }
+                        ]
+                    }
+                ],
+                adminData: {
+                    orders: [
+                        { orderId: 'ORD-1001', customerId: 'cust-1', customerName: 'Alex Johnson', accountEmail: 'alex@sportbox.com', packageName: 'Football Pro Box', trackingCode: 'SPX-789-XYZ', deliveryState: 'Shipped', points: 1240, returned: true, returnReason: 'Damaged bottle shaker', batchId: 'BATCH-NORTH-12' }
+                    ],
+                    stock: [
+                        { item: 'Dark Roast', stock: 8, threshold: 10, theme: 'Coffee Edit' }
+                    ],
+                    themes: [
+                        { id: 'theme-1', name: 'Coffee Edit', month: 'May 2026', status: 'Ready', items: 5 }
+                    ],
+                    shippingBatches: [
+                        { batchId: 'BATCH-NORTH-12', region: 'North', orders: 28, warehouseState: 'Picking' }
+                    ],
+                    themeUploads: []
+                }
+            };
+
+            function ensureDatabase() {
+                if (!localStorage.getItem(DB_KEY)) {
+                    localStorage.setItem(DB_KEY, JSON.stringify(seedDatabase));
+                }
+            }
+
+            function getDatabase() {
+                ensureDatabase();
+                return JSON.parse(localStorage.getItem(DB_KEY));
+            }
+
+            function saveDatabase(db) {
+                localStorage.setItem(DB_KEY, JSON.stringify(db));
+            }
+
+            function normalizeEmail(email) {
+                return (email || '').trim().toLowerCase();
+            }
+
+            function authenticate(email, password, role) {
+                const db = getDatabase();
+                const list = role === 'admin' ? db.admins : db.customers;
+                const account = list.find((item) => item.email === normalizeEmail(email) && item.password === password);
+                if (!account) {
+                    return { ok: false, message: `No ${role} account matches those credentials.` };
+                }
+                localStorage.setItem(SESSION_KEY, JSON.stringify({
+                    id: account.id,
+                    role: account.role,
+                    name: account.name,
+                    email: account.email
+                }));
+                return { ok: true, account };
+            }
+
+            function registerCustomer(payload) {
+                const db = getDatabase();
+                const email = normalizeEmail(payload.email);
+                const exists = [...db.customers, ...db.admins].some((item) => item.email === email);
+                if (exists) {
+                    return { ok: false, message: 'An account with this email already exists.' };
+                }
+                const customer = {
+                    id: `cust-${Date.now()}`,
+                    name: `${payload.firstName} ${payload.lastName}`.trim(),
+                    email,
+                    password: payload.password,
+                    role: 'customer',
+                    tier: 'Basic',
+                    favoriteTheme: payload.favoriteTheme || 'Starter Box',
+                    points: 150,
+                    memberSince: new Date().toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+                    nextBillingDate: '2026-05-01',
+                    nextDeliveryDate: '2026-05-05',
+                    boxCount: 0,
+                    daysToNextBox: 11,
+                    boxItems: ['Starter Pick', 'Welcome Card', 'Surprise Add-on'],
+                    orderHistory: [],
+                    delivery: { state: 'Pending', trackingCode: 'Pending assignment', stopsAway: 0 },
+                    subscriptions: [
+                        { id: `sub-${Date.now()}`, name: `${payload.favoriteTheme || 'Starter'} Box`, status: 'active', nextBillingDate: '2026-05-01', price: '$29 / month' }
+                    ]
+                };
+                db.customers.push(customer);
+                saveDatabase(db);
+                localStorage.setItem(SESSION_KEY, JSON.stringify({
+                    id: customer.id,
+                    role: customer.role,
+                    name: customer.name,
+                    email: customer.email
+                }));
+                return { ok: true, account: customer };
+            }
+
+            ensureDatabase();
+            return { authenticate, registerCustomer };
+        })();
+
+        function toggleDarkMode() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('sportbox-dark', isDark ? '1' : '0');
+            const icon = document.getElementById('darkModeToggle')?.querySelector('i');
+            if (icon) icon.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+        }
+
+        (function () {
+            if (localStorage.getItem('sportbox-dark') === '1') {
+                document.body.classList.add('dark-mode');
+                window.addEventListener('DOMContentLoaded', () => {
+                    const icon = document.getElementById('darkModeToggle')?.querySelector('i');
+                    if (icon) icon.className = 'bi bi-sun-fill';
+                });
+            }
+        })();
+
+        function showToast(msg, type = 'success') {
+            const el = document.getElementById('mainToast');
+            const msgEl = document.getElementById('toastMsg');
+            if (msgEl) msgEl.textContent = msg;
+            if (el) {
+                el.className = `toast align-items-center border-0 text-bg-${type}`;
+                new bootstrap.Toast(el, { delay: 3000 }).show();
+            }
+        }
+
+        function getPortalSession() {
+            const raw = localStorage.getItem('sportbox-session');
+            return raw ? JSON.parse(raw) : null;
+        }
+
+        function handleLogout(event) {
+            event.preventDefault();
+            localStorage.removeItem('sportbox-session');
+            window.location.href = 'auth.html';
+        }
+
+        function updateAuthUI() {
+            const session = getPortalSession();
+            const rewardNavItem = document.getElementById('rewardNavItem');
+            const footerRewardItem = document.getElementById('footerRewardItem');
+            const footerAuthLink = document.getElementById('footerAuthLink');
+            const footerRegisterItem = document.getElementById('footerRegisterItem');
+            const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
+
+            if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
+            if (footerRewardItem) footerRewardItem.style.display = session ? '' : 'none';
+            adminOnlyHiddenLinks.forEach((link) => {
+                link.closest('.nav-item').style.display = session?.role === 'admin' ? 'none' : '';
+            });
+
+            if (session) {
+                if (footerAuthLink) {
+                    footerAuthLink.textContent = 'Logout';
+                    footerAuthLink.href = '#';
+                    footerAuthLink.onclick = handleLogout;
+                }
+                if (footerRegisterItem) footerRegisterItem.style.display = 'none';
+            }
+        }
+
+        function switchTab(tab, btn) {
+            document.querySelectorAll('#authPageTabs > .auth-tab-btn').forEach((button) => button.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+            updateDivider();
+        }
+
+        function selectLoginRole(role, btn) {
+            document.querySelectorAll('[data-role-btn]').forEach((button) => button.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('loginRole').value = role;
+        }
+
+        function togglePwd(id, btn) {
+            const input = document.getElementById(id);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'bi bi-eye-slash text-muted';
+            } else {
+                input.type = 'password';
+                icon.className = 'bi bi-eye text-muted';
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const result = SportBoxPortal.authenticate(
+                document.getElementById('loginEmail').value,
+                document.getElementById('loginPwd').value,
+                document.getElementById('loginRole').value
+            );
+
+            if (!result.ok) {
+                showToast(result.message, 'danger');
+                return;
+            }
+
+            showToast(`${result.account.role === 'admin' ? 'Admin' : 'Customer'} login successful. Redirecting...`, 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1200);
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const stateCode = (document.getElementById('regStateCode')?.value || '').toUpperCase();
+            const serviceable = ['NY', 'NJ', 'CT'];
+            if (!serviceable.includes(stateCode)) {
+                showToast('Address is outside the current serviceable zone.', 'danger');
+                return;
+            }
+
+            const result = SportBoxPortal.registerCustomer({
+                firstName: document.getElementById('regFirstName').value,
+                lastName: document.getElementById('regLastName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPwd').value,
+                favoriteTheme: document.getElementById('regFavoriteSport').value
+            });
+
+            if (!result.ok) {
+                showToast(result.message, 'danger');
+                return;
+            }
+
+            showToast('Account created and saved in the app database.', 'success');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1200);
+        }
+
+        function socialLogin(provider) {
+            showToast(`Signing in with ${provider} is a UI placeholder for now.`, 'primary');
+        }
+
+        function updateDivider() {
+            const span = document.querySelector('.text-center.text-muted.small span[style]');
+            if (span) span.style.background = document.body.classList.contains('dark-mode') ? '#1e293b' : 'white';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+            updateDivider();
+        });
+    </script>
+</body>
+</html>
