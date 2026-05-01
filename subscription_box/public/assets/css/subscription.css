@@ -1,0 +1,14 @@
+.accordion-button:not(.collapsed) {
+    color: var(--primary);
+    background: rgba(16, 185, 129, .05);
+    box-shadow: none;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+    border-color: #334155;
+}

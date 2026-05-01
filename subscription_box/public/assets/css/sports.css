@@ -1,0 +1,17 @@
+/* Page-specific */
+.type-badge {
+    font-size: .75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
+body.dark-mode .modal-content {
+    background: #1e293b;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+body.dark-mode .modal-header {
+    border-color: #334155;
+}

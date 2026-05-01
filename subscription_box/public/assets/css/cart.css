@@ -1,0 +1,7 @@
+
+.cart-card { background: white; border-radius: var(--radius-lg); box-shadow: var(--card-shadow-md); padding: 24px; }
+.addon-chip { padding: 8px 14px; border-radius: 999px; border: 2px dashed var(--border-color); background: transparent; color: #6b7280; cursor: pointer; transition: var(--transition); }
+.addon-chip:hover { border-color: var(--primary); color: var(--primary); background: rgba(16,185,129,.05); }
+.shipping-note { background: linear-gradient(135deg, rgba(16,185,129,.08), rgba(15,118,110,.03)); border: 1px solid rgba(16,185,129,.16); border-radius: var(--radius); }
+body.dark-mode .cart-card { background: #1e293b !important; color: #e2e8f0; }
+body.dark-mode .addon-chip { border-color: #334155; color: #94a3b8; }
