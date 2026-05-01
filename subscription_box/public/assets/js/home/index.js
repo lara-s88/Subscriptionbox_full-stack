@@ -23,7 +23,7 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = "{{ route('login') }}";
 }
 
 function updateAuthUI() {

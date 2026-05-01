@@ -298,9 +298,9 @@
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
                     <ul class="footer-links">
-                        <li><a href="{{ route('welcome') }}">Home</a></li>
+                        <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
-                        <li><a href="{{ route('subscription') }}">Subscriptions</a></li>
+                        <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
                         <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>

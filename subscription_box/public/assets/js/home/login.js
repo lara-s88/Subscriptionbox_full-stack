@@ -232,7 +232,10 @@ if (!result.ok) {
 
 showToast(`${result.account.role === 'admin' ? 'Admin' : 'Customer'} login successful. Redirecting...`, 'success');
 setTimeout(() => {
-    window.location.href = 'dashboard.html';
+    window.location.href = "{{ route('dashboard') }}";
+}, 1200);
+setTimeout(() => {
+    window.location.href = dashboardUrl;
 }, 1200);
 }
 

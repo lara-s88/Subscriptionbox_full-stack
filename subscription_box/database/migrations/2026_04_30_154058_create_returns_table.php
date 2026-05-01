@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('return_items', function (Blueprint $table) {
+        Schema::create('returns', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('order_id')
@@ -32,6 +32,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('return_items');
+        Schema::dropIfExists('returns');
     }
 };
