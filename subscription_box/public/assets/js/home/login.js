@@ -164,7 +164,7 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = '/login';
+window.location.href = sportBoxRoute('home');
 }
 
 function updateAuthUI() {
@@ -173,7 +173,7 @@ const rewardNavItem = document.getElementById('rewardNavItem');
 const footerRewardItem = document.getElementById('footerRewardItem');
 const footerAuthLink = document.getElementById('footerAuthLink');
 const footerRegisterItem = document.getElementById('footerRegisterItem');
-const adminOnlyHiddenLinks = document.querySelectorAll(window.routeSelector('home', 'sports', 'subscriptions'));
+const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
 
 if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
 if (footerRewardItem) footerRewardItem.style.display = session ? '' : 'none';
@@ -232,7 +232,7 @@ if (!result.ok) {
 
 showToast(`${result.account.role === 'admin' ? 'Admin' : 'Customer'} login successful. Redirecting...`, 'success');
 setTimeout(() => {
-    window.location.href = "/dashboard";
+    window.location.href = sportBoxRoute('dashboard');
 }, 1200);
 }
 
@@ -260,7 +260,7 @@ if (!result.ok) {
 
 showToast('Account created and saved in the app database.', 'success');
 setTimeout(() => {
-    window.location.href = '/dashboard';
+    window.location.href = sportBoxRoute('dashboard');
 }, 1200);
 }
 

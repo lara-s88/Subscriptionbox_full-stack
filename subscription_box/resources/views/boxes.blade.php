@@ -92,7 +92,7 @@
                             <p class="fw-semibold small mb-2">What's inside:</p>
                             <div class="d-flex flex-wrap gap-2 mb-4" id="modalItems"></div>
                             <div class="d-flex gap-2">
-                                <a href="{{ route('customize') }}" class="btn btn-primary"><i class="bi bi-pencil-square me-1"></i>Customize Box</a>
+                                <a id="modalCustomizeLink" href="{{ route('customize') }}" class="btn btn-primary"><i class="bi bi-pencil-square me-1"></i>Customize Box</a>
                                 <button class="btn btn-outline-primary" onclick="addToCart()"><i class="bi bi-cart-plus me-1"></i>Add to Cart</button>
                             </div>
                         </div>

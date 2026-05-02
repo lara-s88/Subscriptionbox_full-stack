@@ -130,7 +130,7 @@
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='{{ route(''customize'') }}'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('customize') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));">
                                                 <i class="bi bi-box-seam" style="color:var(--primary);"></i>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='{{ route(''subscriptions'') }}'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('subscriptions') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));">
                                                 <i class="bi bi-arrow-up-circle" style="color:#8b5cf6;"></i>
@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='{{ route(''reward'') }}'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('reward') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06));">
                                                 <i class="bi bi-gift" style="color:#f59e0b;"></i>
@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='{{ route(''cart'') }}'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('cart') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.06));">
                                                 <i class="bi bi-cart3" style="color:#2563eb;"></i>

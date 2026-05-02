@@ -23,14 +23,14 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = '/';
+window.location.href = sportBoxRoute('home');
 }
 function updateAuthUI() {
 const session = getPortalSession();
 const rewardNavItem = document.getElementById('rewardNavItem');
 const authActionLink = document.getElementById('authActionLink');
 const footerAuthLink = document.getElementById('footerAuthLink');
-const adminOnlyHiddenLinks = document.querySelectorAll(window.routeSelector('home', 'sports', 'subscriptions'));
+const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
 if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
 adminOnlyHiddenLinks.forEach((link) => {
     link.closest('.nav-item').style.display = session?.role === 'admin' ? 'none' : '';

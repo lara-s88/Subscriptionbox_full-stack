@@ -11,7 +11,7 @@
 
 </head>
 <body>
-   <x-navbar activePage="sports"></x-navbar>
+   <x-navbar activePage="login"></x-navbar>
 
     <main style="padding-top: 76px; min-height: 100vh;" class="d-flex align-items-center py-5">
         <div class="container">

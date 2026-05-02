@@ -21,7 +21,7 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = '/';
+window.location.href = sportBoxRoute('home');
 }
 function updateAuthUI() {
 const session = getPortalSession();
@@ -29,9 +29,9 @@ const rewardNavItem = document.getElementById('rewardNavItem');
 const footerRewardItem = document.getElementById('footerRewardItem');
 const authActionLink = document.getElementById('authActionLink');
 const footerAuthLink = document.getElementById('footerAuthLink');
-const adminOnlyHiddenLinks = document.querySelectorAll(window.routeSelector('home', 'sports', 'subscriptions'));
+const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
 if (!session) {
-    window.location.href = '/login';
+    window.location.href = sportBoxRoute('login');
     return false;
 }
 if (rewardNavItem) rewardNavItem.style.display = '';

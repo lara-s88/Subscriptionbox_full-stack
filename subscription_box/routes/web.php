@@ -33,10 +33,15 @@ Route::get('/cart', function () {
 })->name('cart');
 
 Route::get('/customize', function () {
-    return view('customize');
+    return view('custemize');
 })->name('customize');
+
+Route::redirect('/custemize', '/customize')->name('custemize');
+
 
 Route::get('/reward', function () {
     return view('reward');
 })->name('reward');
+
+
 

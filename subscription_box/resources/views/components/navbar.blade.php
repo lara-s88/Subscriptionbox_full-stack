@@ -9,16 +9,16 @@
          </button>
          <div class="collapse navbar-collapse" id="navbarNav">
              <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'home' ? 'active' : '' }} fw-semibold"
+                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'home' ? 'active' : '' }} fw-semibold" data-public-nav
                          href="{{ route('home') }}">Home</a>
-                 </li>
-                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}"
+                 </li> 
+                                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}" data-public-nav
                          href="{{ route('sports') }}">Sports</a></li>
-                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'subscriptions' ? 'active' : '' }}"
+                                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'subscriptions' ? 'active' : '' }}" data-public-nav
                          href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}"
+                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}" data-public-nav
                          href="{{ route('dashboard') }}">Dashboard</a></li>
-                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3 {{ $activePage == 'reward' ? 'active' : '' }}" href="{{ route('reward') }}">Rewards</a></li>
+                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="{{ route('reward') }}">Rewards</a></li>
                  <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2"  href="{{ route('login') }}"
                          id="authActionLink">Login</a></li>
                  <li class="nav-item ms-lg-1">
@@ -31,3 +31,19 @@
          </div>
      </div>
  </nav>
+<script>
+     window.SportBoxRoutes = {
+         home: @json(route('home')),
+         sports: @json(route('sports')),
+         subscriptions: @json(route('subscriptions')),
+         dashboard: @json(route('dashboard')),
+         login: @json(route('login')),
+         boxes: @json(route('boxes')),
+         cart: @json(route('cart')),
+         customize: @json(route('customize')),
+         reward: @json(route('reward')),
+     };
+     window.sportBoxRoute = function (name) {
+         return window.SportBoxRoutes?.[name] || '/' + name;
+     };
+ </script>
