@@ -196,14 +196,14 @@
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                        <li id="footerRewardItem"><a href="{{ route('reward') }}l">Rewards</a></li>
+                        <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
                     <ul class="footer-links">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
                         <li id="footerRegisterItem"><a href="{{ route('login') }}">Register</a></li>
                     </ul>
                 </div>

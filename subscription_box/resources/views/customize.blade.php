@@ -8,19 +8,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/custemize.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/customize.css') }}">
     
 </head>
 <body>
     <!-- Navbar -->
-    <x-navbar activePage="custemize"></x-navbar>
+    <x-navbar activePage="customize"></x-navbar>
 
     <!-- Header -->
     <div class="hero-section-sm">
         <div class="container position-relative">
             <div class="d-flex gap-2 flex-wrap mb-3">
-                <a href="boxes.html" class="btn btn-sm btn-outline-light px-3"><i class="bi bi-arrow-left me-1"></i>Back to Boxes</a>
-                <a href="cart.html" class="btn btn-sm btn-light px-3"><i class="bi bi-cart3 me-1"></i>View Cart</a>
+                <a href="{{ route('boxes') }}" class="btn btn-sm btn-outline-light px-3"><i class="bi bi-arrow-left me-1"></i>Back to Boxes</a>
+                <a href="{{ route('cart') }}" class="btn btn-sm btn-light px-3"><i class="bi bi-cart3 me-1"></i>View Cart</a>
             </div>
             <h1 class="display-6 fw-bold mb-1" id="boxTitle">Customize Your Box</h1>
             <p class="lead mb-0" style="opacity:.85;" id="boxSubtitle">Swap, remove, or add items to match your preferences</p>
@@ -160,7 +160,7 @@
                         <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" onclick="confirmSelection()">
                             <i class="bi bi-cart-check me-2"></i>Save to Cart
                         </button>
-                        <a href="boxes.html" class="btn btn-outline-secondary w-100 py-2">
+                        <a href="{{ route('boxes') }}" class="btn btn-outline-secondary w-100 py-2">
                             <i class="bi bi-arrow-left me-1"></i>Back to Boxes
                         </a>
                     </div>
@@ -180,7 +180,7 @@
                     <h4 class="fw-bold mb-2">Box Customized! 🎉</h4>
                     <p class="text-muted mb-4">Your selections are saved in the cart. Review everything there and confirm shipping when ready.</p>
                     <div class="d-flex gap-2 justify-content-center">
-                        <a href="cart.html" class="btn btn-primary px-4"><i class="bi bi-cart3 me-1"></i>View Cart</a>
+                        <a href="{{ route('cart') }}" class="btn btn-primary px-4"><i class="bi bi-cart3 me-1"></i>View Cart</a>
                         <button class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Continue Editing</button>
                     </div>
                 </div>
@@ -203,8 +203,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p><div class="social-links d-flex gap-2"><a href="#"><i class="bi bi-facebook"></i></a><a href="#"><i class="bi bi-instagram"></i></a><a href="#"><i class="bi bi-twitter-x"></i></a><a href="#"><i class="bi bi-youtube"></i></a></div></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('welcome') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscription') }}">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dsahboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
                 <div class="col-lg-4"><h6 class="fw-bold mb-3">Contact</h6><p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com</p><p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">
@@ -213,6 +213,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-     <script src="{{ asset('assets/js/home/custemize.js') }}"></script>
+     <script src="{{ asset('assets/js/home/customize.js') }}"></script>
 </body>
 </html>

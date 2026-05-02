@@ -30,14 +30,14 @@
                         <i class="bi bi-person-lock display-4 text-primary d-block mb-3"></i>
                         <h4 class="fw-bold mb-2">Customer login required</h4>
                         <p class="text-muted mb-4">Only customer accounts can use the cart and confirm shipping.</p>
-                        <a href="auth.html" class="btn btn-primary">Go to Login</a>
+                        <a href="{{ route('login') }}" class="btn btn-primary">Go to Login</a>
                     </div>
 
                     <div id="emptyState" class="cart-card text-center" style="display:none;">
                         <i class="bi bi-cart-x display-4 text-primary d-block mb-3"></i>
                         <h4 class="fw-bold mb-2">Your cart is empty</h4>
                         <p class="text-muted mb-4">Start from the box pages or customize a package to add it here.</p>
-                        <a href="sports.html" class="btn btn-primary">Browse Boxes</a>
+                        <a href="{{ route('sports') }}" class="btn btn-primary">Browse Boxes</a>
                     </div>
 
                     <div id="cartList" class="d-flex flex-column gap-4"></div>
@@ -56,7 +56,7 @@
                         <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" id="confirmShippingBtn" onclick="confirmShipping()">
                             <i class="bi bi-truck me-2"></i>Confirm Shipping
                         </button>
-                        <a href="sports.html" class="btn btn-outline-secondary w-100">Add More Boxes</a>
+                        <a href="{{ route('sports') }}" class="btn btn-outline-secondary w-100">Add More Boxes</a>
                     </div>
                 </div>
             </div>
@@ -76,8 +76,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p><div class="social-links d-flex gap-2"><a href="#"><i class="bi bi-facebook"></i></a><a href="#"><i class="bi bi-instagram"></i></a><a href="#"><i class="bi bi-twitter-x"></i></a><a href="#"><i class="bi bi-youtube"></i></a></div></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('welcome') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscription') }}l">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dsahboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
                 <div class="col-lg-4"><h6 class="fw-bold mb-3">Contact</h6><p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com</p><p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">

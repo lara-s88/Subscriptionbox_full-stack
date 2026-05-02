@@ -21,14 +21,14 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 function updateAuthUI() {
     const session = getPortalSession();
     const rewardNavItem = document.getElementById('rewardNavItem');
     const authActionLink = document.getElementById('authActionLink');
     const footerAuthLink = document.getElementById('footerAuthLink');
-    const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
+    const adminOnlyHiddenLinks = document.querySelectorAll(window.routeSelector('home', 'sports', 'subscriptions'));
     if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
     adminOnlyHiddenLinks.forEach((link) => {
         link.closest('.nav-item').style.display = session?.role === 'admin' ? 'none' : '';
@@ -204,7 +204,7 @@ function confirmSelection() {
     const session = getPortalSession();
     if (!session || session.role !== 'customer') {
         showToast('Please log in as a customer to save this box to your cart.', 'warning');
-        setTimeout(() => { window.location.href = 'auth.html'; }, 900);
+        setTimeout(() => { window.location.href = '/login'; }, 900);
         return;
     }
     if (currentItems.length === 0) { showToast('Please add at least one item to your box!', 'warning'); return; }

@@ -18,7 +18,7 @@
                          href="{{ route('subscriptions') }}">Subscriptions</a></li>
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}"
                          href="{{ route('dashboard') }}">Dashboard</a></li>
-                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="reward.html">Rewards</a></li>
+                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3 {{ $activePage == 'reward' ? 'active' : '' }}" href="{{ route('reward') }}">Rewards</a></li>
                  <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2"  href="{{ route('login') }}"
                          id="authActionLink">Login</a></li>
                  <li class="nav-item ms-lg-1">

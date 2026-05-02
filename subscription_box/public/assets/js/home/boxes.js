@@ -21,14 +21,14 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 function updateAuthUI() {
     const session = getPortalSession();
     const rewardNavItem = document.getElementById('rewardNavItem');
     const authActionLink = document.getElementById('authActionLink');
     const footerAuthLink = document.getElementById('footerAuthLink');
-    const adminOnlyHiddenLinks = document.querySelectorAll('.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]');
+    const adminOnlyHiddenLinks = document.querySelectorAll(window.routeSelector('home', 'sports', 'subscriptions'));
     if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
     adminOnlyHiddenLinks.forEach((link) => {
         link.closest('.nav-item').style.display = session?.role === 'admin' ? 'none' : '';
@@ -158,7 +158,7 @@ function renderBoxes() {
                     <p class="text-muted small mb-3" style="font-size:.82rem;">${b.desc}</p>
                     <div class="d-flex align-items-center justify-content-between">
                         <span class="fw-bold text-primary fs-5">$${b.price}</span>
-                        <a href="customize.html?box=${b.id}" class="btn btn-primary btn-sm px-3" onclick="event.stopPropagation()"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                        <a href="/customize?box=${b.id}" class="btn btn-primary btn-sm px-3" onclick="event.stopPropagation()"><i class="bi bi-pencil-square me-1"></i>Customize</a>
                     </div>
                 </div>
             </div>`;
@@ -213,7 +213,7 @@ function addToCart() {
     const session = getPortalSession();
     if (!session || session.role !== 'customer') {
         showToast('Please log in as a customer to add boxes to your cart.', 'warning');
-        setTimeout(() => { window.location.href = 'auth.html'; }, 900);
+        setTimeout(() => { window.location.href = '/login'; }, 900);
         return;
     }
     if (!selectedBox) return;

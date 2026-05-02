@@ -20,7 +20,7 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/login', function () {
-    return view('auth\login');
+    return view('auth.login');
 })->name('login');
 
 
@@ -32,15 +32,11 @@ Route::get('/cart', function () {
     return view('cart');
 })->name('cart');
 
-Route::get('/custemize', function () {
-    return view('custemize');
-})->name('custemize');
-
+Route::get('/customize', function () {
+    return view('customize');
+})->name('customize');
 
 Route::get('/reward', function () {
     return view('reward');
 })->name('reward');
-
-
-
 

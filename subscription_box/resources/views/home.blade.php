@@ -77,7 +77,7 @@
                             style="color:var(--primary-dark);">
                             <i class="bi bi-grid me-2"></i>Explore Sports
                         </a>
-                        <a href="plans.html" class="btn btn-outline-light btn-lg px-4">View Plans</a>
+                        <a href="{{ route('subscriptions') }}" class="btn btn-outline-light btn-lg px-4">View Plans</a>
                     </div>
                     <div class="d-flex flex-wrap gap-3">
                         <div class="trust-badge"><i class="bi bi-star-fill text-warning"></i>4.9 Rating</div>
@@ -105,7 +105,7 @@
                 <!-- Populated by JS -->
             </div>
             <div class="text-center mt-4">
-                <a href="sports.html" class="btn btn-outline-primary px-4">
+                <a href="{{ route('sports') }}" class="btn btn-outline-primary px-4">
                     View All Sports &amp; Boxes <i class="bi bi-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -198,7 +198,7 @@
                                     style="color:#d1d5db;"></i><span class="text-muted">Free express shipping</span>
                             </li>
                         </ul>
-                        <a href="plans.html" class="btn btn-outline-primary w-100 py-3 fw-semibold">Get Started —
+                        <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 py-3 fw-semibold">Get Started —
                             Basic</a>
                     </div>
                 </div>
@@ -243,7 +243,7 @@
                             <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
                                     style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
                         </ul>
-                        <a href="plans.html" class="btn btn-primary w-100 py-3 fw-semibold">Get Started — Pro</a>
+                        <a href="{{ route('subscriptions') }}" class="btn btn-primary w-100 py-3 fw-semibold">Get Started — Pro</a>
                     </div>
                 </div>
 
@@ -284,13 +284,13 @@
                                     class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>VIP
                                     events &amp; challenges</span></li>
                         </ul>
-                        <a href="plans.html" class="btn btn-outline-primary w-100 py-3 fw-semibold">Get Started —
+                        <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 py-3 fw-semibold">Get Started —
                             VIP</a>
                     </div>
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="plans.html" class="btn btn-outline-primary px-4">
+                <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary px-4">
                     Compare All Plans <i class="bi bi-arrow-right ms-2"></i>
                 </a>
             </div>
@@ -380,11 +380,11 @@
                 <p class="lead mb-4" style="opacity:.9;">Join over 10,000 athletes getting premium gear delivered
                     every month.</p>
                 <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                    <a href="auth.html" class="btn btn-light btn-lg fw-semibold px-4"
+                    <a href="{{ route('login') }}" class="btn btn-light btn-lg fw-semibold px-4"
                         style="color:var(--primary-dark);">
                         <i class="bi bi-person-plus me-2"></i>Get Started Free
                     </a>
-                    <a href="plans.html" class="btn btn-outline-light btn-lg px-4">View Plans</a>
+                    <a href="{{ route('subscriptions') }}" class="btn btn-outline-light btn-lg px-4">View Plans</a>
                 </div>
             </div>
         </div>

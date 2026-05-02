@@ -362,7 +362,7 @@ function handleLogout(event) {
     SportBoxPortal.clearSession();
     showToast('You have been logged out.', 'secondary');
     setTimeout(() => {
-        window.location.href = 'auth.html';
+        window.location.href = '/login';
     }, 700);
 }
 
@@ -373,7 +373,7 @@ function updateAuthAction() {
     const rewardNavItem = document.getElementById('rewardNavItem');
     const footerRewardItem = document.getElementById('footerRewardItem');
     const adminOnlyHiddenLinks = document.querySelectorAll(
-        '.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]'
+        window.routeSelector('home', 'sports', 'subscriptions')
     );
 
     if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
@@ -395,7 +395,7 @@ function updateAuthAction() {
     } else {
         if (footerAuthLink) {
             footerAuthLink.textContent = 'Login';
-            footerAuthLink.href = 'auth.html';
+            footerAuthLink.href = '/login';
             footerAuthLink.onclick = null;
         }
     }

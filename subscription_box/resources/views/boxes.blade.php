@@ -17,7 +17,7 @@
     <!-- Mini Hero -->
     <div class="hero-section-sm">
         <div class="container position-relative">
-            <a href="sports.html" class="btn btn-sm btn-outline-light px-3 mb-3"><i class="bi bi-arrow-left me-1"></i>All Sports</a>
+            <a href="{{ route('sports') }}" class="btn btn-sm btn-outline-light px-3 mb-3"><i class="bi bi-arrow-left me-1"></i>All Sports</a>
             <h1 class="display-5 fw-bold mb-2" id="sportTitle">Football Boxes</h1>
             <p class="lead mb-0" style="opacity:.88;" id="sportDesc">Premium curated boxes for football enthusiasts</p>
         </div>
@@ -47,7 +47,7 @@
                     <i class="bi bi-search"></i>
                     <input type="text" class="form-control" placeholder="Search boxes..." id="searchInput" oninput="searchBoxes()">
                 </div>
-                <a href="cart.html" class="btn btn-outline-primary">
+                <a href="{{ route('cart') }}" class="btn btn-outline-primary">
                     <i class="bi bi-cart3 me-1"></i>View Cart
                 </a>
             </div>
@@ -92,7 +92,7 @@
                             <p class="fw-semibold small mb-2">What's inside:</p>
                             <div class="d-flex flex-wrap gap-2 mb-4" id="modalItems"></div>
                             <div class="d-flex gap-2">
-                                <a href="customize.html" class="btn btn-primary"><i class="bi bi-pencil-square me-1"></i>Customize Box</a>
+                                <a href="{{ route('customize') }}" class="btn btn-primary"><i class="bi bi-pencil-square me-1"></i>Customize Box</a>
                                 <button class="btn btn-outline-primary" onclick="addToCart()"><i class="bi bi-cart-plus me-1"></i>Add to Cart</button>
                             </div>
                         </div>
@@ -117,8 +117,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p><div class="social-links d-flex gap-2"><a href="#"><i class="bi bi-facebook"></i></a><a href="#"><i class="bi bi-instagram"></i></a><a href="#"><i class="bi bi-twitter-x"></i></a><a href="#"><i class="bi bi-youtube"></i></a></div></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('welcome') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscription') }}">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dsahboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li></ul></div>
                 <div class="col-lg-4"><h6 class="fw-bold mb-3">Contact</h6><p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com</p><p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">

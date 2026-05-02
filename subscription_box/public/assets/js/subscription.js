@@ -23,7 +23,7 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 
 function updateAuthUI() {
@@ -34,7 +34,7 @@ function updateAuthUI() {
     const footerAuthLink = document.getElementById('footerAuthLink');
     const footerRegisterItem = document.getElementById('footerRegisterItem');
     const adminOnlyHiddenLinks = document.querySelectorAll(
-        '.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]'
+        window.routeSelector('home', 'sports', 'subscriptions')
     );
     if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
     if (footerRewardItem) footerRewardItem.style.display = session ? '' : 'none';
@@ -113,7 +113,7 @@ function choosePlan(plan) {
         'No prorated adjustment';
     showToast(`${plan} selected (${benefits.shipping}). ${deltaMsg}`, 'success');
     setTimeout(() => {
-        window.location.href = 'auth.html';
+        window.location.href = '/login';
     }, 1800);
 }
 document.addEventListener('DOMContentLoaded', updateAuthUI);
