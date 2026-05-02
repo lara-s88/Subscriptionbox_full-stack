@@ -184,7 +184,7 @@
                             style="color:var(--primary-dark);">
                             <i class="bi bi-grid me-2"></i>Browse Sports
                         </a>
-                        <a href="plans.html" class="btn btn-outline-light btn-lg px-4">View Plans</a>
+                        <a href="{{ route('subscriptions') }}" class="btn btn-outline-light btn-lg px-4">View Plans</a>
                     </div>
                 </div>
             </div>
@@ -256,7 +256,7 @@
                             <div class="h4 fw-bold text-primary mb-3" id="modalPrice"></div>
                             <div class="mb-4" id="modalItems"></div>
                             <div class="d-flex gap-2">
-                                <a id="customizeBtn" href="customize.html" class="btn btn-primary">
+                                <a id="customizeBtn" href="{{ route('customize') }}" class="btn btn-primary">
                                     <i class="bi bi-pencil-square me-1"></i>Customize Box
                                 </a>
                                 <button class="btn btn-outline-primary" onclick="addToCart()">

@@ -362,7 +362,7 @@ function handleLogout(event) {
     SportBoxPortal.clearSession();
     showToast('You have been logged out.', 'secondary');
     setTimeout(() => {
-        window.location.href = 'auth.html';
+        window.location.href = sportBoxRoute('login');
     }, 700);
 }
 
@@ -395,7 +395,7 @@ function updateAuthAction() {
     } else {
         if (footerAuthLink) {
             footerAuthLink.textContent = 'Login';
-            footerAuthLink.href = 'auth.html';
+            footerAuthLink.href = sportBoxRoute('login');
             footerAuthLink.onclick = null;
         }
     }

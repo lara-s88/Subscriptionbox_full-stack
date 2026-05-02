@@ -21,7 +21,7 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = sportBoxRoute('home');
 }
 function updateAuthUI() {
     const session = getPortalSession();
@@ -204,7 +204,7 @@ function confirmSelection() {
     const session = getPortalSession();
     if (!session || session.role !== 'customer') {
         showToast('Please log in as a customer to save this box to your cart.', 'warning');
-        setTimeout(() => { window.location.href = 'auth.html'; }, 900);
+        setTimeout(() => { window.location.href = sportBoxRoute('login'); }, 900);
         return;
     }
     if (currentItems.length === 0) { showToast('Please add at least one item to your box!', 'warning'); return; }

@@ -23,7 +23,7 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = 'index.html';
+window.location.href = sportBoxRoute('home');
 }
 function updateAuthUI() {
 const session = getPortalSession();

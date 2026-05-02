@@ -23,7 +23,7 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = "{{ route('login') }}";
+    window.location.href = "/login";
 }
 
 function updateAuthUI() {
@@ -34,7 +34,7 @@ function updateAuthUI() {
     const footerAuthLink = document.getElementById('footerAuthLink');
     const footerRegisterItem = document.getElementById('footerRegisterItem');
     const adminOnlyHiddenLinks = document.querySelectorAll(
-        '.navbar .nav-link[href="index.html"], .navbar .nav-link[href="sports.html"], .navbar .nav-link[href="plans.html"]'
+        window.routeSelector('home', 'sports', 'subscriptions')
     );
 
     if (rewardNavItem) rewardNavItem.style.display = session ? '' : 'none';
@@ -80,7 +80,7 @@ function renderSports() {
         const col = document.createElement('div');
         col.className = 'col-md-6 col-lg-3 animate-in';
         col.innerHTML = `
-                    <a href="boxes.html?sport=${encodeURIComponent(sport.name)}" class="text-decoration-none">
+                    <a href="/boxes?sport=${encodeURIComponent(sport.name)}" class="text-decoration-none">
                         <div class="sport-card h-100">
                             <img src="${sport.image}" class="card-img-top" alt="${sport.name}" style="height:200px;object-fit:cover;">
                             <div class="card-body p-4">

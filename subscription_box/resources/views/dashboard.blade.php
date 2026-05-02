@@ -40,7 +40,7 @@
                 <h4 class="fw-bold mb-2">Sign in to open the portal</h4>
                 <p class="text-muted mb-4">Customers can manage subscriptions here, and admins can review orders,
                     returns, stock alerts, and theme uploads.</p>
-                <a href="auth.html" class="btn btn-primary px-4">Go to Login</a>
+                <a href="{{ route('login') }}" class="btn btn-primary px-4">Go to Login</a>
             </div>
 
             <section id="customerDashboard" style="display:none;">
@@ -80,7 +80,7 @@
                                         <p class="small fw-semibold mb-2">Box Contents:</p>
                                         <div class="d-flex flex-wrap gap-2 mb-3" id="boxContents"></div>
                                         <div class="d-flex gap-2 flex-wrap">
-                                            <a href="customize.html" class="btn btn-primary btn-sm px-3"><i
+                                            <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i
                                                     class="bi bi-pencil-square me-1"></i>Swap Items</a>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='customize.html'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('customize') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));">
                                                 <i class="bi bi-box-seam" style="color:var(--primary);"></i>
@@ -139,7 +139,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='plans.html'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('subscriptions') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));">
                                                 <i class="bi bi-arrow-up-circle" style="color:#8b5cf6;"></i>
@@ -148,7 +148,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='reward.html'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('reward') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06));">
                                                 <i class="bi bi-gift" style="color:#f59e0b;"></i>
@@ -157,7 +157,7 @@
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card" onclick="location.href='cart.html'">
+                                        <div class="quick-action-card" onclick="location.href='{{ route('cart') }}'">
                                             <div class="quick-action-icon"
                                                 style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.06));">
                                                 <i class="bi bi-cart3" style="color:#2563eb;"></i>
@@ -203,7 +203,7 @@
                                 <div class="d-flex justify-content-between small mb-3"><span class="text-muted">Member
                                         since:</span><span class="fw-semibold" id="subscriptionMemberSince">Aug
                                         2023</span></div>
-                                <a href="plans.html" class="btn btn-outline-primary w-100 btn-sm">Upgrade Plan</a>
+                                <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 btn-sm">Upgrade Plan</a>
                             </div>
                         </div>
 
@@ -212,7 +212,7 @@
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h6 class="fw-bold mb-0"><i class="bi bi-trophy text-warning me-2"></i>Rewards
                                     </h6>
-                                    <a href="reward.html" class="text-primary text-decoration-none small">View all</a>
+                                    <a href="{{ route('reward') }}" class="text-primary text-decoration-none small">View all</a>
                                 </div>
                                 <div class="text-center mb-3">
                                     <div class="display-6 fw-bold text-primary" id="customerPoints">0</div>
@@ -226,7 +226,7 @@
                                     <div class="progress-bar" id="pointsProgressBar"
                                         style="width:0;background:var(--gradient);border-radius:4px;"></div>
                                 </div>
-                                <a href="reward.html" class="btn btn-primary w-100 btn-sm">Redeem Points</a>
+                                <a href="{{ route('reward') }}" class="btn btn-primary w-100 btn-sm">Redeem Points</a>
                             </div>
                         </div>
                     </div>
@@ -396,14 +396,14 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
-                        <li><a href="{{ route('subscription') }}">Subscriptions</a></li>
+                        <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
                         <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
                     <ul class="footer-links">
-                        <li><a href="{{ route('dsahboard') }}">Dashboard</a></li>
+                        <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
                     </ul>
                 </div>

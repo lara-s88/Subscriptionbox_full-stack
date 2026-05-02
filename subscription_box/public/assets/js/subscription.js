@@ -23,7 +23,7 @@ function getPortalSession() {
 function handleLogout(event) {
     event.preventDefault();
     localStorage.removeItem('sportbox-session');
-    window.location.href = 'index.html';
+    window.location.href = sportBoxRoute('home');
 }
 
 function updateAuthUI() {
@@ -113,7 +113,7 @@ function choosePlan(plan) {
         'No prorated adjustment';
     showToast(`${plan} selected (${benefits.shipping}). ${deltaMsg}`, 'success');
     setTimeout(() => {
-        window.location.href = 'auth.html';
+        window.location.href = sportBoxRoute('login');
     }, 1800);
 }
 document.addEventListener('DOMContentLoaded', updateAuthUI);

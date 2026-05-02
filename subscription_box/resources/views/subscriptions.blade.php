@@ -330,9 +330,9 @@
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
                     <ul class="footer-links">
-                        <li><a href="{{ route('welcome') }}">Home</a></li>
+                        <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
-                        <li><a href="{{ route('subscription') }}">Subscriptions</a></li>
+                        <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
                         <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
@@ -340,8 +340,8 @@
                     <h6 class="fw-bold mb-3">Account</h6>
                     <ul class="footer-links">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="login" id="footerAuthLink">Login</a></li>
-                        <li id="footerRegisterItem"><a href="login">Register</a></li>
+                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li id="footerRegisterItem"><a href="{{ route('login') }}">Register</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -357,7 +357,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-   <script src="{{ asset('assets/js/home/subscription.js') }}"></script>
+   <script src="{{ asset('assets/js/subscription.js') }}"></script>
 </body>
 
 </html>

@@ -164,7 +164,7 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = 'auth.html';
+window.location.href = sportBoxRoute('home');
 }
 
 function updateAuthUI() {
@@ -232,10 +232,7 @@ if (!result.ok) {
 
 showToast(`${result.account.role === 'admin' ? 'Admin' : 'Customer'} login successful. Redirecting...`, 'success');
 setTimeout(() => {
-    window.location.href = "{{ route('dashboard') }}";
-}, 1200);
-setTimeout(() => {
-    window.location.href = dashboardUrl;
+    window.location.href = sportBoxRoute('dashboard');
 }, 1200);
 }
 
@@ -263,7 +260,7 @@ if (!result.ok) {
 
 showToast('Account created and saved in the app database.', 'success');
 setTimeout(() => {
-    window.location.href = 'dashboard.html';
+    window.location.href = sportBoxRoute('dashboard');
 }, 1200);
 }
 

@@ -25,7 +25,7 @@ return raw ? JSON.parse(raw) : null;
 function handleLogout(event) {
 event.preventDefault();
 localStorage.removeItem('sportbox-session');
-window.location.href = 'index.html';
+window.location.href = sportBoxRoute('home');
 }
 
 function updateAuthUI() {
@@ -260,7 +260,7 @@ if (activeFilter === 'all') {
                     <p class="text-muted small mb-3">${box.items.length} premium items included</p>
                     <div class="d-flex align-items-center justify-content-between">
                         <span class="fw-bold text-primary fs-5">${box.price}</span>
-                        <a href="customize.html?box=${box.id}" class="btn btn-primary btn-sm px-3"
+                        <a href="${sportBoxRoute('customize')}?box=${box.id}" class="btn btn-primary btn-sm px-3"
                             onclick="event.stopPropagation()">
                             <i class="bi bi-pencil-square me-1"></i>Customize
                         </a>
@@ -283,7 +283,7 @@ document.getElementById('modalImage').src = box.image;
 document.getElementById('modalImage').alt = box.title;
 document.getElementById('modalBoxTitle').textContent = box.title;
 document.getElementById('modalPrice').textContent = box.price;
-document.getElementById('customizeBtn').href = `customize.html?box=${box.id}`;
+document.getElementById('customizeBtn').href = `${sportBoxRoute('customize')}?box=${box.id}`;
 
 const itemsEl = document.getElementById('modalItems');
 itemsEl.innerHTML = '<p class="fw-semibold small mb-2">What\'s inside:</p>';
@@ -307,7 +307,7 @@ const session = getPortalSession();
 if (!session || session.role !== 'customer') {
     showToast('Please log in as a customer to add boxes to your cart.', 'warning');
     setTimeout(() => {
-        window.location.href = 'auth.html';
+        window.location.href = sportBoxRoute('login');
     }, 900);
     return;
 }
