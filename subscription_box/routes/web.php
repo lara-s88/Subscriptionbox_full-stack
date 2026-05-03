@@ -33,7 +33,7 @@ Route::get('/cart', function () {
 })->name('cart');
 
 Route::get('/customize', function () {
-    return view('custemize');
+    return view('customize');
 })->name('customize');
 
 Route::redirect('/custemize', '/customize')->name('custemize');
