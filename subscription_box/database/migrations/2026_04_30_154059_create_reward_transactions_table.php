@@ -17,12 +17,8 @@ return new class extends Migration
 
             $table->integer('points_used');
 
-            $table->string('source_type', 80);
-            $table->integer('source_id')->nullable();
 
-            $table->string('description', 255)->nullable();
-
-            $table->timestamp('created_at')->useCurrent();
+           
         });
     }
 

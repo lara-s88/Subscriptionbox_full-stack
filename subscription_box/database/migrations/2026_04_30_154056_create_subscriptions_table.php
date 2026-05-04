@@ -14,27 +14,28 @@ return new class extends Migration
     Schema::create('subscriptions', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('user_id')
-              ->constrained()
-              ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                  ->unique()
+                  ->constrained('users')
+                  ->cascadeOnDelete();
 
-        $table->foreignId('plan_id')
-              ->constrained()
-              ->cascadeOnDelete();
+            $table->foreignId('plan_id')
+                  ->constrained('plans')
+                  ->cascadeOnDelete();
 
-        $table->enum('status', ['active', 'paused', 'cancelled', 'pending'])
-              ->default('pending');
+            $table->enum('status', ['active', 'paused', 'cancelled'])
+                  ->default('active');
 
-        $table->date('next_billing_date')->nullable();
-        $table->date('last_billing_date')->nullable();
-        $table->date('pause_until')->nullable();
-        $table->date('started_at')->nullable();
+            $table->date('last_billing_date')->nullable();
+            $table->date('next_billing_date');
+            $table->date('pause_until');
+            $table->timestamp('started_at')->useCurrent();
 
-        $table->integer('renewal_day')->nullable();
+            $table->unsignedTinyInteger('renewal_day');
 
-        $table->timestamps(); // created_at + updated_at
-    });
-}
+            $table->timestamps();
+        });
+    }
     /**
      * Reverse the migrations.
      */

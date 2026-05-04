@@ -8,11 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('box_items', function (Blueprint $table) {
+        Schema::create('subscription_item_extra', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignId('box_id')
-                  ->constrained('boxes')
+            $table->foreignId('subscription_id')
+                  ->constrained('subscriptions')
                   ->cascadeOnDelete();
 
             $table->foreignId('inventory_item_id')
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('box_items');
+        Schema::dropIfExists('subscription_item_extra');
     }
 };

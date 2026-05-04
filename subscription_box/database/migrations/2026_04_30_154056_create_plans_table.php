@@ -24,7 +24,6 @@ return new class extends Migration
         $table->boolean('early_access')->default(false);
         $table->boolean('vip_support')->default(false);
 
-        $table->timestamp('created_at')->useCurrent();
     });
 }
     

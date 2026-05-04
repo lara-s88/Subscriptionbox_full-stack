@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('order_id')
-                  ->constrained('orders')
+                  ->constrained('box_orders')
                   ->cascadeOnDelete();
 
             $table->text('reason');

@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cart_items', function (Blueprint $table) {
+        Schema::create('box_orders', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')
@@ -19,13 +19,12 @@ return new class extends Migration
                   ->constrained('boxes')
                   ->cascadeOnDelete();
 
-            $table->string('custom_size', 20)->nullable();
             $table->string('diet_preference', 100)->nullable();
 
             $table->enum('shipping_status', [
                 'pending_confirmation',
                 'shipping_confirmed',
-                'shipped'
+                'shipped',
             ])->default('pending_confirmation');
 
             $table->decimal('subtotal', 10, 2)->default(0.00);
@@ -36,6 +35,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('cart_items');
+        Schema::dropIfExists('box_orders');
     }
 };

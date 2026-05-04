@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('order_id')
-                  ->constrained('orders')
+                  ->constrained('box_orders')
                   ->cascadeOnDelete();
 
             $table->foreignId('batch_id')
@@ -35,7 +35,6 @@ return new class extends Migration
             $table->date('estimated_delivery')->nullable();
             $table->integer('stops_away')->nullable();
 
-            $table->timestamp('created_at')->useCurrent();
         });
     }
 

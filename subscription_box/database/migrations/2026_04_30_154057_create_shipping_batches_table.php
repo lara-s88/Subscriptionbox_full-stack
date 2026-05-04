@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
 
             $table->string('batch_code', 50)->unique();
-            $table->string('region', 100);
+            $table->string('city', 100);
 
             $table->enum('warehouse_state', [
                 'picking',

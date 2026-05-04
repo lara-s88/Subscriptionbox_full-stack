@@ -8,21 +8,23 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('box_items', function (Blueprint $table) {
+        Schema::create('subscription_boxes', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('subscription_id')
+                  ->constrained('subscriptions')
+                  ->cascadeOnDelete();
 
             $table->foreignId('box_id')
                   ->constrained('boxes')
                   ->cascadeOnDelete();
 
-            $table->foreignId('inventory_item_id')
-                  ->constrained('inventory_items')
-                  ->cascadeOnDelete();
+            $table->timestamp('changed_at')->useCurrent();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('box_items');
+        Schema::dropIfExists('subscription_boxes');
     }
 };

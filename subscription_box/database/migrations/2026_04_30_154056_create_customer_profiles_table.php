@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('user_profiles', function (Blueprint $table) {
+        Schema::create('customer_profiles', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')
@@ -16,9 +16,14 @@ return new class extends Migration
                   ->constrained('users')
                   ->cascadeOnDelete();
 
-            $table->string('diet_preference', 100)->nullable();
-            $table->string('skill_level', 50)->nullable();
-            $table->string('address_line', 190)->nullable();
+            $table->enum('diet_preference', [
+                'standard',
+                'keto',
+                'vegan',
+                'Hiegh Protein',
+            ])->nullable();
+          
+            $table->string('address', 190)->nullable();
             $table->string('city', 100)->nullable();
             $table->string('country', 100)->nullable();
             $table->text('delivery_instructions')->nullable();
@@ -29,6 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('user_profiles');
+        Schema::dropIfExists('customer_profiles');
     }
 };
