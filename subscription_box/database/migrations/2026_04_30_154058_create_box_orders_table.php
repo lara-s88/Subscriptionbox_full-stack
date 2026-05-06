@@ -10,25 +10,39 @@ return new class extends Migration
     {
         Schema::create('box_orders', function (Blueprint $table) {
             $table->id();
-
+            
             $table->foreignId('user_id')
                   ->constrained('users')
                   ->cascadeOnDelete();
-
+        
             $table->foreignId('box_id')
                   ->constrained('boxes')
                   ->cascadeOnDelete();
 
-            $table->string('diet_preference', 100)->nullable();
+            $table->foreignId("base_price")
+                   ->constrained('boxes', 'base_price')
+                   ->cascadeOnDelete();
+                  
+            $table->foreignId('country_id')
+                  ->constrained('customers', 'country')
+                  ->cascadeOnDelete();
+                  
 
-            $table->enum('shipping_status', [
-                'pending_confirmation',
-                'shipping_confirmed',
+            $table->string('order_number')->unique();
+            
+            $table->enum('status', [
+                'pending',
+                'packed',
                 'shipped',
-            ])->default('pending_confirmation');
-
-            $table->decimal('subtotal', 10, 2)->default(0.00);
-
+                'out_for_delivery',
+                'delivered',
+                'returned'
+            ])->default('pending');
+            
+            $table->decimal('total_amount', 10, 2);
+            
+            
+            $table->timestamps();
         });
     }
 
