@@ -22,7 +22,7 @@ return new class extends Migration
 
             $table->date('scheduled_ship_date')->nullable();
 
-            $table->timestamp('created_at')->useCurrent();
+            
         });
     }
 

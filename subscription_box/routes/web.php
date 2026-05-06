@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoxController;
-use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
     return view('home');
@@ -21,9 +22,11 @@ Route::get('/dashboard', function () {
 })->name('dashboard');
 
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+//Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register/submit', [RegisterController::class, 'register'])->name('register.submit');
+
 
 
 Route::get('/boxes', function () {
@@ -45,9 +48,7 @@ Route::get('/reward', function () {
     return view('reward');
 })->name('reward');
 
-//Route::get('/box/{id}', [BoxController::class , 'showBox']);
-//Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
-//Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
-Route::post('/register', [CustomerController::class, 'register']);
-//Route::post('/login', [CustomerController::class, 'login']);
+Route::get('/box/{id}', [BoxController::class , 'showBox']);
+Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
+Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
 

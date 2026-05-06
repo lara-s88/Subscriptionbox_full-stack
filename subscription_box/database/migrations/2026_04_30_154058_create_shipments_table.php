@@ -35,6 +35,7 @@ return new class extends Migration
             $table->date('estimated_delivery')->nullable();
             $table->integer('stops_away')->nullable();
 
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 

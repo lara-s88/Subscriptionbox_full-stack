@@ -26,7 +26,7 @@ return new class extends Migration
 
             $table->string('photo_path', 255)->nullable();
 
-            $table->timestamp('created_at')->useCurrent();
+            
         });
     }
 

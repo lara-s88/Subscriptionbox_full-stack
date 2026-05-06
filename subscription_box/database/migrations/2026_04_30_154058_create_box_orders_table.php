@@ -29,7 +29,6 @@ return new class extends Migration
 
             $table->decimal('subtotal', 10, 2)->default(0.00);
 
-            $table->timestamp('created_at')->useCurrent();
         });
     }
 

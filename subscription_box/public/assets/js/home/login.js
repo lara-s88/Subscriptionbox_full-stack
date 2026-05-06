@@ -2,7 +2,54 @@
 const SportBoxPortal = (() => {
 const DB_KEY = 'sportbox-db';
 const SESSION_KEY = 'sportbox-session';
-
+const seedDatabase = {
+    admins: [
+        { id: 'admin-1', name: 'Maya Carter', email: 'admin@sportbox.com', password: 'Admin123!', role: 'admin', title: 'Operations Admin' }
+    ],
+    customers: [
+        {
+            id: 'cust-1',
+            name: 'Alex Johnson',
+            email: 'alex@sportbox.com',
+            password: 'User123!',
+            role: 'customer',
+            tier: 'Pro',
+            favoriteTheme: 'Football',
+            points: 1240,
+            memberSince: 'Aug 2023',
+            nextBillingDate: '2026-04-27',
+            nextDeliveryDate: '2026-04-28',
+            boxCount: 8,
+            daysToNextBox: 5,
+            boxItems: ['Single-Origin Beans', 'Dark Roast', 'Filter Papers', 'Ceramic Mug', 'Mystery Item'],
+            orderHistory: [
+                { title: 'Football Pro Box', date: 'Mar 20, 2026', status: 'Delivered', amount: '$49.99' },
+                { title: 'Gym Starter Box', date: 'Feb 25, 2026', status: 'Delivered', amount: '$39.99' },
+                { title: 'Basketball Gear Pack', date: 'Jan 28, 2026', status: 'Returned', amount: '$59.99' },
+                { title: 'Tennis Pro Kit', date: 'Dec 30, 2025', status: 'Delivered', amount: '$64.99' }
+            ],
+            delivery: { state: 'Shipped', trackingCode: 'SPX-789-XYZ', stopsAway: 9 },
+            subscriptions: [
+                { id: 'sub-1', name: 'Football Pro Box', status: 'active', nextBillingDate: '2026-04-27', price: '$49 / month' }
+            ]
+        }
+    ],
+    adminData: {
+        orders: [
+            { orderId: 'ORD-1001', customerId: 'cust-1', customerName: 'Alex Johnson', accountEmail: 'alex@sportbox.com', packageName: 'Football Pro Box', trackingCode: 'SPX-789-XYZ', deliveryState: 'Shipped', points: 1240, returned: true, returnReason: 'Damaged bottle shaker', batchId: 'BATCH-NORTH-12' }
+        ],
+        stock: [
+            { item: 'Dark Roast', stock: 8, threshold: 10, theme: 'Coffee Edit' }
+        ],
+        themes: [
+            { id: 'theme-1', name: 'Coffee Edit', month: 'May 2026', status: 'Ready', items: 5 }
+        ],
+        shippingBatches: [
+            { batchId: 'BATCH-NORTH-12', region: 'North', orders: 28, warehouseState: 'Picking' }
+        ],
+        themeUploads: []
+    }
+};
 
 function ensureDatabase() {
     if (!localStorage.getItem(DB_KEY)) {
@@ -171,52 +218,95 @@ if (input.type === 'password') {
 }
 
 function handleLogin(event) {
-event.preventDefault();
-const result = SportBoxPortal.authenticate(
-    document.getElementById('loginEmail').value,
-    document.getElementById('loginPwd').value,
-    document.getElementById('loginRole').value
-);
+    event.preventDefault();
 
-if (!result.ok) {
-    showToast(result.message, 'danger');
-    return;
-}
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-showToast(`${result.account.role === 'admin' ? 'Admin' : 'Customer'} login successful. Redirecting...`, 'success');
-setTimeout(() => {
-    window.location.href = sportBoxRoute('dashboard');
-}, 1200);
+    const data = {
+        email: document.getElementById('loginEmail').value,
+        password: document.getElementById('loginPwd').value,
+        role: document.getElementById('loginRole').value
+    };
+
+    fetch("/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRF-TOKEN": token
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (!result.ok) {
+            showToast(result.message || 'Invalid credentials', 'danger');
+            return;
+        }
+
+        showToast('Login successful ', 'success');
+
+        setTimeout(() => {
+            window.location.href = "/dashboard";
+        }, 1200);
+    })
+    .catch(error => {
+        console.log(error);
+        showToast('Server error', 'danger');
+    });
 }
 
 function handleRegister(event) {
-event.preventDefault();
-const stateCode = (document.getElementById('regStateCode')?.value || '').toUpperCase();
-const serviceable = ['NY', 'NJ', 'CT'];
-if (!serviceable.includes(stateCode)) {
-    showToast('Address is outside the current serviceable zone.', 'danger');
-    return;
+    event.preventDefault();
+
+    let token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    const stateCode = (document.getElementById('regStateCode')?.value || '').toUpperCase();
+    const serviceable = ['NY', 'NJ', 'CT'];
+
+    if (!serviceable.includes(stateCode)) {
+        showToast('Address is outside the current serviceable zone.', 'danger');
+        return;
+    }
+
+    const data = {
+        first_name: document.getElementById('regFirstName').value,
+        last_name: document.getElementById('regLastName').value,
+        email: document.getElementById('regEmail').value,
+        password: document.getElementById('regPwd').value,
+        favorite_theme: document.getElementById('regFavoriteSport').value,
+        state_code: stateCode,
+    };
+
+    fetch("/register/submit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "X-CSRF-TOKEN": token
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+    if (!result.ok) {
+        showToast(result.message || 'Something went wrong', 'danger');
+        return;
+    }
+
+    showToast('Account created successfully 🎉', 'success');
+
+    setTimeout(() => {
+        const loginBtn = document.querySelector('.auth-tab-btn');
+        switchTab('login', loginBtn);
+    }, 1200);
+
+})
+    .catch(error => {
+        console.log(error);
+        showToast('Server error occurred', 'danger');
+    });
 }
-
-const result = SportBoxPortal.registerCustomer({
-    firstName: document.getElementById('regFirstName').value,
-    lastName: document.getElementById('regLastName').value,
-    email: document.getElementById('regEmail').value,
-    password: document.getElementById('regPwd').value,
-    favoriteTheme: document.getElementById('regFavoriteSport').value
-});
-
-if (!result.ok) {
-    showToast(result.message, 'danger');
-    return;
-}
-
-showToast('Account created and saved in the app database.', 'success');
-setTimeout(() => {
-    window.location.href = sportBoxRoute('dashboard');
-}, 1200);
-}
-
 function socialLogin(provider) {
 showToast(`Signing in with ${provider} is a UI placeholder for now.`, 'primary');
 }

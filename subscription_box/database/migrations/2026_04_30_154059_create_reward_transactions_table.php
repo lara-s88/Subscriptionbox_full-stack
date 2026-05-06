@@ -17,8 +17,7 @@ return new class extends Migration
 
             $table->integer('points_used');
 
-
-           
+        
         });
     }
 

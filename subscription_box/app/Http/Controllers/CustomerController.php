@@ -19,12 +19,12 @@ class CustomerController extends Controller
     $user->password = Hash::make($request->password);
 
 
-    $customer = new CustomerProfile();
-    $customer->user_id = $request->firstname;
-    $customer->lastname = $request->lastname;
-    $customer->email = $request->email;
-    $customer->role = $request->role;
-    $customer->password = Hash::make($request->password);
+   // $customer = new CustomerProfile();
+    //$customer->user_id = $request->firstname;
+    //$customer->lastname = $request->lastname;
+    //$customer->email = $request->email;
+    //$customer->role = $request->role;
+    //$customer->password = Hash::make($request->password);
      
 
 
