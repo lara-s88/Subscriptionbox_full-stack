@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class user_profiles extends Model
 {
-    //
+     protected $table = "cart_box_orders";
 }

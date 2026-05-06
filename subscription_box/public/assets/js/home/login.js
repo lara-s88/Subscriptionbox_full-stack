@@ -2,54 +2,7 @@
 const SportBoxPortal = (() => {
 const DB_KEY = 'sportbox-db';
 const SESSION_KEY = 'sportbox-session';
-const seedDatabase = {
-    admins: [
-        { id: 'admin-1', name: 'Maya Carter', email: 'admin@sportbox.com', password: 'Admin123!', role: 'admin', title: 'Operations Admin' }
-    ],
-    customers: [
-        {
-            id: 'cust-1',
-            name: 'Alex Johnson',
-            email: 'alex@sportbox.com',
-            password: 'User123!',
-            role: 'customer',
-            tier: 'Pro',
-            favoriteTheme: 'Football',
-            points: 1240,
-            memberSince: 'Aug 2023',
-            nextBillingDate: '2026-04-27',
-            nextDeliveryDate: '2026-04-28',
-            boxCount: 8,
-            daysToNextBox: 5,
-            boxItems: ['Single-Origin Beans', 'Dark Roast', 'Filter Papers', 'Ceramic Mug', 'Mystery Item'],
-            orderHistory: [
-                { title: 'Football Pro Box', date: 'Mar 20, 2026', status: 'Delivered', amount: '$49.99' },
-                { title: 'Gym Starter Box', date: 'Feb 25, 2026', status: 'Delivered', amount: '$39.99' },
-                { title: 'Basketball Gear Pack', date: 'Jan 28, 2026', status: 'Returned', amount: '$59.99' },
-                { title: 'Tennis Pro Kit', date: 'Dec 30, 2025', status: 'Delivered', amount: '$64.99' }
-            ],
-            delivery: { state: 'Shipped', trackingCode: 'SPX-789-XYZ', stopsAway: 9 },
-            subscriptions: [
-                { id: 'sub-1', name: 'Football Pro Box', status: 'active', nextBillingDate: '2026-04-27', price: '$49 / month' }
-            ]
-        }
-    ],
-    adminData: {
-        orders: [
-            { orderId: 'ORD-1001', customerId: 'cust-1', customerName: 'Alex Johnson', accountEmail: 'alex@sportbox.com', packageName: 'Football Pro Box', trackingCode: 'SPX-789-XYZ', deliveryState: 'Shipped', points: 1240, returned: true, returnReason: 'Damaged bottle shaker', batchId: 'BATCH-NORTH-12' }
-        ],
-        stock: [
-            { item: 'Dark Roast', stock: 8, threshold: 10, theme: 'Coffee Edit' }
-        ],
-        themes: [
-            { id: 'theme-1', name: 'Coffee Edit', month: 'May 2026', status: 'Ready', items: 5 }
-        ],
-        shippingBatches: [
-            { batchId: 'BATCH-NORTH-12', region: 'North', orders: 28, warehouseState: 'Picking' }
-        ],
-        themeUploads: []
-    }
-};
+
 
 function ensureDatabase() {
     if (!localStorage.getItem(DB_KEY)) {

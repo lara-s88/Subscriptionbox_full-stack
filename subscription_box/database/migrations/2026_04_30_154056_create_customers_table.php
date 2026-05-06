@@ -8,13 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('customer_profiles', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')
-                  ->unique()
-                  ->constrained('users')
-                  ->cascadeOnDelete();
+                ->unique()
+                ->constrained('users')
+                ->cascadeOnDelete();
 
             $table->enum('diet_preference', [
                 'standard',
@@ -22,7 +22,7 @@ return new class extends Migration
                 'vegan',
                 'Hiegh Protein',
             ])->nullable();
-          
+
             $table->string('address', 190)->nullable();
             $table->string('city', 100)->nullable();
             $table->string('country', 100)->nullable();
@@ -34,6 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('customer_profiles');
+        Schema::dropIfExists('customers');
     }
 };

@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BoxController;
+use App\Http\Controllers\CustomerController;
 
 Route::get('/', function () {
     return view('home');
@@ -43,5 +45,9 @@ Route::get('/reward', function () {
     return view('reward');
 })->name('reward');
 
-
+//Route::get('/box/{id}', [BoxController::class , 'showBox']);
+//Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
+//Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
+Route::post('/register', [CustomerController::class, 'register']);
+//Route::post('/login', [CustomerController::class, 'login']);
 

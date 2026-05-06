@@ -1,0 +1,229 @@
+------------------------- Roles -------------------------
+    * Admin
+    * Customer
+    * Guest
+
+------------------------- Pages -------------------------
+    * Home Page                         Done
+       => index.html
+
+    * Login Page                        Done
+        => auth.html
+
+    * Register Page                     Done
+        => auth.html
+
+    * Sports Page                       Done
+        => sports.html
+
+    * Boxes Page                        Done
+        => boxes.html
+
+    * Customize Box Page                Done
+        => customize.html
+
+    * Subscription Plans Page           Done
+        => plans.html
+
+    * Rewards Page                      Done
+        => reward.html
+
+    * Cart Page                         Done
+        => cart.html
+
+    * Dashboard Page                    Done
+        => dashboard.html
+
+-------------------------  Storage -------------------------
+@ admins
+    => id
+    => first_name       note : regex : /^[A-Za-z]+$/
+    => last_name
+    => email [unique]
+    => password [min : 8]
+
+@ customers
+    => id
+    => first_name       note : regex : /^[A-Za-z]+$/
+    => last_name
+    => email [unique]
+    => password [min : 8]
+    => diet_preference enum [
+        "vegetarian",
+        "vegan",
+        "pescatarian",
+    ]
+    => skill_level enum [
+        "beginner",
+        "intermediate",
+        "advanced"
+    ]
+    => address
+    => city
+    => country
+    => delivery_instructions
+
+@ user_allergies
+    => id
+    => user_id
+    => allergy_name
+
+@ plans
+    => id
+    => name
+    => price_monthly
+    => boxes_per_month
+    => swap_limit
+    => express_shipping
+    => early_access
+    => vip_support
+    => created_at
+
+@ subscriptions
+    => id
+    => user_id [unique] Note : one subscription per customer
+    => plan_id
+    => status enum[
+        "active",           Note : default when created
+        "paused",           Note : when customer pauses subscription
+        "cancelled",        Note : when customer cancels subscription
+        ]
+    => last_billing_date  (nullable)
+    => next_billing_date
+    => pause_until  (nullable)
+    => started_at
+    => renewal_day
+    => created_at
+    => updated_at
+
+@ inventory_items
+    => id
+    => name
+    => category
+    => stock_qty            Note : Admin can update this when new stock arrives or when items are used in boxes
+    => safety_threshold
+    => price
+    => weight_kg
+
+@ boxes
+    => id
+    => name
+    => category
+    => price
+    => image
+    => description
+    => weight_kg
+    => is_active
+    => created_at
+
+@ box_items
+    => id
+    => box_id
+    => inventory_item_id
+
+@ subscription_boxes
+    => id
+    => subscription_id
+    => box_id
+    => changed_at
+
+@ subscription_item_extra
+    => id
+    => subscription_id
+    => inventory_item_id
+
+@ box_orders
+    => id
+    => user_id
+    => box_id
+    => diet_preference
+    => shipping_status ["pending_confirmation", "shipping_confirmed", "shipped"]
+    => subtotal
+    => created_at
+
+@ cart_box_orders
+    => id
+    => user_id
+    => box_order_ids
+
+@ shipping_batches
+    => id
+    => batch_code (unique)
+    => city
+    => warehouse_state ["picking", "packed", "shipped"]
+    => scheduled_ship_date
+    => created_at
+
+@ shipments
+    => id
+    => order_id
+    => batch_id
+    => tracking_code
+    => carrier_name
+    => status ["pending", "picking", "packed", "shipped", "out_for_delivery", "delivered"]
+    => estimated_delivery
+    => stops_away
+    => created_at
+
+@ returns
+    => id
+    => order_id
+    => reason
+    => status ["requested", "approved", "rejected", "completed"]
+    => photo_path
+    => created_at
+
+@ reward_accounts
+    => id
+    => user_id
+    => points
+    => tier_name
+    => updated_at
+
+@ reward_transactions
+    => id
+    => user_id
+    => points_used
+    => source_type
+    => source_id
+    => description
+    => created_at
+
+
+------------------------- Permissions -------------------------
+    @ Admin :
+        * Login
+        * Open Dashboard
+        * Show all account orders
+        * Show returned orders
+        * Show stock threshold alerts
+        * Show shipping batches
+        * Upload monthly theme data
+        * Monitor customer reward points
+
+    @ Customer :
+        * Login And Register
+        * Show sports
+        * Show boxes by sport
+        * Search sports or boxes
+        * Customize box items
+        * Save customized box to cart
+        * Show his cart
+        * Add cart add-ons
+        * Remove cart items
+        * Confirm shipping
+        * Choose subscription plan
+        * Show his dashboard
+        * Show his order history
+        * Pause or resume subscription
+        * Show rewards and referral code
+        * Redeem rewards
+
+    @ Guest :
+        * Show home page
+        * Show sports page
+        * Show boxes page
+        * Show subscription plans
+        * Login
+        * Register
+        * Cannot use cart until customer login

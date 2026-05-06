@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Box extends Model
+class CartItem extends Model
 {
-    protected $table = "boxes";
+     protected $table = "subscription_boxes";
 }
