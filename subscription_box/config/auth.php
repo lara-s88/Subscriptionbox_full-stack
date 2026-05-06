@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Admin;
 use App\Models\Customer;
 use App\Models\User;
 
@@ -18,8 +17,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'admin',
-        'passwords' => 'admins',
+        'guard' => 'web',
+        'passwords' => 'users',
     ],
 
     /*
@@ -40,14 +39,19 @@ return [
     */
 
     'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
         'admin' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'users',
         ],
 
         'customer' => [
             'driver' => 'session',
-            'provider' => 'customerss',
+            'provider' => 'customers',
         ],
     ],
 
@@ -69,9 +73,9 @@ return [
     */
 
     'providers' => [
-        'admins' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => Admin::class,
+            'model' => User::class,
         ],
 
         'customers' => [
@@ -105,7 +109,7 @@ return [
     */
 
     'passwords' => [
-        'admins' => [
+        'users' => [
             'provider' => 'users',
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,

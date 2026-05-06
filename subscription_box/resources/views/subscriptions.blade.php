@@ -33,7 +33,7 @@
                     <span class="fw-semibold" id="lblMonthly" style="color:var(--primary);">Monthly</span>
                     <div class="form-check form-switch mb-0" style="transform:scale(1.15);">
                         <input class="form-check-input" type="checkbox" id="billingToggle" role="switch"
-                            onchange="toggleBilling()" style="cursor:pointer;">
+                            style="cursor:pointer;">
                     </div>
                     <span class="fw-semibold text-muted" id="lblAnnual">
                         Annual <span class="badge bg-success ms-1 rounded-pill" style="font-size:.7rem;">Save 20%</span>
@@ -84,8 +84,8 @@
                             <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
                                     style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
                         </ul>
-                        <button class="btn btn-outline-primary w-100 py-3 fw-semibold" onclick="choosePlan('Basic')">Get
-                            Started — Basic</button>
+                        <a class="btn btn-outline-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get
+                            Started — Basic</a>
                     </div>
                 </div>
 
@@ -135,8 +135,8 @@
                             <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
                                     style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
                         </ul>
-                        <button class="btn btn-primary w-100 py-3 fw-semibold" onclick="choosePlan('Pro')">Get Started
-                            — Pro</button>
+                        <a class="btn btn-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get Started
+                            — Pro</a>
                     </div>
                 </div>
 
@@ -183,8 +183,8 @@
                                     class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>VIP
                                     events &amp; challenges</span></li>
                         </ul>
-                        <button class="btn btn-outline-primary w-100 py-3 fw-semibold" onclick="choosePlan('VIP')">Get
-                            Started — VIP</button>
+                        <a class="btn btn-outline-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get
+                            Started — VIP</a>
                     </div>
                 </div>
             </div>
@@ -341,7 +341,7 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
-                        <li id="footerRegisterItem"><a href="{{ route('login') }}">Register</a></li>
+                        <li id="footerRegisterItem"><a href="{{ route('register') }}">Register</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -357,7 +357,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-   <script src="{{ asset('assets/js/subscription.js') }}"></script>
 </body>
 
 </html>

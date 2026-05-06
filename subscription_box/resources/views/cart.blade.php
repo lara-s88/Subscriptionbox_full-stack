@@ -40,7 +40,27 @@
                         <a href="{{ route('sports') }}" class="btn btn-primary">Browse Boxes</a>
                     </div>
 
-                    <div id="cartList" class="d-flex flex-column gap-4"></div>
+                    <div id="cartList" class="d-flex flex-column gap-4">
+                        <div class="cart-card">
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-3">
+                                    <img src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cart box" class="w-100 rounded-3" style="height:120px;object-fit:cover;">
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold mb-1">Box name</h6>
+                                    <p class="text-muted small mb-2">Backend cart details go here.</p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);">Item</span>
+                                        <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);">Item</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-md-end">
+                                    <div class="fw-bold text-primary fs-5">$0.00</div>
+                                    <button class="btn btn-sm btn-outline-danger mt-2" type="button">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-lg-4">
@@ -53,7 +73,7 @@
                         <div class="d-flex justify-content-between small mb-2"><span class="text-muted">Boxes</span><span class="fw-semibold" id="summaryCount">0</span></div>
                         <div class="d-flex justify-content-between small mb-2"><span class="text-muted">Add-ons</span><span class="fw-semibold" id="summaryAddOns">0</span></div>
                         <div class="d-flex justify-content-between small mb-3"><span class="text-muted">Order total</span><span class="fw-semibold" id="summaryTotal">$0.00</span></div>
-                        <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" id="confirmShippingBtn" onclick="confirmShipping()">
+                        <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" id="confirmShippingBtn" type="button">
                             <i class="bi bi-truck me-2"></i>Confirm Shipping
                         </button>
                         <a href="{{ route('sports') }}" class="btn btn-outline-secondary w-100">Add More Boxes</a>
@@ -86,6 +106,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/home/cart.js') }}"></script>
 </body>
 </html>

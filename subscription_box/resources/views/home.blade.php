@@ -24,41 +24,6 @@
 
     <x-navbar activePage="home"></x-navbar>
 
-    <!-- Mock Data -->
-    <script>
-        const mockData = {
-            sports: [{
-                    id: 1,
-                    name: 'Football',
-                    icon: 'bi-dribbble',
-                    image: 'https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Gear up for the game with authentic jerseys, balls, and training equipment.'
-                },
-                {
-                    id: 2,
-                    name: 'Basketball',
-                    icon: 'bi-basket3-fill',
-                    image: 'https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Dribble in style with premium basketballs, sneakers, and apparel.'
-                },
-                {
-                    id: 3,
-                    name: 'Gym/Fitness',
-                    icon: 'bi-heart-pulse-fill',
-                    image: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Build strength with resistance bands, supplements, and workout gear.'
-                },
-                {
-                    id: 4,
-                    name: 'Tennis',
-                    icon: 'bi-trophy-fill',
-                    image: 'https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Ace your game with rackets, balls, grips, and performance wear.'
-                }
-            ]
-        };
-    </script>
-
     <!-- ===== Hero Section ===== -->
     <section id="home" class="hero-section">
         <div class="container position-relative">
@@ -102,7 +67,42 @@
                 <p class="lead text-muted">Find boxes perfect for your favorite sport</p>
             </div>
             <div class="row g-4" id="sports-grid">
-                <!-- Populated by JS -->
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=football" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Football" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-2">Football</h5>
+                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=basketball" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Basketball" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-2">Basketball</h5>
+                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=gym" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Gym/Fitness" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-2">Gym/Fitness</h5>
+                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=tennis" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Tennis" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold mb-2">Tennis</h5>
+                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                        </div>
+                    </a>
+                </div>
             </div>
             <div class="text-center mt-4">
                 <a href="{{ route('sports') }}" class="btn btn-outline-primary px-4">
@@ -419,7 +419,7 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
-                        <li id="footerRegisterItem"><a href="{{ route('login') }}">Register</a></li>
+                        <li id="footerRegisterItem"><a href="{{ route('register') }}">Register</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -448,8 +448,6 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script src="{{ asset('assets/js/home/index.js') }}"></script>
 
 </body>
 

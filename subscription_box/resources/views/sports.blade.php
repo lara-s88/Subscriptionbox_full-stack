@@ -24,151 +24,6 @@
 
     <x-navbar activePage="sports"></x-navbar>
 
- <!-- Mock Data -->
-    <script>
-        const mockData = {
-            sports: [{
-                    id: 1,
-                    name: 'Football',
-                    icon: 'bi-dribbble',
-                    image: 'https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Gear up for the game with authentic jerseys, balls, and training equipment.',
-                    boxes: [{
-                            id: 1,
-                            title: 'Football Clothing Box',
-                            price: '$49.99',
-                            image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'clothing',
-                            items: ['Jersey (S-XXL)', 'Training Shorts', 'Socks', 'Cap']
-                        },
-                        {
-                            id: 2,
-                            title: 'Equipment Essentials',
-                            price: '$69.99',
-                            image: 'https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'equipment',
-                            items: ['Soccer Ball', 'Shin Guards', 'Training Cones', 'Water Bottle']
-                        },
-                        {
-                            id: 3,
-                            title: 'Diet & Recovery',
-                            price: '$39.99',
-                            image: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'diet',
-                            items: ['Protein Powder', 'Energy Bars', 'Recovery Drink', 'Vitamin Pack']
-                        }
-                    ]
-                },
-                {
-                    id: 2,
-                    name: 'Basketball',
-                    icon: 'bi-basket3-fill',
-                    image: 'https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Dribble in style with premium basketballs, sneakers, and apparel.',
-                    boxes: [{
-                            id: 4,
-                            title: 'Basketball Gear Pack',
-                            price: '$59.99',
-                            image: 'https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'equipment',
-                            items: ['Basketball', 'Knee Pads', 'Grip Tape', 'Pump']
-                        },
-                        {
-                            id: 5,
-                            title: 'Performance Apparel',
-                            price: '$44.99',
-                            image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'clothing',
-                            items: ['Shooting Shirt', 'Basketball Shorts', 'Ankle Socks', 'Headband']
-                        },
-                        {
-                            id: 6,
-                            title: 'Nutrition Starter',
-                            price: '$34.99',
-                            image: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'diet',
-                            items: ['Whey Protein', 'Pre-Workout', 'BCAA Drink', 'Electrolytes']
-                        }
-                    ]
-                },
-                {
-                    id: 3,
-                    name: 'Gym/Fitness',
-                    icon: 'bi-heart-pulse-fill',
-                    image: 'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Build strength with resistance bands, supplements, and workout gear.',
-                    boxes: [{
-                            id: 7,
-                            title: 'Strength Training Kit',
-                            price: '$54.99',
-                            image: 'https://images.pexels.com/photos/416717/pexels-photo-416717.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'equipment',
-                            items: ['Resistance Bands', 'Jump Rope', 'Gloves', 'Chalk']
-                        },
-                        {
-                            id: 8,
-                            title: 'Workout Apparel',
-                            price: '$39.99',
-                            image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'clothing',
-                            items: ['Gym Tank', 'Leggings', 'Sports Bra', 'Compression Sleeves']
-                        },
-                        {
-                            id: 9,
-                            title: 'Muscle Builder Pack',
-                            price: '$49.99',
-                            image: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'diet',
-                            items: ['Creatine', 'Mass Gainer', 'BCAAs', 'Test Booster']
-                        }
-                    ]
-                },
-                {
-                    id: 4,
-                    name: 'Tennis',
-                    icon: 'bi-trophy-fill',
-                    image: 'https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800',
-                    description: 'Ace your game with rackets, balls, grips, and performance wear.',
-                    boxes: [{
-                            id: 10,
-                            title: 'Tennis Pro Kit',
-                            price: '$64.99',
-                            image: 'https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'equipment',
-                            items: ['Tennis Racket', 'Pressure Balls', 'Overgrip', 'Vibration Dampener']
-                        },
-                        {
-                            id: 11,
-                            title: 'Court Apparel',
-                            price: '$42.99',
-                            image: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'clothing',
-                            items: ['Polo Shirt', 'Tennis Shorts', 'Wristbands', 'Visor']
-                        },
-                        {
-                            id: 12,
-                            title: 'Endurance Fuel',
-                            price: '$37.99',
-                            image: 'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=600',
-                            type: 'diet',
-                            items: ['Electrolyte Tabs', 'Energy Gels', 'Recovery Shake', 'Magnesium']
-                        }
-                    ]
-                }
-            ]
-        };
-
-        /* Build a flat box lookup for the modal */
-        const boxLookup = {};
-        mockData.sports.forEach(s => s.boxes.forEach(b => {
-            boxLookup[b.id] = {
-                ...b,
-                sportName: s.name
-            };
-        }));
-    </script>
-   
-
     <!-- ===== Hero Section ===== -->
     <section class="hero-section">
         <div class="container position-relative">
@@ -198,10 +53,13 @@
             <!-- Filter Tabs -->
             <div class="text-center mb-4">
                 <div class="filter-tabs-wrap" id="filterTabsWrap">
-                    <button class="filter-tab active" data-sport="all" onclick="filterSport('all', this)">
+                    <button class="filter-tab active" data-sport="all" type="button">
                         <i class="bi bi-grid me-1"></i>All Sports
                     </button>
-                    <!-- Sport tabs injected by JS -->
+                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=football">Football</a>
+                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=basketball">Basketball</a>
+                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=gym">Gym/Fitness</a>
+                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=tennis">Tennis</a>
                 </div>
             </div>
 
@@ -211,27 +69,94 @@
                     <div class="search-bar-wrap">
                         <i class="bi bi-search"></i>
                         <input type="text" class="form-control" placeholder="Search sports or boxes…"
-                            id="searchInput" oninput="handleSearch()">
+                            id="searchInput">
                     </div>
                 </div>
             </div>
 
             <!-- Dynamic section header -->
-            <div class="mb-4" id="sectionHeader"></div>
+            <div class="mb-4" id="sectionHeader">
+                <h4 class="fw-bold mb-1">All Sports</h4>
+                <p class="text-muted small mb-0">Sports loaded from the backend will appear in these cards.</p>
+            </div>
 
             <!-- Skeleton (shown briefly on load) -->
             <div class="row g-4" id="skeletonGrid"></div>
 
             <!-- Main grid -->
-            <div class="row g-4" id="sports-grid" style="display:none;"></div>
+            <div class="row g-4" id="sports-grid">
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=football" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Football" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-dribbble text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Football</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=basketball" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Basketball" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-basket3-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Basketball</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=gym" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Gym/Fitness" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-heart-pulse-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Gym/Fitness</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ route('boxes') }}?sport=tennis" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Tennis" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-trophy-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Tennis</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
 
             <!-- Empty state -->
             <div id="emptyState" style="display:none;" class="text-center py-5">
                 <i class="bi bi-search display-3 text-muted mb-3 d-block"></i>
                 <h5 class="text-muted">No results found</h5>
                 <p class="text-muted small">Try a different search term or browse all sports</p>
-                <button class="btn btn-outline-primary"
-                    onclick="filterSport('all', document.querySelector('[data-sport=all]'))">Browse All Sports</button>
+                <a class="btn btn-outline-primary" href="{{ route('sports') }}">Browse All Sports</a>
             </div>
 
         </div>
@@ -259,7 +184,7 @@
                                 <a id="customizeBtn" href="{{ route('customize') }}" class="btn btn-primary">
                                     <i class="bi bi-pencil-square me-1"></i>Customize Box
                                 </a>
-                                <button class="btn btn-outline-primary" onclick="addToCart()">
+                                <button class="btn btn-outline-primary" type="button">
                                     <i class="bi bi-cart-plus me-1"></i>Add to Cart
                                 </button>
                             </div>
@@ -309,7 +234,7 @@
                     <ul class="footer-links">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
-                        <li><a href="{{ route('login') }}">Register</a></li>
+                        <li><a href="{{ route('register') }}">Register</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -327,7 +252,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/home/sports.js') }}"></script>
 </body>
 
 </html>

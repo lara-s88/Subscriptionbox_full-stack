@@ -377,6 +377,7 @@ section { scroll-margin-top: 76px; }
     padding: 18px 12px; box-shadow: var(--card-shadow);
     cursor: pointer; transition: var(--transition);
     border: 2px solid transparent; text-align: center;
+    display: block; height: 100%; color: inherit;
 }
 .quick-action-card:hover { border-color: var(--primary); transform: translateY(-3px); box-shadow: var(--card-shadow-md); }
 .quick-action-icon {

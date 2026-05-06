@@ -43,7 +43,22 @@
                         </div>
                         <div class="card-body p-4">
                             <p class="text-muted small mb-3">Drag to reorder, or remove items you don't want.</p>
-                            <div class="d-flex flex-column gap-2" id="itemsList"></div>
+                            <div class="d-flex flex-column gap-2" id="itemsList">
+                                <div class="custom-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-3 border">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <i class="bi bi-grip-vertical text-muted"></i>
+                                        <span class="fw-semibold small">Item name</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger" type="button"><i class="bi bi-x-lg"></i></button>
+                                </div>
+                                <div class="custom-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-3 border">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <i class="bi bi-grip-vertical text-muted"></i>
+                                        <span class="fw-semibold small">Item name</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-outline-danger" type="button"><i class="bi bi-x-lg"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -54,7 +69,11 @@
                         </div>
                         <div class="card-body p-4">
                             <p class="text-muted small mb-3">Click any item below to add it to your box.</p>
-                            <div class="d-flex flex-wrap gap-2" id="availableItems"></div>
+                            <div class="d-flex flex-wrap gap-2" id="availableItems">
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" type="button">Add item</button>
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" type="button">Add item</button>
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" type="button">Add item</button>
+                            </div>
                         </div>
                     </div>
 
@@ -68,37 +87,37 @@
                                 <div class="col-md-6">
                                     <label class="fw-semibold small mb-3 d-block">Clothing Size</label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="size-btn" onclick="selectSize(this)">XS</button>
-                                        <button class="size-btn" onclick="selectSize(this)">S</button>
-                                        <button class="size-btn active" onclick="selectSize(this)">M</button>
-                                        <button class="size-btn" onclick="selectSize(this)">L</button>
-                                        <button class="size-btn" onclick="selectSize(this)">XL</button>
-                                        <button class="size-btn" onclick="selectSize(this)">XXL</button>
+                                        <button class="size-btn" type="button">XS</button>
+                                        <button class="size-btn" type="button">S</button>
+                                        <button class="size-btn active" type="button">M</button>
+                                        <button class="size-btn" type="button">L</button>
+                                        <button class="size-btn" type="button">XL</button>
+                                        <button class="size-btn" type="button">XXL</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="fw-semibold small mb-3 d-block">Diet Preference</label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="pref-btn active" onclick="selectPref('diet', this)">Standard</button>
-                                        <button class="pref-btn" onclick="selectPref('diet', this)">Keto</button>
-                                        <button class="pref-btn" onclick="selectPref('diet', this)">Vegan</button>
-                                        <button class="pref-btn" onclick="selectPref('diet', this)">High Protein</button>
+                                        <button class="pref-btn active" type="button">Standard</button>
+                                        <button class="pref-btn" type="button">Keto</button>
+                                        <button class="pref-btn" type="button">Vegan</button>
+                                        <button class="pref-btn" type="button">High Protein</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="fw-semibold small mb-3 d-block">Skill Level</label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="pref-btn" onclick="selectPref('skill', this)">Beginner</button>
-                                        <button class="pref-btn active" onclick="selectPref('skill', this)">Intermediate</button>
-                                        <button class="pref-btn" onclick="selectPref('skill', this)">Pro</button>
+                                        <button class="pref-btn" type="button">Beginner</button>
+                                        <button class="pref-btn active" type="button">Intermediate</button>
+                                        <button class="pref-btn" type="button">Pro</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="fw-semibold small mb-3 d-block">Delivery Frequency</label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="pref-btn active" onclick="selectPref('freq', this)">Monthly</button>
-                                        <button class="pref-btn" onclick="selectPref('freq', this)">Bi-Monthly</button>
-                                        <button class="pref-btn" onclick="selectPref('freq', this)">Quarterly</button>
+                                        <button class="pref-btn active" type="button">Monthly</button>
+                                        <button class="pref-btn" type="button">Bi-Monthly</button>
+                                        <button class="pref-btn" type="button">Quarterly</button>
                                     </div>
                                 </div>
                             </div>
@@ -157,7 +176,7 @@
                             <div class="small text-muted" id="swapText">2 of 5 swaps used (Pro plan: unlimited)</div>
                         </div>
 
-                        <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" onclick="confirmSelection()">
+                        <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" type="button">
                             <i class="bi bi-cart-check me-2"></i>Save to Cart
                         </button>
                         <a href="{{ route('boxes') }}" class="btn btn-outline-secondary w-100 py-2">
@@ -213,6 +232,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-     <script src="{{ asset('assets/js/home/customize.js') }}"></script>
 </body>
 </html>

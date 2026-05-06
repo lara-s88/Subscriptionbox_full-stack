@@ -14,17 +14,20 @@
 <body>
     <!-- Navbar -->
    <x-navbar activePage="reward"></x-navbar>
+   @php($isAdminReward = ($rewardMode ?? 'customer') === 'admin')
 
     <!-- Hero -->
     <div class="hero-section-sm text-center">
         <div class="container position-relative">
-            <h1 class="display-5 fw-bold mb-3"><i class="bi bi-gift me-3"></i>Referral &amp; Rewards</h1>
-            <p class="lead mb-0" style="opacity:.88;">Invite friends, earn points, unlock exclusive rewards</p>
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="bi {{ $isAdminReward ? 'bi-award' : 'bi-gift' }} me-3"></i>{{ $isAdminReward ? 'Customer Rewards Monitor' : 'Referral &amp; Rewards' }}
+            </h1>
+            <p class="lead mb-0" style="opacity:.88;">{{ $isAdminReward ? 'Admin view of each customer account and its current reward points.' : 'Invite friends, earn points, unlock exclusive rewards' }}</p>
         </div>
     </div>
 
     <!-- Content -->
-    <section class="py-5" id="customerRewardsView">
+    <section class="py-5" id="customerRewardsView" @if($isAdminReward) style="display:none;" @endif>
         <div class="container">
             <!-- Points Summary Banner -->
             <div class="p-4 rounded-4 mb-5 text-white" style="background:var(--gradient);">
@@ -74,8 +77,8 @@
                                 <div class="text-muted small mt-1">Click to copy</div>
                             </div>
                             <div class="d-flex gap-2 flex-wrap">
-                                <button class="btn btn-primary" onclick="copyCode()"><i class="bi bi-clipboard me-2"></i>Copy Code</button>
-                                <button class="btn btn-outline-primary" onclick="copyLink()"><i class="bi bi-link-45deg me-2"></i>Copy Link</button>
+                                <button class="btn btn-primary" type="button"><i class="bi bi-clipboard me-2"></i>Copy Code</button>
+                                <button class="btn btn-outline-primary" type="button"><i class="bi bi-link-45deg me-2"></i>Copy Link</button>
                             </div>
                         </div>
                     </div>
@@ -86,10 +89,10 @@
                             <h6 class="fw-bold mb-3"><i class="bi bi-megaphone text-primary me-2"></i>Share &amp; Earn</h6>
                             <p class="text-muted small mb-4">Share via social media and earn an extra <strong class="text-primary">50 points</strong> per platform!</p>
                             <div class="d-flex flex-wrap gap-2">
-                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#1877F2;color:white;" onclick="shareOn('Facebook')"><i class="bi bi-facebook me-1"></i>Facebook</button>
-                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#E1306C;color:white;" onclick="shareOn('Instagram')"><i class="bi bi-instagram me-1"></i>Instagram</button>
-                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#1DA1F2;color:white;" onclick="shareOn('Twitter')"><i class="bi bi-twitter-x me-1"></i>Twitter</button>
-                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#25D366;color:white;" onclick="shareOn('WhatsApp')"><i class="bi bi-whatsapp me-1"></i>WhatsApp</button>
+                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#1877F2;color:white;" type="button"><i class="bi bi-facebook me-1"></i>Facebook</button>
+                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#E1306C;color:white;" type="button"><i class="bi bi-instagram me-1"></i>Instagram</button>
+                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#1DA1F2;color:white;" type="button"><i class="bi bi-twitter-x me-1"></i>Twitter</button>
+                                <button class="btn btn-sm px-3 py-2 rounded-pill fw-semibold" style="background:#25D366;color:white;" type="button"><i class="bi bi-whatsapp me-1"></i>WhatsApp</button>
                             </div>
                         </div>
                     </div>
@@ -102,7 +105,15 @@
                                 <span class="badge rounded-pill" style="background:var(--gradient);">3 Friends</span>
                             </div>
                         </div>
-                        <div class="card-body p-3" id="friendsList"></div>
+                        <div class="card-body p-3" id="friendsList">
+                            <div class="d-flex align-items-center justify-content-between border rounded-3 p-3 mb-2">
+                                <div>
+                                    <div class="fw-semibold small">Friend name</div>
+                                    <div class="text-muted" style="font-size:.8rem;">Backend referral status</div>
+                                </div>
+                                <span class="badge rounded-pill" style="background:rgba(16,185,129,.1);color:var(--primary);">Status</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -112,7 +123,12 @@
                     <div class="card border-0 rounded-4 shadow-sm mb-4">
                         <div class="card-body p-4">
                             <h6 class="fw-bold mb-4"><i class="bi bi-bar-chart-line text-primary me-2"></i>Tier Progress</h6>
-                            <div class="d-flex flex-column gap-3 mb-4" id="tierList"></div>
+                            <div class="d-flex flex-column gap-3 mb-4" id="tierList">
+                                <div class="d-flex align-items-center justify-content-between border rounded-3 p-3">
+                                    <div class="fw-semibold small">Tier name</div>
+                                    <span class="text-muted small">Points</span>
+                                </div>
+                            </div>
                             <div class="p-3 rounded-3 mt-2" style="background:linear-gradient(135deg,rgba(16,185,129,.06),rgba(15,118,110,.03));">
                                 <div class="d-flex justify-content-between small mb-2">
                                     <span class="text-muted">Silver → Gold</span>
@@ -132,7 +148,17 @@
                             <h6 class="fw-bold mb-0"><i class="bi bi-gift text-primary me-2"></i>Available Rewards</h6>
                         </div>
                         <div class="card-body p-4">
-                            <div class="d-flex flex-column gap-3" id="rewardsList"></div>
+                            <div class="d-flex flex-column gap-3" id="rewardsList">
+                                <div class="border rounded-4 p-3">
+                                    <div class="d-flex justify-content-between align-items-start gap-3">
+                                        <div>
+                                            <div class="fw-semibold">Reward name</div>
+                                            <div class="small text-muted">Backend reward details go here.</div>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-primary" type="button">Redeem</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,7 +166,7 @@
         </div>
     </section>
 
-    <section class="py-5" id="adminRewardsView" style="display:none;">
+    <section class="py-5" id="adminRewardsView" @if(!$isAdminReward) style="display:none;" @endif>
         <div class="container">
             <div class="card border-0 rounded-4 shadow-sm">
                 <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
@@ -150,7 +176,26 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <div class="row g-3 mb-4" id="adminRewardStats"></div>
+                    <div class="row g-3 mb-4" id="adminRewardStats">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="h4 fw-bold text-primary mb-1">0</div>
+                                <div class="text-muted small">Tracked customers</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="h4 fw-bold text-primary mb-1">0</div>
+                                <div class="text-muted small">Total reward points</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="h4 fw-bold text-primary mb-1">N/A</div>
+                                <div class="text-muted small">Top reward balance</div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="table-responsive">
                         <table class="table align-middle mb-0">
                             <thead>
@@ -162,7 +207,15 @@
                                     <th>Tier</th>
                                 </tr>
                             </thead>
-                            <tbody id="adminRewardsTable"></tbody>
+                            <tbody id="adminRewardsTable">
+                                <tr>
+                                    <td class="fw-semibold">Customer name</td>
+                                    <td>customer@example.com</td>
+                                    <td>Plan</td>
+                                    <td class="text-primary fw-semibold">0</td>
+                                    <td><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Tier</span></td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -195,7 +248,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/home/reward.js') }}"></script>
   
 </body>
 </html>

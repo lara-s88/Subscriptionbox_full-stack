@@ -30,22 +30,22 @@
             <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
                 <!-- Type Filter -->
                 <div class="filter-tabs-wrap" id="typeFilters">
-                    <button class="filter-tab active" data-type="all" onclick="filterType('all', this)">All</button>
-                    <button class="filter-tab" data-type="clothing" onclick="filterType('clothing', this)">👕 Clothing</button>
-                    <button class="filter-tab" data-type="equipment" onclick="filterType('equipment', this)">🏋️ Equipment</button>
-                    <button class="filter-tab" data-type="diet" onclick="filterType('diet', this)">🥗 Diet</button>
+                    <button class="filter-tab active" data-type="all" type="button">All</button>
+                    <button class="filter-tab" data-type="clothing" type="button">👕 Clothing</button>
+                    <button class="filter-tab" data-type="equipment" type="button">🏋️ Equipment</button>
+                    <button class="filter-tab" data-type="diet" type="button">🥗 Diet</button>
                 </div>
                 <!-- Price Filter -->
                 <div class="d-flex gap-2 flex-wrap" id="priceFilters">
-                    <button class="price-filter-btn active" data-price="all" onclick="filterPrice('all', this)">All Prices</button>
-                    <button class="price-filter-btn" data-price="under40" onclick="filterPrice('under40', this)">Under $40</button>
-                    <button class="price-filter-btn" data-price="40to60" onclick="filterPrice('40to60', this)">$40–$60</button>
-                    <button class="price-filter-btn" data-price="over60" onclick="filterPrice('over60', this)">$60+</button>
+                    <button class="price-filter-btn active" data-price="all" type="button">All Prices</button>
+                    <button class="price-filter-btn" data-price="under40" type="button">Under $40</button>
+                    <button class="price-filter-btn" data-price="40to60" type="button">$40–$60</button>
+                    <button class="price-filter-btn" data-price="over60" type="button">$60+</button>
                 </div>
                 <!-- Search -->
                 <div class="search-bar-wrap ms-auto" style="min-width:220px;">
                     <i class="bi bi-search"></i>
-                    <input type="text" class="form-control" placeholder="Search boxes..." id="searchInput" oninput="searchBoxes()">
+                    <input type="text" class="form-control" placeholder="Search boxes..." id="searchInput">
                 </div>
                 <a href="{{ route('cart') }}" class="btn btn-outline-primary">
                     <i class="bi bi-cart3 me-1"></i>View Cart
@@ -53,20 +53,75 @@
             </div>
 
             <!-- Results count -->
-            <p class="text-muted small mb-4" id="resultsCount"></p>
+            <p class="text-muted small mb-4" id="resultsCount">Backend box results will appear below.</p>
 
             <!-- Skeleton (shown during load) -->
             <div class="row g-4" id="skeletonGrid"></div>
 
             <!-- Box Grid -->
-            <div class="row g-4" id="boxGrid" style="display:none;"></div>
+            <div class="row g-4" id="boxGrid">
+                <div class="col-md-6 col-lg-4">
+                    <div class="box-card h-100">
+                        <div class="overflow-hidden" style="height:190px;">
+                            <img src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box image" class="box-card-img">
+                        </div>
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
+                                <span class="type-badge" style="background:#3b82f618;color:#3b82f6;">Type</span>
+                            </div>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box-card h-100">
+                        <div class="overflow-hidden" style="height:190px;">
+                            <img src="https://images.pexels.com/photos/46798/the-ball-stadion-football-the-pitch-46798.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box image" class="box-card-img">
+                        </div>
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
+                                <span class="type-badge" style="background:#10b98118;color:#10b981;">Type</span>
+                            </div>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="box-card h-100">
+                        <div class="overflow-hidden" style="height:190px;">
+                            <img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box image" class="box-card-img">
+                        </div>
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
+                                <span class="type-badge" style="background:#f59e0b18;color:#f59e0b;">Type</span>
+                            </div>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Empty State -->
             <div id="emptyState" style="display:none;" class="text-center py-5">
                 <i class="bi bi-box2 display-3 text-muted mb-3 d-block"></i>
                 <h5 class="text-muted">No boxes found</h5>
                 <p class="text-muted small">Try adjusting your filters or search query</p>
-                <button class="btn btn-outline-primary" onclick="resetFilters()">Reset Filters</button>
+                <a class="btn btn-outline-primary" href="{{ route('boxes') }}">Reset Filters</a>
             </div>
         </div>
     </section>
@@ -93,7 +148,7 @@
                             <div class="d-flex flex-wrap gap-2 mb-4" id="modalItems"></div>
                             <div class="d-flex gap-2">
                                 <a id="modalCustomizeLink" href="{{ route('customize') }}" class="btn btn-primary"><i class="bi bi-pencil-square me-1"></i>Customize Box</a>
-                                <button class="btn btn-outline-primary" onclick="addToCart()"><i class="bi bi-cart-plus me-1"></i>Add to Cart</button>
+                                <button class="btn btn-outline-primary" type="button"><i class="bi bi-cart-plus me-1"></i>Add to Cart</button>
                             </div>
                         </div>
                     </div>
@@ -127,6 +182,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/home/boxes.js') }}"></script>
 </body>
 </html>

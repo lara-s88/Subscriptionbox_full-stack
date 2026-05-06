@@ -18,14 +18,19 @@ Route::get('/subscriptions', function () {
 })->name('subscriptions');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', ['dashboardMode' => 'customer']);
 })->name('dashboard');
+
+Route::get('/admin/dashboard', function () {
+    return view('adminDashboared');
+})->name('admin.dashboard');
 
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
-//Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('/register/submit', [RegisterController::class, 'register'])->name('register.submit');
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
+Route::post('/register/submit', [RegisterController::class, 'register'])->name('register.submit.legacy');
 
 
 
@@ -45,10 +50,13 @@ Route::redirect('/custemize', '/customize')->name('custemize');
 
 
 Route::get('/reward', function () {
-    return view('reward');
+    return view('reward', ['rewardMode' => 'customer']);
 })->name('reward');
+
+Route::get('/admin/reward', function () {
+    return view('adminReward');
+})->name('admin.reward');
 
 Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
 Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
-

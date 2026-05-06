@@ -21,9 +21,10 @@
                  <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="{{ route('reward') }}">Rewards</a></li>
                  <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2"  href="{{ route('login') }}"
                          id="authActionLink">Login</a></li>
+                 <li class="nav-item"><a class="nav-link btn btn-sm btn-primary px-3 ms-lg-1" href="{{ route('register') }}">Register</a></li>
                  <li class="nav-item ms-lg-1">
                      <button class="btn btn-sm btn-outline-secondary px-3" id="darkModeToggle"
-                         onclick="toggleDarkMode()">
+                         type="button">
                          <i class="bi bi-moon-stars-fill"></i>
                      </button>
                  </li>
@@ -38,6 +39,7 @@
          subscriptions: @json(route('subscriptions')),
          dashboard: @json(route('dashboard')),
          login: @json(route('login')),
+         register: @json(route('register')),
          boxes: @json(route('boxes')),
          cart: @json(route('cart')),
          customize: @json(route('customize')),
