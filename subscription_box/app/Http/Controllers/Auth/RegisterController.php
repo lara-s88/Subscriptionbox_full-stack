@@ -68,7 +68,6 @@ class RegisterController extends Controller
 
         return redirect()
             ->route('login')
-            ->with('status', 'Account created successfully. You can log in now.');
             ->with('status', 'Account created successfully. Sign in as Customer with your credentials.');
     }
 }
