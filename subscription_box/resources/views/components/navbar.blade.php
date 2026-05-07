@@ -1,6 +1,11 @@
 @php
     /** Skip admin guard lookup if `admins` table does not exist (avoids QueryException). */
     $loggedInAdmin = \Illuminate\Support\Facades\Schema::hasTable('admins') && auth('admin')->check();
+    $loggedInCustomer = auth('web')->check();
+    $isLoggedIn = $loggedInAdmin || $loggedInCustomer;
+    $dashboardUrl = $loggedInAdmin ? route('admin.dashboard') : route('dashboard');
+    $rewardUrl = $loggedInAdmin ? route('admin.reward') : route('reward');
+@endphp
  <!-- Navbar -->
  <nav class="navbar navbar-expand-lg fixed-top py-3">
      <div class="container">
@@ -14,8 +19,6 @@
              <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'home' ? 'active' : '' }} fw-semibold" data-public-nav
                          href="{{ route('home') }}">Home</a>
-                 </li> 
-                                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}" data-public-nav
                  </li>
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}" data-public-nav
                          href="{{ route('sports') }}">Sports</a></li>
