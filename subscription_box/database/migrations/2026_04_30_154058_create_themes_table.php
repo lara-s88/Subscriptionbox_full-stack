@@ -15,15 +15,9 @@ return new class extends Migration
             $table->id();
 
             $table->string('name')->unique();
-
+            $table->unsignedTinyInteger('month');      
             $table->text('description')->nullable();
-
             $table->string('image_url')->nullable();
-
-            $table->foreignId('items')
-                  ->constrained('inventory_items')
-                  ->cascadeOnDelete();
-                  
             $table->timestamps();
         });
     }

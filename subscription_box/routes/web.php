@@ -63,6 +63,10 @@ Route::get('/admin/reward', function () {
     return view('adminReward');
 })->name('admin.reward');
 
+Route::get('/admin/dashboard', function () {
+    return view('adminDashboared');
+})->name('admin.dashboard');
+
 Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
 Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
