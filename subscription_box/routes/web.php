@@ -28,6 +28,7 @@ Route::get('/admin/dashboard', function () {
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 Route::post('/register/submit', [RegisterController::class, 'register'])->name('register.submit.legacy');
@@ -46,7 +47,7 @@ Route::get('/customize', function () {
     return view('customize');
 })->name('customize');
 
-Route::redirect('/custemize', '/customize')->name('custemize');
+
 
 
 Route::get('/reward', function () {

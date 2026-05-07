@@ -1,3 +1,6 @@
+@php
+    /** Skip admin guard lookup if `admins` table does not exist (avoids QueryException). */
+    $loggedInAdmin = \Illuminate\Support\Facades\Schema::hasTable('admins') && auth('admin')->check();
  <!-- Navbar -->
  <nav class="navbar navbar-expand-lg fixed-top py-3">
      <div class="container">
@@ -13,15 +16,27 @@
                          href="{{ route('home') }}">Home</a>
                  </li> 
                                   <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}" data-public-nav
+                 </li>
+                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'sports' ? 'active' : '' }}" data-public-nav
                          href="{{ route('sports') }}">Sports</a></li>
-                                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'subscriptions' ? 'active' : '' }}" data-public-nav
+                 <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'subscriptions' ? 'active' : '' }}" data-public-nav
                          href="{{ route('subscriptions') }}">Subscriptions</a></li>
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}" data-public-nav
-                         href="{{ route('dashboard') }}">Dashboard</a></li>
-                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3" href="{{ route('reward') }}">Rewards</a></li>
-                 <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2"  href="{{ route('login') }}"
+                         href="{{ $dashboardUrl }}">Dashboard</a></li>
+                 <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3 {{ $activePage == 'reward' ? 'active' : '' }}" href="{{ $rewardUrl }}">Rewards</a></li>
+                 @if ($isLoggedIn)
+                 <li class="nav-item">
+                     <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                         @csrf
+                         <button type="submit" class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2"
+                             id="authActionLink">Logout</button>
+                     </form>
+                 </li>
+                 @else
+                 <li class="nav-item"><a class="nav-link btn btn-sm btn-outline-primary px-3 ms-lg-2" href="{{ route('login') }}"
                          id="authActionLink">Login</a></li>
                  <li class="nav-item"><a class="nav-link btn btn-sm btn-primary px-3 ms-lg-1" href="{{ route('register') }}">Register</a></li>
+                 @endif
                  <li class="nav-item ms-lg-1">
                      <button class="btn btn-sm btn-outline-secondary px-3" id="darkModeToggle"
                          type="button">
@@ -37,13 +52,14 @@
          home: @json(route('home')),
          sports: @json(route('sports')),
          subscriptions: @json(route('subscriptions')),
-         dashboard: @json(route('dashboard')),
+         dashboard: @json($dashboardUrl),
          login: @json(route('login')),
          register: @json(route('register')),
          boxes: @json(route('boxes')),
          cart: @json(route('cart')),
          customize: @json(route('customize')),
-         reward: @json(route('reward')),
+         reward: @json($rewardUrl),
+         logout: @json(route('logout')),
      };
      window.sportBoxRoute = function (name) {
          return window.SportBoxRoutes?.[name] || '/' + name;

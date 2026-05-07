@@ -72,6 +72,15 @@
 
                         <form method="POST" action="{{ route('login.submit') }}">
                             @csrf
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small d-block mb-2">Sign in as</label>
+                                <div class="btn-group w-100" role="group" aria-label="Account type">
+                                    <input type="radio" class="btn-check" name="account_type" id="loginTypeCustomer" value="customer" autocomplete="off" {{ old('account_type', 'customer') === 'customer' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary py-2" for="loginTypeCustomer"><i class="bi bi-person me-1"></i>Customer</label>
+                                    <input type="radio" class="btn-check" name="account_type" id="loginTypeAdmin" value="admin" autocomplete="off" {{ old('account_type') === 'admin' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary py-2" for="loginTypeAdmin"><i class="bi bi-shield-lock me-1"></i>Admin</label>
+                                </div>
+                            </div>
                             <div class="mb-3">
                                 <label class="form-label fw-semibold small" for="email">Email Address</label>
                                 <div class="input-group">

@@ -56,7 +56,7 @@
                             <p class="text-muted small mb-0">Create a new SportBox account.</p>
                         </div>
                         <h5 class="fw-bold mb-1">Create your account</h5>
-                        <p class="text-muted small mb-4">New registrations create customer accounts in the database.</p>
+                        <p class="text-muted small mb-4" id="registerIntro">Choose whether you are registering as a customer or an admin.</p>
 
                         @if ($errors->any())
                             <div class="alert alert-danger">
@@ -64,8 +64,17 @@
                             </div>
                         @endif
 
-                        <form method="POST" action="{{ route('register.submit') }}">
+                        <form method="POST" action="{{ route('register.submit') }}" id="registerForm">
                             @csrf
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold small d-block mb-2">Register as</label>
+                                <div class="btn-group w-100" role="group" aria-label="Account type">
+                                    <input type="radio" class="btn-check" name="account_type" id="regTypeCustomer" value="customer" autocomplete="off" {{ old('account_type', 'customer') === 'customer' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary py-2" for="regTypeCustomer"><i class="bi bi-person me-1"></i>Customer</label>
+                                    <input type="radio" class="btn-check" name="account_type" id="regTypeAdmin" value="admin" autocomplete="off" {{ old('account_type') === 'admin' ? 'checked' : '' }}>
+                                    <label class="btn btn-outline-primary py-2" for="regTypeAdmin"><i class="bi bi-shield-lock me-1"></i>Admin</label>
+                                </div>
+                            </div>
                             <div class="row g-3 mb-3">
                                 <div class="col-6">
                                     <label class="form-label fw-semibold small" for="first_name">First Name</label>
@@ -90,34 +99,11 @@
                                     <input type="password" class="form-control" placeholder="Min. 8 characters" id="password" name="password" required>
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small" for="favorite_theme">Favorite Theme</label>
-                                <select class="form-select" id="favorite_theme" name="favorite_theme">
-                                    <option value="">Select your theme...</option>
-                                    <option>Football</option>
-                                    <option>Basketball</option>
-                                    <option>Fitness</option>
-                                    <option>Tennis</option>
-                                    <option>Coffee</option>
-                                    <option>Books</option>
-                                    <option>Electronics</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small" for="referral_code">Referral Code <span class="text-muted fw-normal">(optional)</span></label>
-                                <input type="text" class="form-control" placeholder="Enter referral code" id="referral_code" name="referral_code" value="{{ old('referral_code') }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label fw-semibold small" for="state_code">State Code</label>
-                                <input type="text" class="form-control" placeholder="NY" id="state_code" name="state_code" value="{{ old('state_code') }}" maxlength="2">
-                            </div>
-                            <div class="form-check mb-4">
-                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
-                                <label class="form-check-label text-muted small" for="termsCheck">
-                                    I agree to the <a href="#" class="text-primary">Terms &amp; Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a>
-                                </label>
-                            </div>
-                            <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold">
+                    
+                            
+                           
+                            
+                            <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold" id="registerSubmitBtn">
                                 <i class="bi bi-person-check me-2"></i>Create My Account
                             </button>
                         </form>
@@ -168,5 +154,33 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+    var intro = document.getElementById('registerIntro');
+    var submitBtn = document.getElementById('registerSubmitBtn');
+
+    function sync() {
+        var admin = document.getElementById('regTypeAdmin').checked;
+
+        if (intro) {
+            intro.textContent = admin
+                ? 'Admin accounts use the admins database table. Sign in with Admin after registering.'
+                : 'Choose customer to manage subscriptions and orders.';
+        }
+
+        if (submitBtn) {
+            submitBtn.innerHTML = admin
+                ? '<i class="bi bi-shield-check me-2"></i>Create Admin Account'
+                : '<i class="bi bi-person-check me-2"></i>Create My Account';
+        }
+    }
+
+    document.querySelectorAll('input[name="account_type"]').forEach(function (r) {
+        r.addEventListener('change', sync);
+    });
+
+    sync();
+})();
+    </script>
 </body>
 </html>
