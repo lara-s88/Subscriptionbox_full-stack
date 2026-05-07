@@ -52,32 +52,7 @@
             </div>
 
             <section id="customerDashboard" @if($isAdminDashboard) style="display:none;" @endif>
-                <div class="row g-3 mb-4" id="customerStats">
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="stat-card" style="border-left-color:var(--primary);">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="stat-icon" style="color:var(--primary);"><i class="bi bi-box2-heart-fill"></i></div>
-                                <div><div class="h4 fw-bold mb-0" style="color:var(--primary);">0</div><div class="text-muted small">Boxes Received</div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="stat-card" style="border-left-color:#f59e0b;">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="stat-icon" style="color:#f59e0b;"><i class="bi bi-stars"></i></div>
-                                <div><div class="h4 fw-bold mb-0" style="color:#f59e0b;">0</div><div class="text-muted small">Reward Points</div></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="stat-card" style="border-left-color:#06b6d4;">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="stat-icon" style="color:#06b6d4;"><i class="bi bi-truck"></i></div>
-                                <div><div class="h4 fw-bold mb-0" style="color:#06b6d4;">0</div><div class="text-muted small">Days to Next Box</div></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row g-4">
                     <div class="col-lg-8">
                         <div class="card border-0 rounded-4 shadow-sm mb-4 overflow-hidden">
@@ -252,14 +227,7 @@
                                     </div>
                                     <i class="bi bi-star-fill text-warning fs-3"></i>
                                 </div>
-                                <div class="d-flex justify-content-between small mb-2"><span class="text-muted">Next
-                                        billing:</span><span class="fw-semibold" id="subscriptionBillingDate">May 1,
-                                        2026</span></div>
-                                <div class="d-flex justify-content-between small mb-2"><span class="text-muted">Swaps
-                                        remaining:</span><span class="fw-semibold text-primary">Unlimited</span></div>
-                                <div class="d-flex justify-content-between small mb-3"><span class="text-muted">Member
-                                        since:</span><span class="fw-semibold" id="subscriptionMemberSince">Aug
-                                        2023</span></div>
+                                
                                 <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 btn-sm">Upgrade Plan</a>
                             </div>
                         </div>
@@ -559,6 +527,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   
     
 </body>

@@ -23,6 +23,7 @@ return new class extends Migration
         $table->boolean('express_shipping')->default(false);
         $table->boolean('early_access')->default(false);
         $table->boolean('vip_support')->default(false);
+        $table->timestamps();
 
       
     });

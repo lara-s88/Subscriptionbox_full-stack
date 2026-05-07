@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\PlanController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PauseResumeController;
+
 
 Route::get('/', function () {
     return view('home');
@@ -71,3 +73,6 @@ Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
 Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
 Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select.plan');
+Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
+Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
+Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);

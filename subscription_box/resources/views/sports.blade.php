@@ -51,17 +51,7 @@
         <div class="container">
 
             <!-- Filter Tabs -->
-            <div class="text-center mb-4">
-                <div class="filter-tabs-wrap" id="filterTabsWrap">
-                    <button class="filter-tab active" data-sport="all" type="button">
-                        <i class="bi bi-grid me-1"></i>All Sports
-                    </button>
-                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=football">Football</a>
-                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=basketball">Basketball</a>
-                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=gym">Gym/Fitness</a>
-                    <a class="filter-tab text-decoration-none" href="{{ route('boxes') }}?sport=tennis">Tennis</a>
-                </div>
-            </div>
+           
 
             <!-- Search -->
             <div class="row justify-content-center mb-4">
@@ -77,7 +67,7 @@
             <!-- Dynamic section header -->
             <div class="mb-4" id="sectionHeader">
                 <h4 class="fw-bold mb-1">All Sports</h4>
-                <p class="text-muted small mb-0">Sports loaded from the backend will appear in these cards.</p>
+                
             </div>
 
             <!-- Skeleton (shown briefly on load) -->
@@ -85,7 +75,7 @@
 
             <!-- Main grid -->
             <div class="row g-4" id="sports-grid">
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-4">
                     <a href="{{ route('boxes') }}?sport=football" class="sport-card h-100 text-decoration-none text-body d-block">
                         <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Football" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
@@ -93,7 +83,7 @@
                                 <i class="bi bi-dribbble text-primary fs-5"></i>
                                 <h5 class="card-title fw-bold mb-0">Football</h5>
                             </div>
-                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-3"></p>
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="text-muted small">Boxes</span>
                                 <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
@@ -101,7 +91,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-4">
                     <a href="{{ route('boxes') }}?sport=basketball" class="sport-card h-100 text-decoration-none text-body d-block">
                         <img src="https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Basketball" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
@@ -109,7 +99,7 @@
                                 <i class="bi bi-basket3-fill text-primary fs-5"></i>
                                 <h5 class="card-title fw-bold mb-0">Basketball</h5>
                             </div>
-                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-3"></p>
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="text-muted small">Boxes</span>
                                 <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
@@ -117,7 +107,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-6 col-lg-3">
+                <div class="col-md-6 col-lg-4">
                     <a href="{{ route('boxes') }}?sport=gym" class="sport-card h-100 text-decoration-none text-body d-block">
                         <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Gym/Fitness" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
@@ -125,7 +115,7 @@
                                 <i class="bi bi-heart-pulse-fill text-primary fs-5"></i>
                                 <h5 class="card-title fw-bold mb-0">Gym/Fitness</h5>
                             </div>
-                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-3"></p>
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="text-muted small">Boxes</span>
                                 <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
@@ -133,19 +123,9 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-md-6 col-lg-3">
-                    <a href="{{ route('boxes') }}?sport=tennis" class="sport-card h-100 text-decoration-none text-body d-block">
-                        <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Tennis" style="height:200px;object-fit:cover;">
-                        <div class="card-body p-4">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-trophy-fill text-primary fs-5"></i>
-                                <h5 class="card-title fw-bold mb-0">Tennis</h5>
-                            </div>
-                            <p class="card-text text-muted small mb-3">Backend description goes here.</p>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <span class="text-muted small">Boxes</span>
-                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
-                            </div>
+                                            
+                <p class="card-text text-muted small mb-3"></p>
+                            
                         </div>
                     </a>
                 </div>

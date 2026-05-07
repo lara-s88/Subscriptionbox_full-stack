@@ -105,19 +105,17 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="fw-semibold small mb-3 d-block">Skill Level</label>
+                                    <label class="fw-semibold small mb-3 d-block">Delivery Frequency</label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="pref-btn" type="button">Beginner</button>
-                                        <button class="pref-btn active" type="button">Intermediate</button>
-                                        <button class="pref-btn" type="button">Pro</button>
+                                        <button class="pref-btn" type="button">Monthly</button>
+                                        <button class="pref-btn active" type="button">Bi-Monthly</button>
+                                        <button class="pref-btn" type="button">Quarterly</button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="fw-semibold small mb-3 d-block">Delivery Frequency</label>
+                                    <label class="fw-semibold small mb-3 d-block"></label>
                                     <div class="d-flex gap-2 flex-wrap">
-                                        <button class="pref-btn active" type="button">Monthly</button>
-                                        <button class="pref-btn" type="button">Bi-Monthly</button>
-                                        <button class="pref-btn" type="button">Quarterly</button>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -132,8 +130,8 @@
                             <div class="overflow-hidden rounded-3 mb-3" style="height:160px;">
                                 <img id="summaryImg" src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box" class="w-100 h-100" style="object-fit:cover;">
                             </div>
-                            <h5 class="fw-bold mb-1" id="summaryTitle">Football Clothing Box</h5>
-                            <p class="text-muted small" id="summaryType">Clothing Box</p>
+                            <h5 class="fw-bold mb-1" id="summaryTitle"> Sports Box</h5>
+                            <p class="text-muted small" id="summaryType"> Box</p>
                         </div>
 
                         <hr>
@@ -142,6 +140,7 @@
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted small">Items in box:</span>
                                 <span class="fw-semibold small" id="summaryCount">4 items</span>
+                                
                             </div>
                             <div class="d-flex justify-content-between mb-2">
                                 <span class="text-muted small">Clothing size:</span>
@@ -161,20 +160,10 @@
 
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <span class="fw-bold">Total</span>
-                            <span class="fw-bold text-primary fs-4" id="summaryPrice">$49.99</span>
+                            <span class="fw-bold text-primary fs-4" id="summaryPrice">0$</span>
                         </div>
 
-                        <!-- Swaps indicator -->
-                        <div class="p-3 rounded-3 mb-4" style="background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.15);">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <i class="bi bi-arrow-repeat text-primary"></i>
-                                <span class="small fw-semibold">Swaps Used</span>
-                            </div>
-                            <div class="progress mb-1" style="height:6px;border-radius:3px;">
-                                <div class="progress-bar" id="swapBar" style="width:40%;background:var(--gradient);border-radius:3px;"></div>
-                            </div>
-                            <div class="small text-muted" id="swapText">2 of 5 swaps used (Pro plan: unlimited)</div>
-                        </div>
+                        
 
                         <button class="btn btn-primary w-100 py-3 fw-semibold mb-2" type="button">
                             <i class="bi bi-cart-check me-2"></i>Save to Cart
@@ -196,7 +185,7 @@
                     <div style="width:80px;height:80px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
                         <i class="bi bi-check-circle-fill text-primary" style="font-size:2.5rem;"></i>
                     </div>
-                    <h4 class="fw-bold mb-2">Box Customized! 🎉</h4>
+                    <h4 class="fw-bold mb-2">Box Customized! </h4>
                     <p class="text-muted mb-4">Your selections are saved in the cart. Review everything there and confirm shipping when ready.</p>
                     <div class="d-flex gap-2 justify-content-center">
                         <a href="{{ route('cart') }}" class="btn btn-primary px-4"><i class="bi bi-cart3 me-1"></i>View Cart</a>
@@ -232,5 +221,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/js/customize.js') }}"></script>
 </body>
 </html>

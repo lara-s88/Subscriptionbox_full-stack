@@ -18,8 +18,8 @@
     <div class="hero-section-sm">
         <div class="container position-relative">
             <a href="{{ route('sports') }}" class="btn btn-sm btn-outline-light px-3 mb-3"><i class="bi bi-arrow-left me-1"></i>All Sports</a>
-            <h1 class="display-5 fw-bold mb-2" id="sportTitle">Football Boxes</h1>
-            <p class="lead mb-0" style="opacity:.88;" id="sportDesc">Premium curated boxes for football enthusiasts</p>
+            <h1 class="display-5 fw-bold mb-2" id="sportTitle">Boxes</h1>
+            <p class="lead mb-0" style="opacity:.88;" id="sportDesc">Premium curated boxes for sports enthusiasts</p>
         </div>
     </div>
 
@@ -28,22 +28,9 @@
         <div class="container">
             <!-- Filters Row -->
             <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
-                <!-- Type Filter -->
-                <div class="filter-tabs-wrap" id="typeFilters">
-                    <button class="filter-tab active" data-type="all" type="button">All</button>
-                    <button class="filter-tab" data-type="clothing" type="button">👕 Clothing</button>
-                    <button class="filter-tab" data-type="equipment" type="button">🏋️ Equipment</button>
-                    <button class="filter-tab" data-type="diet" type="button">🥗 Diet</button>
-                </div>
-                <!-- Price Filter -->
-                <div class="d-flex gap-2 flex-wrap" id="priceFilters">
-                    <button class="price-filter-btn active" data-price="all" type="button">All Prices</button>
-                    <button class="price-filter-btn" data-price="under40" type="button">Under $40</button>
-                    <button class="price-filter-btn" data-price="40to60" type="button">$40–$60</button>
-                    <button class="price-filter-btn" data-price="over60" type="button">$60+</button>
-                </div>
+                
                 <!-- Search -->
-                <div class="search-bar-wrap ms-auto" style="min-width:220px;">
+                <div class="search-bar-wrap ms-auto" style="min-width:920px;">
                     <i class="bi bi-search"></i>
                     <input type="text" class="form-control" placeholder="Search boxes..." id="searchInput">
                 </div>
@@ -53,7 +40,7 @@
             </div>
 
             <!-- Results count -->
-            <p class="text-muted small mb-4" id="resultsCount">Backend box results will appear below.</p>
+            <p class="text-muted small mb-4" id="resultsCount">.</p>
 
             <!-- Skeleton (shown during load) -->
             <div class="row g-4" id="skeletonGrid"></div>
@@ -67,13 +54,14 @@
                         </div>
                         <div class="p-4">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
-                                <span class="type-badge" style="background:#3b82f618;color:#3b82f6;">Type</span>
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Fitness Box</h6>
+                                <span class="type-badge" style="background:#3b82f618;color:#3b82f6;">Gym</span>
                             </div>
-                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Items: Resistance bands, Mini dumbbells, Yoga mat</p>
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <span class="fw-bold text-primary fs-5">30$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                                 <a href="{{ route('cart') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Add to cart</a>
                             </div>
                         </div>
                     </div>
@@ -85,13 +73,14 @@
                         </div>
                         <div class="p-4">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
-                                <span class="type-badge" style="background:#10b98118;color:#10b981;">Type</span>
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Football Box </h6>
+                                <span class="type-badge" style="background:#10b98118;color:#10b981;">Football</span>
                             </div>
-                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Items: Mini Football, Football socks, Running Shoes</p>
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <span class="fw-bold text-primary fs-5">20$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                                <a href="{{ route('cart') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Add to cart</a>
                             </div>
                         </div>
                     </div>
@@ -99,17 +88,23 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="box-card h-100">
                         <div class="overflow-hidden" style="height:190px;">
-                            <img src="https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box image" class="box-card-img">
+                            <img src="https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Box image" class="box-card-img">
                         </div>
                         <div class="p-4">
                             <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Box name</h6>
-                                <span class="type-badge" style="background:#f59e0b18;color:#f59e0b;">Type</span>
+                                <h6 class="fw-bold mb-0 flex-grow-1 pe-2">Basketball Box </h6>
+                                <span class="type-badge" style="background:#f59e0b18;color:#f59e0b;">Basketball</span>
                             </div>
-                            <p class="text-muted small mb-3" style="font-size:.82rem;">Backend description goes here.</p>
+                            <p class="text-muted small mb-3" style="font-size:.82rem;">Items: Basketball, Baketball shoes, wrist pants</p>
                             <div class="d-flex align-items-center justify-content-between">
-                                <span class="fw-bold text-primary fs-5">$0.00</span>
+                                <span class="fw-bold text-primary fs-5">25$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
+                                <form method="POST" action="{{ route('cart') }}">
+                          @csrf
+                          <button type="submit" class="btn btn-primary btn-sm px-3">
+                       Add to cart
+                         </button>
+                             </form>
                             </div>
                         </div>
                     </div>
