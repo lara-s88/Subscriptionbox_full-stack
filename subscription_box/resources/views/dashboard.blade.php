@@ -243,9 +243,12 @@
                                 <div class="d-flex align-items-center gap-3 mb-3 p-3 rounded-3"
                                     style="background:var(--gradient);">
                                     <div class="flex-grow-1">
-                                        <div class="text-white fw-bold fs-5" id="subscriptionTitle">Pro Plan</div>
-                                        <div class="small" style="color:rgba(255,255,255,.75);"
-                                            id="subscriptionPrice">$49 / month</div>
+                                        <div class="text-white fw-bold fs-5" id="subscriptionTitle">
+                                                   {{ auth()->user()->customer->plan->name ?? 'No Active Plan' }}
+                                           </div>
+                                        <<div class="text-white-50 small">
+                                               Price: ${{ auth()->user()->customer->plan->price_monthly ?? '0' }}
+                                          </div>
                                     </div>
                                     <i class="bi bi-star-fill text-warning fs-3"></i>
                                 </div>

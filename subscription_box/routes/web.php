@@ -4,6 +4,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoxController;
+use App\Http\Controllers\PlanController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('home');
@@ -21,10 +23,13 @@ Route::get('/dashboard', function () {
     return view('dashboard', ['dashboardMode' => 'customer']);
 })->name('dashboard');
 
-Route::get('/admin/dashboard', function () {
-    return view('adminDashboared');
-})->name('admin.dashboard');
+Route::get('/dashboard', function () {
 
+    if (!Auth::check()) {
+        return redirect()->route('login');
+    }
+    return view('dashboard', ['dashboardMode' => 'customer']);
+})->name('dashboard');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
@@ -61,3 +66,4 @@ Route::get('/admin/reward', function () {
 Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
 Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
+Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select.plan');

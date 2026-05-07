@@ -16,6 +16,10 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
 
+                $table->foreignId('plan_id')
+                ->constrained('plans');
+              
+
             $table->enum('diet_preference', [
                 'standard',
                 'keto',

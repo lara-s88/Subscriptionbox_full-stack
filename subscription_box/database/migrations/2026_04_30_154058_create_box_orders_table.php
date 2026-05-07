@@ -19,16 +19,8 @@ return new class extends Migration
                   ->constrained('boxes')
                   ->cascadeOnDelete();
 
-            $table->foreignId("base_price")
-                   ->constrained('boxes', 'base_price')
-                   ->cascadeOnDelete();
-                  
-            $table->foreignId('country_id')
-                  ->constrained('customers', 'country')
-                  ->cascadeOnDelete();
-                  
-
-            $table->string('order_number')->unique();
+           
+              $table->string('order_number')->unique();
             
             $table->enum('status', [
                 'pending',

@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -49,7 +50,7 @@ class RegisterController extends Controller
             $admin->first_name = $base['first_name'];
             $admin->last_name = $base['last_name'];
             $admin->email = $emailValidated['email'];
-            $admin->password = $base['password'];
+            $admin->password = Hash::make($base['password']);
             $admin->save();
 
             return redirect()

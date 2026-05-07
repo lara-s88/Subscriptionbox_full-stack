@@ -27,19 +27,7 @@
     <section class="py-5">
         <div class="container">
             <!-- Billing Toggle -->
-            <div class="text-center mb-5">
-                <div class="d-inline-flex align-items-center gap-3 px-4 py-2 rounded-pill"
-                    style="background:white;box-shadow:var(--card-shadow);">
-                    <span class="fw-semibold" id="lblMonthly" style="color:var(--primary);">Monthly</span>
-                    <div class="form-check form-switch mb-0" style="transform:scale(1.15);">
-                        <input class="form-check-input" type="checkbox" id="billingToggle" role="switch"
-                            style="cursor:pointer;">
-                    </div>
-                    <span class="fw-semibold text-muted" id="lblAnnual">
-                        Annual <span class="badge bg-success ms-1 rounded-pill" style="font-size:.7rem;">Save 20%</span>
-                    </span>
-                </div>
-            </div>
+            
 
             <!-- Plan Cards -->
             <div class="row g-4 justify-content-center align-items-stretch mb-5">
@@ -84,8 +72,15 @@
                             <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
                                     style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
                         </ul>
-                        <a class="btn btn-outline-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get
-                            Started — Basic</a>
+                        <form method="POST" action="{{ route('select.plan') }}">
+    @csrf
+
+    <input type="hidden" name="plan_name" value="Basic">
+
+    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
+        Get Started — Basic
+    </button>
+</form>
                     </div>
                 </div>
 
@@ -135,8 +130,15 @@
                             <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
                                     style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
                         </ul>
-                        <a class="btn btn-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get Started
-                            — Pro</a>
+                        <form method="POST" action="{{ route('select.plan') }}">
+    @csrf
+
+    <input type="hidden" name="plan_name" value="Pro">
+
+    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
+        Get Started — Pro
+    </button>
+</form>
                     </div>
                 </div>
 
@@ -183,8 +185,15 @@
                                     class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>VIP
                                     events &amp; challenges</span></li>
                         </ul>
-                        <a class="btn btn-outline-primary w-100 py-3 fw-semibold" href="{{ route('register') }}">Get
-                            Started — VIP</a>
+                        <form method="POST" action="{{ route('select.plan') }}">
+    @csrf
+
+    <input type="hidden" name="plan_name" value="VIP">
+
+    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
+        Get Started — VIP
+    </button>
+</form>
                     </div>
                 </div>
             </div>
