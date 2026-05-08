@@ -20,7 +20,11 @@ return new class extends Migration
                   ->cascadeOnDelete();
 
            
-              $table->string('order_number')->unique();
+            $table->string('order_number')->unique();
+            
+            $table->string('clothing_size')->nullable();
+            $table->string('diet_preference')->nullable();
+            $table->string('delivery_frequency')->nullable();
             
             $table->enum('status', [
                 'pending',

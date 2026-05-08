@@ -27,6 +27,21 @@ return new class extends Migration
                 'Hiegh Protein',
             ])->nullable();
 
+            $table->enum('delivery_frequency', [
+                'Monthly',
+                'Bi_Monthly',
+                'Quarterly',
+            ])->nullable();
+
+            $table->enum('clothing_size', [
+                'XS',
+                'S',
+                'M',
+                'L',
+                'XL',
+                'XXL',
+            ])->nullable();
+
             $table->string('address', 190)->nullable();
             $table->string('city', 100)->nullable();
             $table->string('country', 100)->nullable();

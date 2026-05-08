@@ -8,6 +8,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PauseResumeController;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {
@@ -74,6 +75,7 @@ Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select
 Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
 Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
 Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
+Route::post('/cart/save', [CartController::class, 'store']);
 
 
 Route::prefix('admin/api')->group(function () {
