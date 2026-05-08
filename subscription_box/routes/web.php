@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BoxController;
 use App\Http\Controllers\PlanController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PauseResumeController;
 
@@ -61,13 +62,9 @@ Route::get('/reward', function () {
     return view('reward', ['rewardMode' => 'customer']);
 })->name('reward');
 
-Route::get('/admin/reward', function () {
-    return view('adminReward');
-})->name('admin.reward');
+Route::get('/admin/reward', [AdminController::class, 'getAllRewardAccounts'])->name('admin.reward');
 
-Route::get('/admin/dashboard', function () {
-    return view('adminDashboared');
-})->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
 Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
@@ -76,3 +73,49 @@ Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select
 Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
 Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
 Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
+<<<<<<< Updated upstream
+Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
+Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
+Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
+=======
+
+Route::prefix('admin/api')->group(function () {
+    // 1. Plan Management
+    Route::get('/admin/plans', [AdminController::class, 'getAllPlans'])->name('admin.plans');
+    Route::post('/admin/plans/create', [AdminController::class, 'createPlan'])->name('admin.plans.create');
+    Route::delete('/admin/plans/{planId}', [AdminController::class, 'deletePlan'])->name('admin.plans.delete');
+
+    // 2. Inventory Management
+   Route::post('/admin/items/add', [AdminController::class, 'addItem']) ->name('admin.items.add');
+   Route::delete('/admin/items/{itemId}', [AdminController::class, 'deleteItem']) ->name('admin.items.delete');
+   Route::get('/admin/items', [AdminController::class, 'getAllItems'])->name('admin.items');
+    Route::patch('/admin/items/{itemId}/stock', [AdminController::class, 'updateStock'])->name('admin.items.updateStock');
+   Route::get('/admin/items/low-stock', [AdminController::class, 'getLowStockItems'])->name('admin.items.low-stock');
+
+    // 3. Theme Management
+    Route::post('/admin/themes', [AdminController::class, 'createTheme'])->name('admin.themes.create');
+    Route::delete('/admin/themes/{themeId}', [AdminController::class, 'deleteTheme'])->name('admin.themes.delete');
+    Route::post('/admin/themes/assign-item', [AdminController::class, 'assignItemToTheme'])->name('admin.themes.assign-item');
+    Route::delete('/admin/themes/{themeId}/items/{itemId}', [AdminController::class, 'removeItemFromTheme'])->name('admin.themes.remove-item');
+
+    // 4. Orders & Fulfillment
+    Route::get('/orders', [AdminController::class, 'getAllOrders']);
+    Route::get('/orders/{orderId}', [AdminController::class, 'getOrder']);
+    Route::patch('/orders/{orderId}/status', [AdminController::class, 'updateOrderStatus']);
+    Route::get('/orders/batching/{status}/{country_id}', [AdminController::class, 'getOrdersForBatching']);
+
+    // 5. User Management
+    Route::get('/users', [AdminController::class, 'getAllUsers']);
+    Route::get('/users/{userId}', [AdminController::class, 'getUserById']);
+
+    // 6. Rewards
+    Route::post('/orders/{orderId}/add-reward', [AdminController::class, 'addRewardPointsForOrder'])->name('admin.rewards.add');
+    Route::post('/rewards/users/{userId}/redeem', [AdminController::class, 'redeemRewardPoints'])->name('admin.rewards.redeem');
+
+    // 7. Returns
+    Route::get('/returns', [AdminController::class, 'getAllreturns']);
+    Route::get('/returns/{returnsId}', [AdminController::class, 'getReturnById']);
+    Route::patch('/returns/{returnsId}/approve', [AdminController::class, 'approveReturn']);
+    Route::patch('/returns/{returnsId}/reject', [AdminController::class, 'rejectReturn']);
+});
+>>>>>>> Stashed changes

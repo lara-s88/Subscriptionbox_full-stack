@@ -36,6 +36,20 @@
 
     <main class="py-5">
         <div class="container">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             <section id="adminDashboard">
                 <div class="row g-3 mb-4">
                     <div class="col-sm-6 col-xl-3">
@@ -43,7 +57,7 @@
                             <div class="d-flex align-items-center gap-3">
                                 <div class="stat-icon" style="color:var(--primary);"><i class="bi bi-people-fill"></i></div>
                                 <div>
-                                    <div class="h4 fw-bold mb-0" style="color:var(--primary);">0</div>
+                                    <div class="h4 fw-bold mb-0" style="color:var(--primary);">{{ count($users ?? []) }}</div>
                                     <div class="text-muted small">Customer Accounts</div>
                                 </div>
                             </div>
@@ -61,16 +75,16 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-xl-3">
-                        <div class="stat-card" style="border-left-color:#f59e0b;">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="stat-icon" style="color:#f59e0b;"><i class="bi bi-exclamation-triangle-fill"></i></div>
-                                <div>
-                                    <div class="h4 fw-bold mb-0" style="color:#f59e0b;">0</div>
-                                    <div class="text-muted small">Low Stock Alerts</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                         <div class="stat-card" style="border-left-color:#f59e0b;">
+                             <div class="d-flex align-items-center gap-3">
+                                 <div class="stat-icon" style="color:#f59e0b;"><i class="bi bi-exclamation-triangle-fill"></i></div>
+                                 <div>
+                                     <div class="h4 fw-bold mb-0" style="color:#f59e0b;">{{ count($thresholdItems ?? []) }}</div>
+                                     <div class="text-muted small">Low Stock Alerts</div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
                     <div class="col-sm-6 col-xl-3">
                         <div class="stat-card" style="border-left-color:#3b82f6;">
                             <div class="d-flex align-items-center gap-3">
@@ -86,35 +100,128 @@
 
                 <div class="row g-4">
                     <div class="col-xl-8">
+                        <!-- Inventory Management Section -->
                         <div class="surface-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0"><i class="bi bi-truck text-primary me-2"></i>Account Orders &amp; Tracking</h5>
-                                <span class="small text-muted">Live-ready structure for backend data</span>
+                                <h5 class="fw-bold mb-0"><i class="bi bi-box-seam text-primary me-2"></i>Inventory Items</h5>
+                                <span class="badge rounded-pill" style="background:rgba(16,185,129,.1);color:#059669;">
+                                    {{ count($items ?? []) }} Items
+                                </span>
+                            </div>
+                            @if (isset($items) && count($items) > 0)
+                                <div class="table-responsive">
+                                    <table class="table align-middle mb-0">
+                                        <thead>
+                                            <tr style="border-bottom: 2px solid #e5e7eb;">
+                                                <th class="fw-semibold">Item Name</th>
+                                                <th class="fw-semibold">Category</th>
+                                                <th class="fw-semibold">Price</th>
+                                                <th class="fw-semibold">Stock</th>
+                                                <th class="fw-semibold">Threshold</th>
+                                                <th class="fw-semibold text-center">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($items as $item)
+                                                <tr style="border-bottom: 1px solid #e5e7eb;">
+                                                    <td>
+                                                        <div class="fw-semibold">{{ $item->name }}</div>
+                                                        <div class="small text-muted">ID: #{{ $item->id }}</div>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge rounded-pill px-2" style="background:rgba(59,130,246,.12);color:#2563eb;">
+                                                            {{ $item->category }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="fw-semibold">${{ number_format($item->unit_price, 2) }}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge rounded-pill px-3 @if($item->stock_qty <= $item->safety_threshold) bg-warning text-dark @else @if($item->stock_qty > 20) bg-success @else bg-info @endif @endif">
+                                                            {{ $item->stock_qty }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="small text-muted">{{ $item->safety_threshold ?? '-' }}</span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#updateStockModal{{ $item->id }}" title="Update stock">
+                                                            <i class="bi bi-arrow-repeat"></i>
+                                                        </button>
+                                                        <form action="{{ route('admin.items.delete', $item->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this item?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete item">
+                                                                <i class="bi bi-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <!-- Update Stock Modal -->
+                                                <div class="modal fade" id="updateStockModal{{ $item->id }}" tabindex="-1">
+                                                    <div class="modal-dialog modal-sm">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Update Stock - {{ $item->name }}</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <form action="{{ route('admin.items.updateStock', $item->id) }}" method="POST">
+                                                                @csrf
+                                                                @method('PATCH')
+                                                                <div class="modal-body">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label fw-semibold">Current Stock: <span class="badge bg-secondary">{{ $item->stock_qty }}</span></label>
+                                                                        <input type="number" class="form-control" name="stock_qty" min="0" value="{{ $item->stock_qty }}" required>
+                                                                        <small class="text-muted">Safety threshold: {{ $item->safety_threshold }}</small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-primary">Update Stock</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+                                <div class="text-center py-4">
+                                    <p class="text-muted">No inventory items yet.</p>
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="surface-card p-4 mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                 <h5 class="fw-bold mb-0"><i class="bi bi-people text-primary me-2"></i>Users Table</h5>
+                                 <span class="small text-muted">{{ count($users ?? []) }} users</span>
                             </div>
                             <div class="table-responsive">
                                 <table class="table align-middle mb-0">
                                     <thead>
                                         <tr>
-                                            <th>Account</th>
-                                            <th>Package</th>
-                                            <th>Tracking</th>
-                                            <th>Status</th>
-                                            <th>Points</th>
-                                            <th>Returned</th>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Email</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>
-                                                <div class="fw-semibold">Account name</div>
-                                                <div class="small text-muted">email@example.com</div>
-                                            </td>
-                                            <td>Package name</td>
-                                            <td><span class="font-monospace text-primary">Tracking code</span></td>
-                                            <td><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Status</span></td>
-                                            <td>0</td>
-                                            <td><span class="badge rounded-pill px-3" style="background:rgba(59,130,246,.12);color:#2563eb;">No return</span></td>
-                                        </tr>
+                                        @forelse (($users ?? []) as $user)
+                                            <tr>
+                                                <td>#{{ $user->id }}</td>
+                                                <td class="fw-semibold">
+                                                    {{ trim(($user->first_name ?? '') . ' ' . ($user->last_name ?? '')) ?: 'N/A' }}
+                                                </td>
+                                                <td>{{ $user->email ?? 'N/A' }}</td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="3" class="text-center text-muted py-4">No users found.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
@@ -168,63 +275,224 @@
                     </div>
 
                     <div class="col-xl-4">
-                        <div class="surface-card p-4 mb-4 upload-panel">
-                            <h5 class="fw-bold mb-2"><i class="bi bi-cloud-upload text-primary me-2"></i>Upload Themes</h5>
-                            <p class="text-muted small mb-4">Admins can add next-month theme data here now, then connect this form to a backend import later.</p>
-                            <form method="POST" action="#">
+                         <div class="surface-card p-4 mb-4">
+                             <h5 class="fw-bold mb-2"><i class="bi bi-plus-circle text-primary me-2"></i>Add Inventory Item</h5>
+                             <p class="text-muted small mb-4">Add a new item to your inventory.</p>
+                             <form method="POST" action="{{ route('admin.items.add') }}">
+                                 @csrf
+                                 <div class="mb-3">
+                                     <label class="form-label fw-semibold small">Item Name <span class="text-danger">*</span></label>
+                                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" placeholder="e.g., Sports Watch" required>
+                                     @error('name')
+                                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                                     @enderror
+                                 </div>
+                                 <div class="mb-3">
+                                     <label class="form-label fw-semibold small">Category <span class="text-danger">*</span></label>
+                                     <input type="text" class="form-control @error('category') is-invalid @enderror" name="category" placeholder="e.g., Electronics" required>
+                                     @error('category')
+                                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                                     @enderror
+                                 </div>
+                                 <div class="mb-3">
+                                     <label class="form-label fw-semibold small">Unit Price <span class="text-danger">*</span></label>
+                                     <div class="input-group">
+                                         <span class="input-group-text">$</span>
+                                         <input type="number" class="form-control @error('unit_price') is-invalid @enderror" name="unit_price" placeholder="25.99" step="0.01" min="0.01" required>
+                                     </div>
+                                     @error('unit_price')
+                                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                                     @enderror
+                                 </div>
+                                  <div class="mb-3">
+                                      <label class="form-label fw-semibold small">Stock Quantity <span class="text-danger">*</span></label>
+                                      <input type="number" class="form-control @error('stock_qty') is-invalid @enderror" name="stock_qty" placeholder="50" min="1" required>
+                                      @error('stock_qty')
+                                          <div class="invalid-feedback d-block">{{ $message }}</div>
+                                      @enderror
+                                  </div>
+                                  <div class="mb-3">
+                                      <label class="form-label fw-semibold small">Safety Threshold <span class="text-danger">*</span></label>
+                                      <input type="number" class="form-control @error('safety_threshold') is-invalid @enderror" name="safety_threshold" placeholder="10" min="5" required>
+                                      @error('safety_threshold')
+                                          <div class="invalid-feedback d-block">{{ $message }}</div>
+                                      @enderror
+                                      <small class="text-muted">Minimum stock level before alert</small>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label class="form-label fw-semibold small">Weight (kg)</label>
+                                     <input type="number" class="form-control @error('weight_kg') is-invalid @enderror" name="weight_kg" placeholder="0.5" step="0.01" min="0.01">
+                                     @error('weight_kg')
+                                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                                     @enderror
+                                 </div>
+                                 <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus-circle me-2"></i>Add Item</button>
+                             </form>
+                         </div>
+
+                         <div class="surface-card p-4 mb-4 upload-panel">
+                             <h5 class="fw-bold mb-2"><i class="bi bi-cloud-upload text-primary me-2"></i>Upload Themes</h5>
+                            <p class="text-muted small mb-4">Create a new monthly theme for subscription boxes.</p>
+                            <form method="POST" action="{{ route('admin.themes.create') }}">
                                 @csrf
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">Theme Name</label>
-                                    <input type="text" class="form-control" name="theme_name" placeholder="May Gadget Drop">
+                                    <input type="text" class="form-control" name="name" placeholder="May Gadget Drop" required>
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">Month</label>
-                                    <input type="text" class="form-control" name="theme_month" placeholder="June 2026">
+                                    <select class="form-control" name="month" required>
+                                        <option value="">Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold small">Item Count</label>
-                                    <input type="number" class="form-control" name="theme_items" min="1" placeholder="6">
+                                    <label class="form-label fw-semibold small">Description</label>
+                                    <textarea class="form-control" name="description" rows="3" placeholder="Describe the theme..."></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100">Upload Theme</button>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Image URL</label>
+                                    <input type="url" class="form-control" name="image_url" placeholder="https://example.com/image.jpg">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Add Inventory Items</label>
+                                    <div class="border rounded p-2" style="max-height:200px;overflow-y:auto;">
+                                        @if(isset($items) && count($items) > 0)
+                                            @foreach($items as $invItem)
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" name="inventory_items[]" value="{{ $invItem->id }}" id="item_{{ $invItem->id }}">
+                                                    <label class="form-check-label small" for="item_{{ $invItem->id }}">
+                                                        {{ $invItem->name }} ({{ $invItem->category }} - Stock: {{ $invItem->stock_qty }})
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted small mb-0">No inventory items available</p>
+                                        @endif
+                                    </div>
+                                    <small class="text-muted">Select items to assign to this theme</small>
+                                </div>
+                                <button type="submit" class="btn btn-primary w-100">Create Theme</button>
                             </form>
                         </div>
 
                         <div class="surface-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Stock Threshold</h5>
-                                <span class="small text-muted">Low stock alerts</span>
+                                 <h5 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Stock Threshold</h5>
+                                 <span class="badge rounded-pill" style="background:rgba(245,158,11,.15);color:#b45309;">
+                                     {{ count($thresholdItems ?? []) }} Low
+                                 </span>
                             </div>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="border rounded-4 p-3">
-                                    <div class="d-flex justify-content-between align-items-start gap-3">
-                                        <div>
-                                            <div class="fw-semibold">Inventory item</div>
-                                            <div class="small text-muted">Theme name</div>
+                            @if (isset($thresholdItems) && count($thresholdItems) > 0)
+                                <div class="d-flex flex-column gap-3">
+                                    @foreach ($thresholdItems as $item)
+                                        <div class="border rounded-4 p-3">
+                                            <div class="d-flex justify-content-between align-items-start gap-3">
+                                                <div>
+                                                    <div class="fw-semibold">{{ $item->name }}</div>
+                                                    <div class="small text-muted">{{ $item->category }}</div>
+                                                </div>
+                                                <span class="badge rounded-pill px-3" style="background:rgba(245,158,11,.15);color:#b45309;">{{ $item->stock_qty }} in stock</span>
+                                            </div>
+                                            <div class="small text-muted mt-2">Threshold: {{ $item->safety_threshold }}</div>
                                         </div>
-                                        <span class="badge rounded-pill px-3" style="background:rgba(245,158,11,.15);color:#b45309;">0 in stock</span>
-                                    </div>
-                                    <div class="small text-muted mt-2">Threshold: 0</div>
+                                    @endforeach
                                 </div>
-                            </div>
+                            @else
+                                <div class="text-center py-4">
+                                    <i class="bi bi-check-circle text-success" style="font-size:2rem;"></i>
+                                    <p class="text-muted mt-2 mb-0">All items above threshold</p>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="surface-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-palette text-primary me-2"></i>Theme Library</h5>
-                                <span class="small text-muted">Latest uploads</span>
+                                <span class="small text-muted">{{ count($themes ?? []) }} themes</span>
                             </div>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="border rounded-4 p-3">
-                                    <div class="d-flex justify-content-between align-items-start gap-3">
-                                        <div>
-                                            <div class="fw-semibold">Theme name</div>
-                                            <div class="small text-muted">Month</div>
+
+                            @if(isset($themes) && count($themes) > 0)
+                                <div class="d-flex flex-column gap-3">
+                                    @foreach($themes as $theme)
+                                        <div class="border rounded-4 p-3" id="theme-{{ $theme->id }}">
+                                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                                <div>
+                                                    <div class="fw-semibold">{{ $theme->name }}</div>
+                                                    <div class="small text-muted">
+                                                        Month: {{ $theme->month }} | 
+                                                        {{ $theme->items->count() }} item(s) assigned
+                                                    </div>
+                                                </div>
+                                                <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">
+                                                    {{ $theme->description ?? 'No description' }}
+                                                </span>
+                                            </div>
+
+                                            @if($theme->items->count() > 0)
+                                                <div class="mb-2">
+                                                    @foreach($theme->items as $assignedItem)
+                                                        <div class="d-flex align-items-center justify-content-between mb-1 p-2 rounded" style="background:rgba(59,130,246,.05);">
+                                                            <span class="small">
+                                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                                                {{ $assignedItem->inventoryItem->name ?? 'Unknown item' }}
+                                                            </span>
+                                                            <form action="{{ route('admin.themes.remove-item', [$theme->id, $assignedItem->inventory_item_id]) }}" method="POST" style="display:inline;">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove from theme">
+                                                                    <i class="bi bi-x-lg"></i>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <div class="small text-muted mb-2">No items assigned yet</div>
+                                            @endif
+
+                                            <form action="{{ route('admin.themes.assign-item') }}" method="POST" class="row g-2">
+                                                @csrf
+                                                <input type="hidden" name="theme_id" value="{{ $theme->id }}">
+                                                <div class="col-8">
+                                                    <select class="form-select form-select-sm @error('inventory_item_id') is-invalid @enderror" name="inventory_item_id" required>
+                                                        <option value="">Select inventory item...</option>
+                                                        @foreach($items->whereNotIn('id', $theme->items->pluck('inventory_item_id')) as $invItem)
+                                                            <option value="{{ $invItem->id }}">
+                                                                {{ $invItem->name }} ({{ $invItem->category }} - Stock: {{ $invItem->stock_qty }})
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    @error('inventory_item_id')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                                <div class="col-4">
+                                                    <button type="submit" class="btn btn-sm btn-primary w-100">
+                                                        <i class="bi bi-plus-circle me-1"></i>Add Item
+                                                    </button>
+                                                </div>
+                                            </form>
                                         </div>
-                                        <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Status</span>
-                                    </div>
-                                    <div class="small text-muted mt-2">0 items</div>
+                                    @endforeach
                                 </div>
-                            </div>
+                            @else
+                                <div class="text-center py-4">
+                                    <i class="bi bi-palette text-muted" style="font-size:2rem;"></i>
+                                    <p class="text-muted mt-2 mb-0">No themes created yet.</p>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

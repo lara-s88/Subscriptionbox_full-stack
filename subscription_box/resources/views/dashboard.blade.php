@@ -393,13 +393,29 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label fw-semibold small">Month</label>
-                                    <input type="text" class="form-control" id="themeMonth"
-                                        placeholder="June 2026" required>
+                                    <select class="form-control" id="themeMonth" required>
+                                        <option value="">Select Month</option>
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label class="form-label fw-semibold small">Item Count</label>
-                                    <input type="number" class="form-control" id="themeItems" min="1"
-                                        placeholder="6" required>
+                                    <label class="form-label fw-semibold small">Description</label>
+                                    <textarea class="form-control" id="themeDescription" rows="3" placeholder="Describe the theme..."></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold small">Image URL</label>
+                                    <input type="url" class="form-control" id="themeImageUrl" placeholder="https://example.com/image.jpg">
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Upload Theme</button>
                             </form>

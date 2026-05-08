@@ -36,30 +36,50 @@
 
     <section class="py-5" id="adminRewardsView">
         <div class="container">
+            @php
+                $accounts = $rewardAccounts ?? collect();
+                $totalPoints = $accounts->sum('points');
+                $topPoints = $accounts->max('points');
+            @endphp
+
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             <div class="card border-0 rounded-4 shadow-sm">
                 <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="fw-bold mb-0"><i class="bi bi-people text-primary me-2"></i>Customer Reward Points</h6>
-                        <span class="badge rounded-pill" style="background:var(--gradient);">0 Accounts</span>
+                        <span class="badge rounded-pill" style="background:var(--gradient);">{{ count($accounts) }} Accounts</span>
                     </div>
                 </div>
                 <div class="card-body p-4">
                     <div class="row g-3 mb-4">
                         <div class="col-md-4">
                             <div class="stat-card">
-                                <div class="h4 fw-bold text-primary mb-1">0</div>
+                                <div class="h4 fw-bold text-primary mb-1">{{ count($accounts) }}</div>
                                 <div class="text-muted small">Tracked customers</div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stat-card">
-                                <div class="h4 fw-bold text-primary mb-1">0</div>
+                                <div class="h4 fw-bold text-primary mb-1">{{ $totalPoints }}</div>
                                 <div class="text-muted small">Total reward points</div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="stat-card">
-                                <div class="h4 fw-bold text-primary mb-1">N/A</div>
+                                <div class="h4 fw-bold text-primary mb-1">{{ $topPoints ?? 0 }}</div>
                                 <div class="text-muted small">Top reward balance</div>
                             </div>
                         </div>
@@ -74,30 +94,34 @@
                                     <th>Plan</th>
                                     <th>Points</th>
                                     <th>Tier</th>
+                                    <th>Redeem</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="fw-semibold">Customer name</td>
-                                    <td>customer@example.com</td>
-                                    <td>Plan</td>
-                                    <td class="text-primary fw-semibold">0</td>
-                                    <td><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Tier</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-semibold">Customer name</td>
-                                    <td>customer@example.com</td>
-                                    <td>Plan</td>
-                                    <td class="text-primary fw-semibold">0</td>
-                                    <td><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Tier</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="fw-semibold">Customer name</td>
-                                    <td>customer@example.com</td>
-                                    <td>Plan</td>
-                                    <td class="text-primary fw-semibold">0</td>
-                                    <td><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Tier</span></td>
-                                </tr>
+                                @forelse ($accounts as $account)
+                                    <tr>
+                                        <td class="fw-semibold">{{ optional($account->user)->first_name }} {{ optional($account->user)->last_name }}</td>
+                                        <td>{{ optional($account->user)->email ?? 'N/A' }}</td>
+                                        <td>{{ optional(optional($account->user)->subscription)->plan_name ?? 'N/A' }}</td>
+                                        <td class="text-primary fw-semibold">{{ $account->points ?? 0 }}</td>
+                                        <td>
+                                            <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">
+                                                {{ $account->tier_name ?? 'Bronze' }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <form action="{{ url('/admin/api/rewards/users/' . $account->user_id . '/redeem') }}" method="POST" class="d-flex gap-2">
+                                                @csrf
+                                                <input type="number" name="points_to_redeem" min="1" class="form-control form-control-sm" placeholder="Pts" style="max-width:90px;" required>
+                                                <button type="submit" class="btn btn-sm btn-outline-primary">Redeem</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">No reward accounts found.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

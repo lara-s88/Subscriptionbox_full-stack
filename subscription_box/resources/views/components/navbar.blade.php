@@ -17,6 +17,14 @@
          </button>
          <div class="collapse navbar-collapse" id="navbarNav">
              <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+                @if ($loggedInAdmin)
+                <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}"
+                        href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'reward' ? 'active' : '' }}"
+                        href="{{ route('admin.reward') }}">Rewards</a></li>
+                <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'plans' ? 'active' : '' }}"
+                        href="{{ route('admin.plans') }}">Plans</a></li>
+                @else
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'home' ? 'active' : '' }} fw-semibold" data-public-nav
                          href="{{ route('home') }}">Home</a>
                  </li>
@@ -27,6 +35,7 @@
                  <li class="nav-item"><a class="nav-link px-3 {{ $activePage == 'dashboard' ? 'active' : '' }}" data-public-nav
                          href="{{ $dashboardUrl }}">Dashboard</a></li>
                  <li class="nav-item" id="rewardNavItem"><a class="nav-link px-3 {{ $activePage == 'reward' ? 'active' : '' }}" href="{{ $rewardUrl }}">Rewards</a></li>
+                @endif
                  @if ($isLoggedIn)
                  <li class="nav-item">
                      <form action="{{ route('logout') }}" method="POST" class="d-inline">
