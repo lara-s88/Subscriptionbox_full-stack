@@ -70,14 +70,11 @@ Route::get('/box/{id}', [BoxController::class , 'showBox']);
 Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
 Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
 Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select.plan');
+
 Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
 Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
 Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
-<<<<<<< Updated upstream
-Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
-Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
-Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
-=======
+
 
 Route::prefix('admin/api')->group(function () {
     // 1. Plan Management
@@ -118,4 +115,3 @@ Route::prefix('admin/api')->group(function () {
     Route::patch('/returns/{returnsId}/approve', [AdminController::class, 'approveReturn']);
     Route::patch('/returns/{returnsId}/reject', [AdminController::class, 'rejectReturn']);
 });
->>>>>>> Stashed changes
