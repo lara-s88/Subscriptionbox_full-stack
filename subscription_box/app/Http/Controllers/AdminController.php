@@ -11,7 +11,7 @@ use App\Models\Plan;
 use App\Models\InventoryItem;
 use App\Models\Themes as Theme;
 use App\Models\ThemesItem;
-use App\Models\Order;
+use App\Models\BoxOrder;
 use App\Models\User;
 use App\Models\RewardAccount;
 use App\Models\RewardItem;
