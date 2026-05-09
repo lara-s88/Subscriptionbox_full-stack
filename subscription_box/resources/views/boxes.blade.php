@@ -61,7 +61,17 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="fw-bold text-primary fs-5">30$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
-                                 <a href="{{ route('cart') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Add to cart</a>
+                                 <form action="{{ route('add.to.cart', 1) }}"
+      method="POST"
+      style="display:inline;">
+      
+    @csrf
+
+    <button type="submit" class="btn btn-primary btn-sm px-3">
+        <i class="bi bi-cart-plus me-1"></i>
+        Add to cart
+    </button>
+</form>
                             </div>
                         </div>
                     </div>
@@ -80,7 +90,17 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="fw-bold text-primary fs-5">20$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
-                                <a href="{{ route('cart') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Add to cart</a>
+                               <form action="{{ route('add.to.cart', 2) }}"
+      method="POST"
+      style="display:inline;">
+      
+    @csrf
+
+    <button type="submit" class="btn btn-primary btn-sm px-3">
+        <i class="bi bi-cart-plus me-1"></i>
+        Add to cart
+    </button>
+</form>
                             </div>
                         </div>
                     </div>
@@ -99,12 +119,17 @@
                             <div class="d-flex align-items-center justify-content-between">
                                 <span class="fw-bold text-primary fs-5">25$</span>
                                 <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i class="bi bi-pencil-square me-1"></i>Customize</a>
-                                <form method="POST" action="{{ route('cart') }}">
-                          @csrf
-                          <button type="submit" class="btn btn-primary btn-sm px-3">
-                       Add to cart
-                         </button>
-                             </form>
+                                <form action="{{ route('add.to.cart', 3) }}"
+      method="POST"
+      style="display:inline;">
+      
+    @csrf
+
+    <button type="submit" class="btn btn-primary btn-sm px-3">
+        <i class="bi bi-cart-plus me-1"></i>
+        Add to cart
+    </button>
+</form>
                             </div>
                         </div>
                     </div>

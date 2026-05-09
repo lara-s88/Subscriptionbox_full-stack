@@ -3,13 +3,10 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BoxController;
-use App\Http\Controllers\PlanController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\PauseResumeController;
-use App\Http\Controllers\CartController;
-
+use App\Models\Customer;
 
 Route::get('/', function () {
     return view('home');
@@ -56,26 +53,25 @@ Route::get('/customize', function () {
     return view('customize');
 })->name('customize');
 
-
-
-
 Route::get('/reward', function () {
     return view('reward', ['rewardMode' => 'customer']);
 })->name('reward');
 
+Route::get('/customize/{id}', [CustomerController::class, 'customize'])
+    ->name('customize.box');
+
+Route::get('/boxes', [CustomerController::class, 'boxes'])
+ ->name('boxes');  
+   
+Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart'])
+ ->name('add.to.cart');
+
+Route::get('/cart', [CustomerController::class, 'cart'])
+  ->name('cart'); 
+
 Route::get('/admin/reward', [AdminController::class, 'getAllRewardAccounts'])->name('admin.reward');
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-
-Route::get('/box/{id}', [BoxController::class , 'showBox']);
-Route::get('/customize/{id}', [BoxController::class , 'customizationOptions']);
-Route::get('/swap/{id}', [BoxController::class , 'swapItem']);
-Route::post('/select-plan', [PlanController::class, 'selectPlan'])->name('select.plan');
-
-Route::get('/pauseSubscription/{id}', [PauseResumeController::class , 'pauseSubscription']);
-Route::get('/resumeSubscription/{id}', [PauseResumeController::class , 'resumeSubscription']);
-Route::post('/cart/add/{boxId}', [BoxController::class, 'addToCart']);
-Route::post('/cart/save', [CartController::class, 'store']);
 
 
 Route::prefix('admin/api')->group(function () {

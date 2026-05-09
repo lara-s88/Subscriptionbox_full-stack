@@ -10,4 +10,10 @@ class BoxItem extends Model
     public $timestamps = false;
 
     protected $fillable = ['box_id', 'inventory_item_id'];
+
+
+    public function box()
+{
+    return $this->belongsTo(Box::class);
+}
 }

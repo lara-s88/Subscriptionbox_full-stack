@@ -21,7 +21,7 @@ return new class extends Migration
 
            
             $table->string('order_number')->unique();
-            
+            $table->string('box_name');
             $table->string('clothing_size')->nullable();
             $table->string('diet_preference')->nullable();
             $table->string('delivery_frequency')->nullable();

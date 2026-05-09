@@ -6,11 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Box extends Model
 {
+    protected $fillable = [
+        'name',
+        'box_type',
+        'base_price',
+        'base_image',
+        'description'
+    ];
+
     public $timestamps = false;
-
-    public function items() 
-    {
-        return $this->hasMany(BoxItem::class);
-
-    }
+    
+    
+    public function items()
+{
+    return $this->hasMany(BoxItem::class);
+}
 }

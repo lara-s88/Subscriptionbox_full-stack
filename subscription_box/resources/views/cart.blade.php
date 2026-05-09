@@ -47,8 +47,60 @@
                                     <img src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Cart box" class="w-100 rounded-3" style="height:120px;object-fit:cover;">
                                 </div>
                                 <div class="col-md-6">
-                                    <h6 class="fw-bold mb-1">Box name</h6>
-                                    <p class="text-muted small mb-2">Backend cart details go here.</p>
+                                    @if($orders->count() > 0)
+
+    @foreach($orders as $order)
+
+   <div id="cartList" class="d-flex flex-column gap-4">
+
+@if($orders->count() > 0)
+
+    @foreach($orders as $order)
+
+        <div class="cart-card">
+            <div class="row g-3 align-items-center">
+
+                <div class="col-md-3">
+                    <img src="{{ $order->box->base_image }}"
+                         class="w-100 rounded-3"
+                         style="height:120px;object-fit:cover;">
+                </div>
+
+                <div class="col-md-6">
+                    <h6 class="fw-bold mb-1">
+                        {{ $order->box->name }}
+                    </h6>
+
+                    <p class="text-muted small mb-2">
+                        {{ $order->box->description }}
+                    </p>
+
+                    <span class="badge rounded-pill px-3 py-2"
+                          style="background:rgba(16,185,129,.1);color:green;">
+                        {{ $order->box->box_type }}
+                    </span>
+                </div>
+
+                <div class="col-md-3 text-md-end">
+                    <div class="fw-bold text-primary fs-5">
+                        ${{ $order->total_amount }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    @endforeach
+
+@else
+
+    <div class="cart-card text-center">
+        <h4>Your cart is empty</h4>
+    </div>
+
+@endif
+
+</div>
                                     <div class="d-flex flex-wrap gap-2">
                                         <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);">Item</span>
                                         <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);">Item</span>
