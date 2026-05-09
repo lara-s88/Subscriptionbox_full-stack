@@ -304,23 +304,15 @@
                                          <div class="invalid-feedback d-block">{{ $message }}</div>
                                      @enderror
                                  </div>
-                                  <div class="mb-3">
-                                      <label class="form-label fw-semibold small">Stock Quantity <span class="text-danger">*</span></label>
-                                      <input type="number" class="form-control @error('stock_qty') is-invalid @enderror" name="stock_qty" placeholder="50" min="1" required>
-                                      @error('stock_qty')
-                                          <div class="invalid-feedback d-block">{{ $message }}</div>
-                                      @enderror
-                                  </div>
-                                  <div class="mb-3">
-                                      <label class="form-label fw-semibold small">Safety Threshold <span class="text-danger">*</span></label>
-                                      <input type="number" class="form-control @error('safety_threshold') is-invalid @enderror" name="safety_threshold" placeholder="10" min="5" required>
-                                      @error('safety_threshold')
-                                          <div class="invalid-feedback d-block">{{ $message }}</div>
-                                      @enderror
-                                      <small class="text-muted">Minimum stock level before alert</small>
-                                  </div>
-                                  <div class="mb-3">
-                                      <label class="form-label fw-semibold small">Weight (kg)</label>
+                                 <div class="mb-3">
+                                     <label class="form-label fw-semibold small">Stock Quantity <span class="text-danger">*</span></label>
+                                     <input type="number" class="form-control @error('stock_qty') is-invalid @enderror" name="stock_qty" placeholder="50" min="1" required>
+                                     @error('stock_qty')
+                                         <div class="invalid-feedback d-block">{{ $message }}</div>
+                                     @enderror
+                                 </div>
+                                 <div class="mb-3">
+                                     <label class="form-label fw-semibold small">Weight (kg)</label>
                                      <input type="number" class="form-control @error('weight_kg') is-invalid @enderror" name="weight_kg" placeholder="0.5" step="0.01" min="0.01">
                                      @error('weight_kg')
                                          <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -365,24 +357,6 @@
                                     <label class="form-label fw-semibold small">Image URL</label>
                                     <input type="url" class="form-control" name="image_url" placeholder="https://example.com/image.jpg">
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label fw-semibold small">Add Inventory Items</label>
-                                    <div class="border rounded p-2" style="max-height:200px;overflow-y:auto;">
-                                        @if(isset($items) && count($items) > 0)
-                                            @foreach($items as $invItem)
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="inventory_items[]" value="{{ $invItem->id }}" id="item_{{ $invItem->id }}">
-                                                    <label class="form-check-label small" for="item_{{ $invItem->id }}">
-                                                        {{ $invItem->name }} ({{ $invItem->category }} - Stock: {{ $invItem->stock_qty }})
-                                                    </label>
-                                                </div>
-                                            @endforeach
-                                        @else
-                                            <p class="text-muted small mb-0">No inventory items available</p>
-                                        @endif
-                                    </div>
-                                    <small class="text-muted">Select items to assign to this theme</small>
-                                </div>
                                 <button type="submit" class="btn btn-primary w-100">Create Theme</button>
                             </form>
                         </div>
@@ -420,79 +394,20 @@
                         <div class="surface-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-palette text-primary me-2"></i>Theme Library</h5>
-                                <span class="small text-muted">{{ count($themes ?? []) }} themes</span>
+                                <span class="small text-muted">Latest uploads</span>
                             </div>
-
-                            @if(isset($themes) && count($themes) > 0)
-                                <div class="d-flex flex-column gap-3">
-                                    @foreach($themes as $theme)
-                                        <div class="border rounded-4 p-3" id="theme-{{ $theme->id }}">
-                                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-                                                <div>
-                                                    <div class="fw-semibold">{{ $theme->name }}</div>
-                                                    <div class="small text-muted">
-                                                        Month: {{ $theme->month }} | 
-                                                        {{ $theme->items->count() }} item(s) assigned
-                                                    </div>
-                                                </div>
-                                                <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">
-                                                    {{ $theme->description ?? 'No description' }}
-                                                </span>
-                                            </div>
-
-                                            @if($theme->items->count() > 0)
-                                                <div class="mb-2">
-                                                    @foreach($theme->items as $assignedItem)
-                                                        <div class="d-flex align-items-center justify-content-between mb-1 p-2 rounded" style="background:rgba(59,130,246,.05);">
-                                                            <span class="small">
-                                                                <i class="bi bi-check-circle-fill text-success me-2"></i>
-                                                                {{ $assignedItem->inventoryItem->name ?? 'Unknown item' }}
-                                                            </span>
-                                                            <form action="{{ route('admin.themes.remove-item', [$theme->id, $assignedItem->inventory_item_id]) }}" method="POST" style="display:inline;">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Remove from theme">
-                                                                    <i class="bi bi-x-lg"></i>
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
-                                            @else
-                                                <div class="small text-muted mb-2">No items assigned yet</div>
-                                            @endif
-
-                                            <form action="{{ route('admin.themes.assign-item') }}" method="POST" class="row g-2">
-                                                @csrf
-                                                <input type="hidden" name="theme_id" value="{{ $theme->id }}">
-                                                <div class="col-8">
-                                                    <select class="form-select form-select-sm @error('inventory_item_id') is-invalid @enderror" name="inventory_item_id" required>
-                                                        <option value="">Select inventory item...</option>
-                                                        @foreach($items->whereNotIn('id', $theme->items->pluck('inventory_item_id')) as $invItem)
-                                                            <option value="{{ $invItem->id }}">
-                                                                {{ $invItem->name }} ({{ $invItem->category }} - Stock: {{ $invItem->stock_qty }})
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('inventory_item_id')
-                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                    @enderror
-                                                </div>
-                                                <div class="col-4">
-                                                    <button type="submit" class="btn btn-sm btn-primary w-100">
-                                                        <i class="bi bi-plus-circle me-1"></i>Add Item
-                                                    </button>
-                                                </div>
-                                            </form>
+                            <div class="d-flex flex-column gap-3">
+                                <div class="border rounded-4 p-3">
+                                    <div class="d-flex justify-content-between align-items-start gap-3">
+                                        <div>
+                                            <div class="fw-semibold">Theme name</div>
+                                            <div class="small text-muted">Month</div>
                                         </div>
-                                    @endforeach
+                                        <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Status</span>
+                                    </div>
+                                    <div class="small text-muted mt-2">0 items</div>
                                 </div>
-                            @else
-                                <div class="text-center py-4">
-                                    <i class="bi bi-palette text-muted" style="font-size:2rem;"></i>
-                                    <p class="text-muted mt-2 mb-0">No themes created yet.</p>
-                                </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>

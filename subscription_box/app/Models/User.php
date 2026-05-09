@@ -34,6 +34,16 @@ class User extends Authenticatable
         return $this->hasOne(RewardAccount::class);
     }
 
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
+    }
+
+    public function boxOrders()
+    {
+        return $this->hasMany(BoxOrder::class);
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -4,26 +4,66 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 //Models
 use App\Models\Plan;
 use App\Models\InventoryItem;
-use App\Models\Themes;
+use App\Models\Themes as Theme;
 use App\Models\ThemesItem;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\RewardAccount;
+use App\Models\RewardItem;
 use App\Models\RewardTransaction;
 use App\Models\Returns;
 use App\Models\ShippingBatch;
 
 class AdminController extends Controller
 {
+     /* =========================
+        0. DASHBOARD
+     ========================= */
+     public function dashboard()
+     {
+         $items = InventoryItem::all();
+         $users = User::with(['customer', 'subscription.plan', 'rewardAccount'])->get();
+         $thresholdItems = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
+         $orders = BoxOrder::with(['user.customer', 'box'])->latest()->get();
+         $batches = $orders->where('status', 'packed')
+             ->groupBy(fn ($order) => $order->user?->customer?->city ?: 'Unassigned')
+             ->map(function ($orders) {
+                 $firstOrder = $orders->first();
+                 $region = $firstOrder->user?->customer?->city ?: 'Unassigned';
 
+                 return [
+                     'batch_id' => $region,
+                     'region' => $region,
+                     'orders_count' => $orders->count(),
+                 ];
+             });
+         $returns = Returns::with('order')->get();
+         $themes = Theme::with('items.inventoryItem')->get();
+
+         return view('adminDashboared', compact(
+             'items',
+             'users',
+             'thresholdItems',
+             'orders',
+             'batches',
+             'returns',
+             'themes'
+         ));
+     }
+
+     public function showDashboard()
+     {
+         return $this->dashboard();
+     }
 
      /* =========================
-       1. PLAN MANAGEMENT
-    ========================= */
+        1. PLAN MANAGEMENT
+     ========================= */
 
 
       // Create a new plan
@@ -68,18 +108,18 @@ public function createPlan(Request $request)
     ========================= */
           // Add a new inventory item
     public function addItem(Request $request){
-        $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'category' => 'required|string|max:80',
-        'unit_price' => 'required|numeric|min:1',
-        'stock_qty' => 'required|integer|min:1',
-        'safety_threshold' => 'required|integer|min:5',
-        'weight_kg' => 'nullable|numeric|min:1',
-    ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category'   => 'required|string|max:80',
+            'unit_price' => 'required|numeric|min:1',
+            'stock_qty'  => 'required|integer|min:1',
+            'safety_threshold' => 5,
+            'weight_kg'  => 'nullable|numeric|min:1',
+        ]);
+        $item = InventoryItem::create($request->all());
 
-    InventoryItem::create($validated);
-
-    return redirect()->back()->with('success', 'Item added successfully.');
+        return redirect()->back()
+         ->with('success', 'Item added successfully.');
 
     }
       
@@ -92,9 +132,11 @@ public function createPlan(Request $request)
          ->with('success', 'Item deleted successfully.');   
       }
 
-    // Get all inventory items (redirects to admin dashboard)
+    // Get all inventory items
     public function getAllItems(){
-        return redirect()->route('admin.dashboard');
+        $items = InventoryItem::all();
+
+        return view('items', compact('items'));
     }
    
 
@@ -112,45 +154,18 @@ public function createPlan(Request $request)
      }
 
      // Get items that are below or equal to their safety threshold
-        public function getLowStockItems(){
-          $items = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
+       public function getThresholdItems(){
+         $items = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
 
-         return view('adminDashboared', compact('items'))->with('thresholdItems', $items);
-        }
-
-      // Admin dashboard - aggregates all data
-      public function dashboard()
-      {
-          $items = InventoryItem::all();
-          $users = User::all();
-          $thresholdItems = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
-          $orders = Order::with(['user', 'box'])->get();
-          $batches = Order::where('status', 'packed')
-              ->whereHas('shipment.batch')
-              ->with(['shipment.batch'])
-              ->get()
-              ->groupBy(fn ($order) => $order->shipment->batch->id)
-              ->map(function ($orders) {
-                  $firstOrder = $orders->first();
-                  $batch = $firstOrder->shipment->batch;
-                  return [
-                      'batch_id' => $batch->id,
-                      'region' => $batch->city,
-                      'orders_count' => $orders->count(),
-                  ];
-              });
-          $returns = Returns::with('order')->get();
-          $themes = Themes::with('items.inventoryItem')->get();
-
-          return view('adminDashboared', compact('items', 'users', 'thresholdItems', 'orders', 'batches', 'returns', 'themes'));
-      }
+        return view('adminDashboared', compact('items'));
+       }
 
 
        /* =========================
        3. THEME (MONTHLY BOX)
     ========================= */
 
-    // Create a new theme
+    // Create a new theme  
     public function createTheme(Request $request)
     {
         $request->validate([
@@ -158,43 +173,22 @@ public function createPlan(Request $request)
             'month'       => 'required|integer|min:1|max:12',
             'description' => 'nullable|string',
             'image_url'   => 'nullable|string',
-            'inventory_items' => 'nullable|array',
-            'inventory_items.*' => 'exists:inventory_items,id',
         ]);
 
-
-        // Get the newly created theme
-        $theme = Themes::where('name', $request->name)->first();
-
-        // Assign inventory items to the theme
-        if ($request->has('inventory_items') && is_array($request->inventory_items)) {
-            foreach ($request->inventory_items as $itemId) {
-                $alreadyExists = ThemesItem::where('theme_id', $theme->id)
-                    ->where('inventory_item_id', $itemId)
-                    ->exists();
-
-                if (!$alreadyExists) {
-                    ThemesItem::create([
-                        'theme_id' => $theme->id,
-                        'inventory_item_id' => $itemId,
-                    ]);
-                }
-            }
-        }
-
+        $theme = Theme::create($request->all());
         return redirect()->back()
          ->with('success', 'Theme created successfully.');
-
+         
          }
 
     // Delete a theme by ID
     public function deleteTheme($themeId)
     {
-        $theme = Themes::findOrFail($themeId);
+        $theme = Theme::findOrFail($themeId);
         $theme->delete();
         return redirect()->back()
          ->with('success', 'Theme deleted successfully.');
-      }
+     }
 
     // Assign an item to a theme
        public function assignItemToTheme(Request $request)
@@ -243,7 +237,7 @@ public function createPlan(Request $request)
     // Get all orders
     public function getAllOrders()
     {
-        $orders = Order::with(['user', 'box'])->get();
+        $orders = BoxOrder::with(['user', 'box'])->get();
 
         return view('adminDashboared', compact('orders'));
     }
@@ -251,11 +245,11 @@ public function createPlan(Request $request)
     // Get a single order by ID
     public function getOrder($orderId)
     {
-        $order = Order::with(['user', 'box'])->findOrFail($orderId);
+        $order = BoxOrder::with(['user', 'box'])->findOrFail($orderId);
 
         return redirect()->back()
          ->with('success', 'Order retrieved successfully.');
-    }
+}
 
     // Update the status of an order
     public function updateOrderStatus(Request $request, $orderId)
@@ -264,7 +258,7 @@ public function createPlan(Request $request)
             'status' => 'required|in:pending,packed,shipped,out_for_delivery,delivered,returned',
         ]);
 
-        $order = Order::findOrFail($orderId);
+        $order = BoxOrder::findOrFail($orderId);
         $order->status = $request->status;
         $order->save();
         return redirect()->back()
@@ -274,7 +268,7 @@ public function createPlan(Request $request)
      // get orders Batching
      public function getOrdersForBatching()
 {
-    $batches = Order::where('status', 'packed')
+    $batches = BoxOrder::where('status', 'packed')
         ->whereHas('shipment.batch')
         ->with(['shipment.batch'])
         ->get()
@@ -323,30 +317,52 @@ public function createPlan(Request $request)
     public function getAllRewardAccounts()
     {
         $rewardAccounts = RewardAccount::with(['user', 'transactions'])->get();
+        $rewardItems = RewardItem::orderBy('points')->get();
 
-        return view('adminReward', compact('rewardAccounts'));
+        return view('adminReward', compact('rewardAccounts', 'rewardItems'));
     }
 
     //add reward points for an order
 
     public function addRewardPointsForOrder($orderId)
 {
-    $order = Order::findOrFail($orderId);
-    $userId = $order->user_id;
+    $order = BoxOrder::findOrFail($orderId);
+    $this->awardRewardPointsForOrder($order);
 
-    // Get or create reward account
-    $rewardAccount = RewardAccount::firstOrCreate(
-        ['user_id' => $userId],
-        ['points' => 0, 'tier_name' => 'Bronze']
-    );
+    return redirect()->back()
+        ->with('success', 'Reward points added successfully.');
+}
 
-    // Add 10 points
-    $rewardAccount->increment('points', 10);
+public function awardRewardPointsForOrder(BoxOrder $order, int $points = 10): RewardAccount
+{
+    return DB::transaction(function () use ($order, $points) {
+        $rewardAccount = RewardAccount::firstOrCreate(
+            ['user_id' => $order->user_id],
+            ['points' => 0, 'tier_name' => 'Bronze']
+        );
 
-    // Refresh updated values
-    $rewardAccount->refresh();
+        $rewardAccount->increment('points', $points);
+        $rewardAccount->refresh();
 
-    // Update tier
+        $this->updateRewardTier($rewardAccount);
+
+        $transactionData = [
+            'user_id' => $order->user_id,
+            'points_used' => $points,
+        ];
+
+        if (Schema::hasColumn('reward_transactions', 'type')) {
+            $transactionData['type'] = 'earned';
+        }
+
+        RewardTransaction::create($transactionData);
+
+        return $rewardAccount;
+    });
+}
+
+private function updateRewardTier(RewardAccount $rewardAccount): void
+{
     if ($rewardAccount->points >= 500) {
         $rewardAccount->tier_name = 'Gold';
     }
@@ -358,16 +374,6 @@ public function createPlan(Request $request)
     }
 
     $rewardAccount->save();
-
-    // Record transaction
-    RewardTransaction::create([
-        'user_id' => $userId,
-        'points_used' => 10,
-        'type' => 'earned'
-    ]);
-
-    return redirect()->back()
-        ->with('success', 'Reward points added successfully.');
 }
 
 
@@ -393,25 +399,19 @@ public function redeemRewardPoints(Request $request, $userId)
     // Refresh updated values
     $rewardAccount->refresh();
 
-    // Update tier
-    if ($rewardAccount->points >= 500) {
-        $rewardAccount->tier_name = 'Gold';
-    }
-    elseif ($rewardAccount->points >= 100) {
-        $rewardAccount->tier_name = 'Silver';
-    }
-    else {
-        $rewardAccount->tier_name = 'Bronze';
-    }
-
-    $rewardAccount->save();
+    $this->updateRewardTier($rewardAccount);
 
     // Record transaction
-    RewardTransaction::create([
+    $transactionData = [
         'user_id' => $userId,
         'points_used' => $request->points_to_redeem,
-        'type' => 'redeemed'
-    ]);
+    ];
+
+    if (Schema::hasColumn('reward_transactions', 'type')) {
+        $transactionData['type'] = 'redeemed';
+    }
+
+    RewardTransaction::create($transactionData);
 
     return redirect()->back()
         ->with('success', 'Points redeemed successfully.');
@@ -465,4 +465,6 @@ public function redeemRewardPoints(Request $request, $userId)
 }
 
 }
+ 
+
  

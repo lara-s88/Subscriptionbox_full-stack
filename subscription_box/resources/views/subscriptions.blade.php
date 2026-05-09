@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,361 +10,83 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/subscription.css') }}">
 </head>
-
 <body>
     <x-navbar activePage="subscriptions"></x-navbar>
 
-    <!-- Hero -->
     <div class="hero-section-sm text-center">
         <div class="container position-relative">
             <h1 class="display-5 fw-bold mb-3">Choose Your Plan</h1>
-            <p class="lead mb-0" style="opacity:.88;">Flexible subscriptions for every athlete. Cancel anytime.</p>
+            <p class="lead mb-0" style="opacity:.88;">Plans are loaded from the database.</p>
         </div>
     </div>
 
-    <!-- Plans -->
     <section class="py-5">
         <div class="container">
-            <!-- Billing Toggle -->
-            
-
-            <!-- Plan Cards -->
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
             <div class="row g-4 justify-content-center align-items-stretch mb-5">
-                <!-- Basic -->
-                <div class="col-lg-4 col-md-8">
-                    <div class="plan-card">
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <div
-                                    style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));display:flex;align-items:center;justify-content:center;">
-                                    <i class="bi bi-box text-primary fs-5"></i>
+                @forelse ($plans as $plan)
+                    <div class="col-lg-4 col-md-8">
+                        <div class="plan-card {{ strtolower($plan->name) === 'pro' ? 'popular' : '' }}">
+                            @if (strtolower($plan->name) === 'pro')
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge px-3 py-2 rounded-pill" style="background:var(--gradient);">Most Popular</span>
                                 </div>
-                                <h4 class="fw-bold mb-0">Basic</h4>
-                            </div>
-                            <p class="text-muted small mb-0">Perfect for getting started</p>
-                        </div>
-                        <div class="mb-4">
-                            <span class="display-5 fw-bold text-primary">$<span class="price-val" data-monthly="29"
-                                    data-annual="24">29</span></span>
-                            <span class="text-muted">/month</span>
-                            <div class="small text-success mt-1 annual-note" style="display:none;font-weight:500;"><i
-                                    class="bi bi-check-circle me-1"></i>Billed as $290/year</div>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>1 Box per
-                                    month</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>3 Item
-                                    swaps</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Standard
-                                    shipping</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Community
-                                    access</span></li>
-                            <li class="mb-3 d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
-                                    style="color:#d1d5db;"></i><span class="text-muted">Early access</span></li>
-                            <li class="mb-3 d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
-                                    style="color:#d1d5db;"></i><span class="text-muted">Free express shipping</span>
-                            </li>
-                            <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
-                                    style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
-                        </ul>
-                        <form method="POST" action="{{ route('select.plan') }}">
-    @csrf
-
-    <input type="hidden" name="plan_name" value="Basic">
-
-    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
-        Get Started — Basic
-    </button>
-</form>
-                    </div>
-                </div>
-
-                <!-- Pro -->
-                <div class="col-lg-4 col-md-8">
-                    <div class="plan-card popular">
-                        <div class="position-absolute top-0 end-0 m-3">
-                            <span class="badge px-3 py-2 rounded-pill" style="background:var(--gradient);">⭐ Most
-                                Popular</span>
-                        </div>
-                        <div class="mb-4 mt-2">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <div
-                                    style="width:42px;height:42px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;">
-                                    <i class="bi bi-star-fill text-white fs-5"></i>
+                            @endif
+                            <div class="mb-4">
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-box text-primary fs-5"></i>
+                                    </div>
+                                    <h4 class="fw-bold mb-0">{{ $plan->name }}</h4>
                                 </div>
-                                <h4 class="fw-bold mb-0">Pro</h4>
+                                <p class="text-muted small mb-0">{{ $plan->boxes_per_month }} box(es) per month</p>
                             </div>
-                            <p class="text-muted small mb-0">For the dedicated athlete</p>
-                        </div>
-                        <div class="mb-4">
-                            <span class="display-5 fw-bold text-primary">$<span class="price-val" data-monthly="49"
-                                    data-annual="39">49</span></span>
-                            <span class="text-muted">/month</span>
-                            <div class="small text-success mt-1 annual-note" style="display:none;font-weight:500;"><i
-                                    class="bi bi-check-circle me-1"></i>Billed as $468/year</div>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>2 Boxes
-                                    per month</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span><strong>Unlimited</strong>
-                                    item swaps</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Free
-                                    express shipping</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Community
-                                    access</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Early
-                                    access to new items</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Priority
-                                    support</span></li>
-                            <li class="d-flex gap-2"><i class="bi bi-x-circle-fill flex-shrink-0 mt-1"
-                                    style="color:#d1d5db;"></i><span class="text-muted">VIP events</span></li>
-                        </ul>
-                        <form method="POST" action="{{ route('select.plan') }}">
-    @csrf
-
-    <input type="hidden" name="plan_name" value="Pro">
-
-    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
-        Get Started — Pro
-    </button>
-</form>
-                    </div>
-                </div>
-
-                <!-- VIP -->
-                <div class="col-lg-4 col-md-8">
-                    <div class="plan-card">
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <div
-                                    style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(245,158,11,.07));display:flex;align-items:center;justify-content:center;">
-                                    <i class="bi bi-gem fs-5" style="color:#f59e0b;"></i>
-                                </div>
-                                <h4 class="fw-bold mb-0">VIP</h4>
+                            <div class="mb-4">
+                                <span class="display-5 fw-bold text-primary">${{ number_format($plan->price_monthly, 0) }}</span>
+                                <span class="text-muted">/month</span>
                             </div>
-                            <p class="text-muted small mb-0">The ultimate sports experience</p>
-                        </div>
-                        <div class="mb-4">
-                            <span class="display-5 fw-bold text-primary">$<span class="price-val" data-monthly="89"
-                                    data-annual="71">89</span></span>
-                            <span class="text-muted">/month</span>
-                            <div class="small text-success mt-1 annual-note" style="display:none;font-weight:500;"><i
-                                    class="bi bi-check-circle me-1"></i>Billed as $852/year</div>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span><strong>3</strong>
-                                    Boxes per month</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Unlimited
-                                    item swaps</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Free
-                                    express shipping</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Community
-                                    access</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Early
-                                    access to new items</span></li>
-                            <li class="mb-3 d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>Dedicated
-                                    account manager</span></li>
-                            <li class="d-flex gap-2"><i
-                                    class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>VIP
-                                    events &amp; challenges</span></li>
-                        </ul>
-                        <form method="POST" action="{{ route('select.plan') }}">
-    @csrf
-
-    <input type="hidden" name="plan_name" value="VIP">
-
-    <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
-        Get Started — VIP
-    </button>
-</form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Guarantee -->
-            <div class="text-center p-4 rounded-4 mb-5"
-                style="background:linear-gradient(135deg,rgba(16,185,129,.07),rgba(15,118,110,.04));border:1px solid rgba(16,185,129,.15);">
-                <i class="bi bi-shield-check-fill text-primary fs-3 mb-2 d-block"></i>
-                <h6 class="fw-bold mb-1">30-Day Satisfaction Guarantee</h6>
-                <p class="text-muted small mb-0">Not happy? Cancel within 30 days for a full refund. No questions
-                    asked.</p>
-            </div>
-
-            <!-- Comparison Table -->
-            <h3 class="text-center fw-bold mb-4">Compare Plans</h3>
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
-                <div class="table-responsive">
-                    <table class="table mb-0 text-center align-middle">
-                        <thead>
-                            <tr style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
-                                <th class="text-start ps-4 py-3">Feature</th>
-                                <th class="py-3">Basic</th>
-                                <th class="py-3 text-primary">Pro ⭐</th>
-                                <th class="py-3">VIP 💎</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Boxes / month</td>
-                                <td class="text-muted">1</td>
-                                <td class="text-primary fw-bold">2</td>
-                                <td class="fw-bold">3</td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Item swaps</td>
-                                <td class="text-muted">3</td>
-                                <td class="text-primary fw-bold">Unlimited</td>
-                                <td class="fw-bold">Unlimited</td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Shipping</td>
-                                <td class="text-muted">Standard</td>
-                                <td class="text-primary fw-bold">Free Express</td>
-                                <td class="fw-bold">Free Express</td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Early access</td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Priority support</td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">Account manager</td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                            </tr>
-                            <tr>
-                                <td class="text-start ps-4 py-3 fw-semibold">VIP events</td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-x-lg text-muted"></i></td>
-                                <td><i class="bi bi-check-lg text-primary fw-bold fs-5"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- FAQ -->
-            <h3 class="text-center fw-bold mb-4">Frequently Asked Questions</h3>
-            <div class="accordion rounded-4 overflow-hidden shadow-sm" id="faqAccordion">
-                <div class="accordion-item border-0 border-bottom">
-                    <h2 class="accordion-header"><button class="accordion-button fw-semibold" type="button"
-                            data-bs-toggle="collapse" data-bs-target="#faq1">Can I cancel my subscription
-                            anytime?</button></h2>
-                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body text-muted">Yes! Cancel anytime from your dashboard. Your
-                            subscription remains active until the end of the billing period, and we offer a full refund
-                            if cancelled within 30 days.</div>
-                    </div>
-                </div>
-                <div class="accordion-item border-0 border-bottom">
-                    <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold"
-                            type="button" data-bs-toggle="collapse" data-bs-target="#faq2">How do item swaps
-                            work?</button></h2>
-                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body text-muted">Before your box ships, log in and swap items from a
-                            curated selection. Basic allows 3 swaps, while Pro and VIP offer unlimited swaps each month.
+                            <ul class="list-unstyled mb-4">
+                                <li class="mb-3 d-flex gap-2"><i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>{{ $plan->boxes_per_month }} box(es) per month</span></li>
+                                <li class="mb-3 d-flex gap-2"><i class="bi bi-check-circle-fill text-primary mt-1 flex-shrink-0"></i><span>{{ is_null($plan->swap_limit) ? 'Unlimited' : $plan->swap_limit }} item swaps</span></li>
+                                <li class="mb-3 d-flex gap-2"><i class="bi {{ $plan->express_shipping ? 'bi-check-circle-fill text-primary' : 'bi-x-circle-fill text-muted' }} mt-1 flex-shrink-0"></i><span>Express shipping</span></li>
+                                <li class="mb-3 d-flex gap-2"><i class="bi {{ $plan->early_access ? 'bi-check-circle-fill text-primary' : 'bi-x-circle-fill text-muted' }} mt-1 flex-shrink-0"></i><span>Early access</span></li>
+                                <li class="d-flex gap-2"><i class="bi {{ $plan->vip_support ? 'bi-check-circle-fill text-primary' : 'bi-x-circle-fill text-muted' }} mt-1 flex-shrink-0"></i><span>VIP support</span></li>
+                            </ul>
+                            <form method="POST" action="{{ route('select.plan') }}">
+                                @csrf
+                                <input type="hidden" name="plan_id" value="{{ $plan->id }}">
+                                <button type="submit" class="btn btn-outline-primary w-100 py-3 fw-semibold">
+                                    Choose {{ $plan->name }}
+                                </button>
+                            </form>
                         </div>
                     </div>
-                </div>
-                <div class="accordion-item border-0 border-bottom">
-                    <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold"
-                            type="button" data-bs-toggle="collapse" data-bs-target="#faq3">Can I change my plan
-                            later?</button></h2>
-                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body text-muted">Absolutely! Upgrade or downgrade at any time from your
-                            dashboard. Changes take effect on the next billing cycle.</div>
+                @empty
+                    <div class="col-12 text-center">
+                        <p class="text-muted">No plans are available yet.</p>
                     </div>
-                </div>
-                <div class="accordion-item border-0">
-                    <h2 class="accordion-header"><button class="accordion-button collapsed fw-semibold"
-                            type="button" data-bs-toggle="collapse" data-bs-target="#faq4">What sports are
-                            supported?</button></h2>
-                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body text-muted">We support Football, Basketball, Gym/Fitness, Tennis,
-                            Swimming, and Running — with more being added regularly!</div>
-                    </div>
-                </div>
+                @endforelse
             </div>
         </div>
     </section>
 
-    <!-- Toast -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
     <footer class="footer py-5 mt-4">
         <div class="container">
             <div class="row g-4">
-                <div class="col-lg-4">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
-                    <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2"><a href="#"><i class="bi bi-facebook"></i></a><a
-                            href="#"><i class="bi bi-instagram"></i></a><a href="#"><i
-                                class="bi bi-twitter-x"></i></a><a href="#"><i class="bi bi-youtube"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-6">
-                    <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
-                        <li><a href="{{ route('home') }}">Home</a></li>
-                        <li><a href="{{ route('sports') }}">Sports</a></li>
-                        <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                        <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-2 col-6">
-                    <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
-                        <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
-                        <li id="footerRegisterItem"><a href="{{ route('register') }}">Register</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4">
-                    <h6 class="fw-bold mb-3">Contact</h6>
-                    <p style="font-size:.9rem;"><i class="bi bi-envelope me-2 text-primary"></i>support@sportbox.com
-                    </p>
-                    <p style="font-size:.9rem;"><i class="bi bi-phone me-2 text-primary"></i>+1 (555) 123-4567</p>
-                </div>
+                <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">
-            <p class="text-center mb-0" style="font-size:.85rem;">© 2024 SportBox. All rights reserved.</p>
+            <p class="text-center mb-0" style="font-size:.85rem;">&copy; 2026 SportBox. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

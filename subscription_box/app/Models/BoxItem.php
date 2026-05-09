@@ -13,7 +13,12 @@ class BoxItem extends Model
 
 
     public function box()
-{
-    return $this->belongsTo(Box::class);
-}
+    {
+        return $this->belongsTo(Box::class);
+    }
+
+    public function inventoryItem()
+    {
+        return $this->belongsTo(InventoryItem::class);
+    }
 }

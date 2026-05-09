@@ -17,7 +17,17 @@
 
     <x-navbar activePage="dashboard"></x-navbar>
 
-    @php($isAdminDashboard = ($dashboardMode ?? 'customer') === 'admin')
+    @php
+        $isAdminDashboard = ($dashboardMode ?? 'customer') === 'admin';
+        $dashboardUser = $user ?? auth()->user();
+        $customerName = $dashboardUser
+            ? trim(($dashboardUser->first_name ?? '') . ' ' . ($dashboardUser->last_name ?? ''))
+            : '';
+        $customerName = $customerName !== '' ? $customerName : ($dashboardUser->email ?? 'Dashboard');
+        $memberSinceDate = isset($memberSince) && $memberSince ? $memberSince->format('M d, Y') : null;
+        $currentSubscription = $subscription ?? $dashboardUser?->subscription;
+        $subscriptionPaused = ($currentSubscription?->status ?? 'active') === 'paused';
+    @endphp
 
     <div class="page-header">
         <div class="container position-relative">
@@ -28,7 +38,7 @@
                 </div>
                 <div>
                     <p class="mb-0 small" style="opacity:.75;" id="headerEyebrow">{{ $isAdminDashboard ? 'Operations Admin' : 'Welcome back!' }}</p>
-                    <h3 class="mb-0 fw-bold" id="headerName">{{ $isAdminDashboard ? 'Admin Dashboard' : 'Dashboard' }}</h3>
+                    <h3 class="mb-0 fw-bold" id="headerName">{{ $isAdminDashboard ? 'Admin Dashboard' : $customerName }}</h3>
                 </div>
             </div>
             <div class="d-flex gap-2 flex-wrap" id="headerBadges">
@@ -36,6 +46,13 @@
                     <span class="admin-pill">Admin account</span>
                     <span class="admin-pill">Orders in view</span>
                     <span class="admin-pill">Shipping batches</span>
+                @else
+                    @if ($currentPlan ?? null)
+                        <span class="admin-pill">{{ $currentPlan->name }}</span>
+                    @endif
+                    @if ($memberSinceDate)
+                        <span class="admin-pill">Member since {{ $memberSinceDate }}</span>
+                    @endif
                 @endif
             </div>
         </div>
@@ -43,6 +60,19 @@
 
     <main class="py-5">
         <div class="container">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ session('error') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+
             <div id="emptyState" class="surface-card p-5 text-center" style="display:none;">
                 <div class="mb-3"><i class="bi bi-shield-lock fs-1 text-primary"></i></div>
                 <h4 class="fw-bold mb-2">Sign in to open the portal</h4>
@@ -55,55 +85,102 @@
                 
                 <div class="row g-4">
                     <div class="col-lg-8">
-                        <div class="card border-0 rounded-4 shadow-sm mb-4 overflow-hidden">
+                        <div class="card border-0 rounded-4 shadow-sm mb-4 overflow-hidden" id="upcomingBoxes">
                             <div class="card-header border-0 py-3 px-4"
                                 style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(15,118,110,.04));">
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h6 class="fw-bold mb-0"><i class="bi bi-box-seam text-primary me-2"></i>Upcoming
-                                        Box</h6>
-                                    <span class="status-pill" id="customerDeliveryPill"
-                                        style="background:#fef9c3;color:#854d0e;">Shipped</span>
+                                        Boxes</h6>
+                                    @if (($upcomingOrders ?? collect())->count())
+                                        <span class="status-pill" id="customerDeliveryPill"
+                                            style="background:#fef9c3;color:#854d0e;">{{ ($upcomingOrders ?? collect())->count() }} Active</span>
+                                    @endif
                                 </div>
                             </div>
                             <div class="card-body p-4">
-                                <div class="row g-3 mb-4">
-                                    <div class="col-md-4">
-                                        <div class="overflow-hidden rounded-3" style="height:185px;">
-                                            <img src="https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800"
-                                                class="w-100 h-100" style="object-fit:cover;" alt="Customer box">
+                                @forelse (($upcomingOrders ?? collect()) as $upcomingOrder)
+                                    @php
+                                        $upcomingBox = $upcomingOrder->box;
+                                        $boxImage = $upcomingBox?->base_image ?: 'https://images.pexels.com/photos/2294361/pexels-photo-2294361.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                        $boxImageSrc = \Illuminate\Support\Str::startsWith($boxImage, ['http://', 'https://']) ? $boxImage : asset($boxImage);
+                                        $statusSteps = ['pending' => 'Ordered', 'packed' => 'Packed', 'shipped' => 'Shipped', 'out_for_delivery' => 'Out for Delivery'];
+                                        $statusKeys = array_keys($statusSteps);
+                                        $activeStep = array_search($upcomingOrder->status, $statusKeys);
+                                        $activeStep = $activeStep === false ? 0 : $activeStep;
+                                        $progressWidth = $activeStep === 0 ? 0 : $activeStep * 25;
+                                    @endphp
+                                    <div class="border rounded-4 p-3 mb-4">
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <div class="overflow-hidden rounded-3" style="height:185px;">
+                                                    <img src="{{ $boxImageSrc }}"
+                                                        class="w-100 h-100" style="object-fit:cover;" alt="Customer box">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="d-flex align-items-start gap-2 mb-1">
+                                                    <h5 class="fw-bold mb-0" id="customerPackageName">{{ $upcomingBox?->name ?? 'Box #' . $upcomingOrder->box_id }}</h5>
+                                                    @if ($currentPlan ?? null)
+                                                        <span class="badge rounded-pill px-2 py-1" id="customerTierBadge"
+                                                            style="background:var(--gradient);font-size:.7rem;">{{ $currentPlan->name }}</span>
+                                                    @endif
+                                                    <span class="badge rounded-pill px-2 py-1" style="background:#fef9c3;color:#854d0e;">{{ ucfirst(str_replace('_', ' ', $upcomingOrder->status)) }}</span>
+                                                </div>
+                                                <p class="text-muted small mb-1"><i class="bi bi-calendar3 me-1"></i>Est.
+                                                    delivery: <strong id="customerDeliveryDate">{{ $upcomingOrder->created_at->copy()->addDays(7)->format('M d, Y') }}</strong></p>
+                                                <p class="text-muted small mb-3"><i class="bi bi-upc-scan me-1"></i>Tracking:
+                                                    <span class="font-monospace text-primary"
+                                                        id="customerTrackingCode">{{ $upcomingOrder->order_number }}</span>
+                                                </p>
+                                                <p class="small fw-semibold mb-2">Box Contents:</p>
+                                                <div class="d-flex flex-wrap gap-2 mb-3" id="boxContents">
+                                                    @foreach ($upcomingBox?->items ?? [] as $boxItem)
+                                                        @if ($boxItem->inventoryItem)
+                                                            <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);font-size:.8rem;">{{ $boxItem->inventoryItem->name }}</span>
+                                                        @endif
+                                                    @endforeach
+                                                </div>
+                                                <form action="{{ route('orders.swap-box', $upcomingOrder->id) }}" method="POST" class="d-flex gap-2 flex-wrap">
+                                                    @csrf
+                                                    <select name="box_id" class="form-control form-control-sm" style="max-width:260px;" required @disabled(($swapBoxes ?? collect())->isEmpty() || $subscriptionPaused)>
+                                                        <option value="">Swap with a box you do not have</option>
+                                                        @foreach (($swapBoxes ?? collect()) as $swapBox)
+                                                            <option value="{{ $swapBox->id }}">{{ $swapBox->name }} - ${{ number_format($swapBox->base_price, 2) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                    <button class="btn btn-primary btn-sm px-3" type="submit" @disabled(($swapBoxes ?? collect())->isEmpty() || $subscriptionPaused)>
+                                                        <i class="bi bi-arrow-left-right me-1"></i>Swap Box
+                                                    </button>
+                                                </form>
+                                                @if (($swapBoxes ?? collect())->isEmpty())
+                                                    <div class="small text-muted mt-2">No other active boxes are available to swap right now.</div>
+                                                @elseif ($subscriptionPaused)
+                                                    <div class="small text-muted mt-2">Resume your subscription before swapping boxes.</div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <div class="p-3 rounded-3 mt-3" style="background:#f8fafc;">
+                                            <p class="small fw-semibold text-muted mb-3 text-uppercase"
+                                                style="font-size:.75rem;letter-spacing:.05em;">Delivery Status</p>
+                                            <div class="delivery-tracker" id="deliveryTracker">
+                                                <div class="tracker-progress" id="trackerProgress" style="width:{{ $progressWidth }}%;"></div>
+                                                @foreach ($statusSteps as $statusKey => $statusLabel)
+                                                    @php($stepIndex = array_search($statusKey, $statusKeys))
+                                                    <div class="tracker-step{{ $stepIndex < $activeStep ? ' done' : '' }}{{ $stepIndex === $activeStep ? ' active' : '' }}">
+                                                        <div class="tracker-step-icon"><i class="bi {{ $stepIndex < $activeStep ? 'bi-check-lg' : 'bi-circle' }}"></i></div>
+                                                        <div class="tracker-step-label">{{ $statusLabel }}</div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="d-flex align-items-start gap-2 mb-1">
-                                            <h5 class="fw-bold mb-0" id="customerPackageName">Football Pro Box</h5>
-                                            <span class="badge rounded-pill px-2 py-1" id="customerTierBadge"
-                                                style="background:var(--gradient);font-size:.7rem;">Pro</span>
-                                        </div>
-                                        <p class="text-muted small mb-1"><i class="bi bi-calendar3 me-1"></i>Est.
-                                            delivery: <strong id="customerDeliveryDate">Apr 28, 2026</strong></p>
-                                        <p class="text-muted small mb-3"><i class="bi bi-upc-scan me-1"></i>Tracking:
-                                            <span class="font-monospace text-primary"
-                                                id="customerTrackingCode">SPX-789-XYZ</span>
-                                        </p>
-                                        <p class="small fw-semibold mb-2">Box Contents:</p>
-                                        <div class="d-flex flex-wrap gap-2 mb-3" id="boxContents">
-                                            <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);font-size:.8rem;">Item</span>
-                                            <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);font-size:.8rem;">Item</span>
-                                            <span class="badge rounded-pill px-3 py-2" style="background:rgba(16,185,129,.1);color:var(--primary);font-size:.8rem;">Item</span>
-                                        </div>
-                                        <div class="d-flex gap-2 flex-wrap">
-                                            <a href="{{ route('customize') }}" class="btn btn-primary btn-sm px-3"><i
-                                                    class="bi bi-pencil-square me-1"></i>Swap Items</a>
-                                        </div>
+                                @empty
+                                    <div class="text-center py-4">
+                                        <i class="bi bi-box2 display-5 text-muted d-block mb-2"></i>
+                                        <div class="fw-semibold">No upcoming boxes yet.</div>
+                                        <a href="{{ route('boxes') }}" class="btn btn-outline-primary btn-sm mt-3">Browse Boxes</a>
                                     </div>
-                                </div>
-                                <div class="p-3 rounded-3" style="background:#f8fafc;">
-                                    <p class="small fw-semibold text-muted mb-3 text-uppercase"
-                                        style="font-size:.75rem;letter-spacing:.05em;">Delivery Status</p>
-                                    <div class="delivery-tracker" id="deliveryTracker">
-                                        <div class="tracker-progress" id="trackerProgress"></div>
-                                    </div>
-                                </div>
+                                @endforelse
                             </div>
                         </div>
 
@@ -126,13 +203,15 @@
                                             </tr>
                                         </thead>
                                         <tbody id="orderHistory">
-                                            <tr>
-                                                <td class="ps-4 py-3 fw-semibold small">Box name</td>
-                                                <td class="py-3 text-muted small">Date</td>
-                                                <td class="py-3 fw-semibold text-primary small">$0.00</td>
-                                                <td class="py-3"><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Status</span></td>
-                                                <td class="py-3"><button class="btn btn-sm btn-outline-secondary rounded-pill px-3" type="button"><i class="bi bi-arrow-repeat me-1"></i>Reorder</button></td>
-                                            </tr>
+                                            @foreach (($orders ?? collect()) as $order)
+                                                <tr>
+                                                    <td class="ps-4 py-3 fw-semibold small">{{ $order->box?->name ?? 'Box #' . $order->box_id }}</td>
+                                                    <td class="py-3 text-muted small">{{ $order->created_at->format('M d, Y') }}</td>
+                                                    <td class="py-3 fw-semibold text-primary small">${{ number_format($order->total_amount, 2) }}</td>
+                                                    <td class="py-3"><span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">{{ ucfirst(str_replace('_', ' ', $order->status)) }}</span></td>
+                                                    <td class="py-3"><button class="btn btn-sm btn-outline-secondary rounded-pill px-3" type="button"><i class="bi bi-arrow-repeat me-1"></i>Reorder</button></td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
@@ -150,13 +229,7 @@
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-6">
-                                        <a class="quick-action-card text-decoration-none text-body" href="{{ route('customize') }}">
-                                            <div class="quick-action-icon"
-                                                style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));">
-                                                <i class="bi bi-box-seam" style="color:var(--primary);"></i>
-                                            </div>
-                                            <div class="small fw-semibold">Swap Items</div>
-                                        </a>
+                                        
                                     </div>
                                     <div class="col-6">
                                         <a class="quick-action-card text-decoration-none text-body" href="{{ route('subscriptions') }}">
@@ -186,14 +259,28 @@
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <div class="quick-action-card">
-                                            <div class="quick-action-icon"
-                                                style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.06));">
-                                                <i id="pauseResumeIcon" class="bi bi-pause-circle"
-                                                    style="color:#ef4444;"></i>
-                                            </div>
-                                            <div id="pauseResumeLabel" class="small fw-semibold">Pause</div>
-                                        </div>
+                                        @if ($subscriptionPaused)
+                                            <form action="{{ route('subscription.resume') }}" method="POST" class="m-0">
+                                                @csrf
+                                                <button class="quick-action-card border-0 w-100 bg-transparent text-body" type="submit">
+                                                    <div class="quick-action-icon"
+                                                        style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));">
+                                                        <i id="pauseResumeIcon" class="bi bi-play-circle"
+                                                            style="color:#10b981;"></i>
+                                                    </div>
+                                                    <div id="pauseResumeLabel" class="small fw-semibold">Resume</div>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button class="quick-action-card border-0 w-100 bg-transparent text-body" type="button" data-bs-toggle="modal" data-bs-target="#pauseModal" @disabled(! ($currentSubscription ?? null))>
+                                                <div class="quick-action-icon"
+                                                    style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.06));">
+                                                    <i id="pauseResumeIcon" class="bi bi-pause-circle"
+                                                        style="color:#ef4444;"></i>
+                                                </div>
+                                                <div id="pauseResumeLabel" class="small fw-semibold">Pause</div>
+                                            </button>
+                                        @endif
                                     </div>
                                     <div class="col-6">
                                         <a class="quick-action-card text-decoration-none text-body" href="{{ route('boxes') }}">
@@ -215,46 +302,38 @@
                                     Subscription</h6>
                             </div>
                             <div class="card-body p-4">
-                                <div class="d-flex align-items-center gap-3 mb-3 p-3 rounded-3"
-                                    style="background:var(--gradient);">
-                                    <div class="flex-grow-1">
-                                        <div class="text-white fw-bold fs-5" id="subscriptionTitle">
-                                                   {{ auth()->user()->customer->plan->name ?? 'No Active Plan' }}
-                                           </div>
-                                        <<div class="text-white-50 small">
-                                               Price: ${{ auth()->user()->customer->plan->price_monthly ?? '0' }}
-                                          </div>
+                                @if ($currentPlan ?? null)
+                                    <div class="d-flex align-items-center gap-3 mb-3 p-3 rounded-3"
+                                        style="background:var(--gradient);">
+                                        <div class="flex-grow-1">
+                                            <div class="text-white fw-bold fs-5" id="subscriptionTitle">
+                                                {{ $currentPlan->name }}
+                                            </div>
+                                            <div class="text-white-50 small">
+                                                Price: ${{ number_format($currentPlan->price_monthly, 2) }}
+                                            </div>
+                                            <div class="mt-2">
+                                                <span class="badge rounded-pill {{ $subscriptionPaused ? 'bg-warning text-dark' : 'bg-success' }}">
+                                                    {{ ucfirst($currentSubscription?->status ?? 'active') }}
+                                                </span>
+                                                @if ($subscriptionPaused && $currentSubscription?->pause_until)
+                                                    <span class="text-white-50 small ms-1">
+                                                        until {{ $currentSubscription->pause_until->format('M d, Y') }}
+                                                    </span>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <i class="bi bi-star-fill text-warning fs-3"></i>
                                     </div>
-                                    <i class="bi bi-star-fill text-warning fs-3"></i>
-                                </div>
+                                @endif
                                 
-                                <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 btn-sm">Upgrade Plan</a>
+                                <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 btn-sm">
+                                    {{ ($currentPlan ?? null) ? 'Update Plan' : 'Choose Plan' }}
+                                </a>
                             </div>
                         </div>
 
-                        <div class="card border-0 rounded-4 shadow-sm">
-                            <div class="card-body p-4">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="fw-bold mb-0"><i class="bi bi-trophy text-warning me-2"></i>Rewards
-                                    </h6>
-                                    <a href="{{ route('reward') }}" class="text-primary text-decoration-none small">View all</a>
-                                </div>
-                                <div class="text-center mb-3">
-                                    <div class="display-6 fw-bold text-primary" id="customerPoints">0</div>
-                                    <div class="text-muted small">Points earned</div>
-                                </div>
-                                <div class="d-flex justify-content-between small mb-2">
-                                    <span class="text-muted">Progress to Gold</span>
-                                    <span class="fw-semibold" id="pointsProgressLabel">0 / 2,000</span>
-                                </div>
-                                <div class="progress mb-3" style="height:8px;border-radius:4px;">
-                                    <div class="progress-bar" id="pointsProgressBar"
-                                        style="width:0;background:var(--gradient);border-radius:4px;"></div>
-                                </div>
-                                <a href="{{ route('reward') }}" class="btn btn-primary w-100 btn-sm">Redeem Points</a>
-                            </div>
-                        </div>
-                    </div>
+                     
                 </div>
             </section>
 
@@ -482,9 +561,15 @@
                         <p class="text-muted mb-0">How long would you like to pause?</p>
                     </div>
                     <div class="d-flex flex-column gap-2">
-                        <button class="btn btn-outline-primary text-start px-4 py-3 rounded-3" type="button"><i class="bi bi-calendar me-2"></i>1 Month</button>
-                        <button class="btn btn-outline-primary text-start px-4 py-3 rounded-3" type="button"><i class="bi bi-calendar me-2"></i>2 Months</button>
-                        <button class="btn btn-outline-primary text-start px-4 py-3 rounded-3" type="button"><i class="bi bi-calendar me-2"></i>3 Months</button>
+                        @foreach ([1, 2, 3] as $months)
+                            <form action="{{ route('subscription.pause') }}" method="POST" class="m-0">
+                                @csrf
+                                <input type="hidden" name="months" value="{{ $months }}">
+                                <button class="btn btn-outline-primary text-start px-4 py-3 rounded-3 w-100" type="submit">
+                                    <i class="bi bi-calendar me-2"></i>{{ $months }} {{ \Illuminate\Support\Str::plural('Month', $months) }}
+                                </button>
+                            </form>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -543,7 +628,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   
     
 </body>

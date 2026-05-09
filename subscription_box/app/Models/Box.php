@@ -11,7 +11,9 @@ class Box extends Model
         'box_type',
         'base_price',
         'base_image',
-        'description'
+        'description',
+        'weight_kg',
+        'is_active',
     ];
 
     public $timestamps = false;

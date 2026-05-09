@@ -94,7 +94,6 @@
                                     <th>Plan</th>
                                     <th>Points</th>
                                     <th>Tier</th>
-                                    <th>Redeem</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -109,17 +108,54 @@
                                                 {{ $account->tier_name ?? 'Bronze' }}
                                             </span>
                                         </td>
-                                        <td>
-                                            <form action="{{ url('/admin/api/rewards/users/' . $account->user_id . '/redeem') }}" method="POST" class="d-flex gap-2">
-                                                @csrf
-                                                <input type="number" name="points_to_redeem" min="1" class="form-control form-control-sm" placeholder="Pts" style="max-width:90px;" required>
-                                                <button type="submit" class="btn btn-sm btn-outline-primary">Redeem</button>
-                                            </form>
-                                        </td>
+                                        
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="6" class="text-center text-muted py-4">No reward accounts found.</td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 rounded-4 shadow-sm mt-4">
+                <div class="card-header border-0 py-3 px-4" style="background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(217,119,6,.04));">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-gift text-warning me-2"></i>Available Reward Items</h6>
+                        <span class="badge rounded-pill" style="background:var(--gradient);">{{ count($rewardItems ?? []) }} Rewards</span>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="table-responsive">
+                        <table class="table align-middle mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Points</th>
+                                    <th>Icon</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse (($rewardItems ?? collect()) as $reward)
+                                    <tr>
+                                        <td class="fw-semibold">{{ $reward->name }}</td>
+                                        <td>{{ $reward->description ?? 'N/A' }}</td>
+                                        <td class="text-primary fw-semibold">{{ $reward->points }}</td>
+                                        <td><i class="bi {{ $reward->icon }} text-primary"></i> {{ $reward->icon }}</td>
+                                        <td>
+                                            <span class="badge rounded-pill px-3 {{ $reward->is_active ? 'bg-success' : 'bg-secondary' }}">
+                                                {{ $reward->is_active ? 'Active' : 'Inactive' }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-4">No reward items found. Run RewardItemSeeder.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

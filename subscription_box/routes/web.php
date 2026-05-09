@@ -5,8 +5,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\AdminController;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Customer;
+use App\Http\Controllers\DashboardController;
+use App\Models\Plan;
 
 Route::get('/', function () {
     return view('home');
@@ -17,20 +17,10 @@ Route::get('/sports', function () {
 })->name('sports');
 
 Route::get('/subscriptions', function () {
-    return view('subscriptions');
+    return view('subscriptions', ['plans' => Plan::all()]);
 })->name('subscriptions');
 
-Route::get('/dashboard', function () {
-    return view('dashboard', ['dashboardMode' => 'customer']);
-})->name('dashboard');
-
-Route::get('/dashboard', function () {
-
-    if (!Auth::check()) {
-        return redirect()->route('login');
-    }
-    return view('dashboard', ['dashboardMode' => 'customer']);
-})->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
@@ -41,24 +31,19 @@ Route::post('/register/submit', [RegisterController::class, 'register'])->name('
 
 
 
-Route::get('/boxes', function () {
-    return view('boxes');
-})->name('boxes');
-
-Route::get('/cart', function () {
-    return view('cart');
-})->name('cart');
+Route::get('/reward', [CustomerController::class, 'reward'])->name('reward');
+Route::post('/reward/{rewardId}/redeem', [CustomerController::class, 'redeemReward'])->name('reward.redeem');
 
 Route::get('/customize', function () {
-    return view('customize');
+    return redirect()->route('boxes');
 })->name('customize');
-
-Route::get('/reward', function () {
-    return view('reward', ['rewardMode' => 'customer']);
-})->name('reward');
 
 Route::get('/customize/{id}', [CustomerController::class, 'customize'])
     ->name('customize.box');
+Route::post('/customize/{id}', [CustomerController::class, 'saveCustomizedBox'])
+    ->name('customize.save');
+Route::post('/orders/{orderId}/swap-box', [CustomerController::class, 'swapBox'])
+    ->name('orders.swap-box');
 
 Route::get('/boxes', [CustomerController::class, 'boxes'])
  ->name('boxes');  
@@ -68,10 +53,16 @@ Route::post('/add-to-cart/{id}', [CustomerController::class, 'addToCart'])
 
 Route::get('/cart', [CustomerController::class, 'cart'])
   ->name('cart'); 
+Route::post('/cart/confirm-shipping', [CustomerController::class, 'confirmShipping'])
+  ->name('cart.confirm-shipping');
 
 Route::get('/admin/reward', [AdminController::class, 'getAllRewardAccounts'])->name('admin.reward');
 
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+
+Route::post('/select-plan', [CustomerController::class, 'selectPlan'])->name('select.plan');
+Route::post('/subscription/pause', [CustomerController::class, 'pauseSubscription'])->name('subscription.pause');
+Route::post('/subscription/resume', [CustomerController::class, 'resumeSubscription'])->name('subscription.resume');
 
 
 Route::prefix('admin/api')->group(function () {

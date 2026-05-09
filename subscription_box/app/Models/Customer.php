@@ -13,6 +13,8 @@ class Customer extends Model
         'user_id',
         'plan_id',
         'diet_preference',
+        'delivery_frequency',
+        'clothing_size',
         'address',
         'city',
         'country',

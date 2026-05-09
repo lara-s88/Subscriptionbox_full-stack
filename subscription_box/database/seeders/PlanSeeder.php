@@ -9,7 +9,7 @@ class PlanSeeder extends Seeder
 {
     public function run(): void
     {
-        Plan::create([
+        Plan::updateOrCreate(['name' => 'Basic'], [
             'name' => 'Basic',
             'price_monthly' => 29,
             'boxes_per_month' => 1,
@@ -19,7 +19,7 @@ class PlanSeeder extends Seeder
             'vip_support' => false,
         ]);
 
-        Plan::create([
+        Plan::updateOrCreate(['name' => 'Pro'], [
             'name' => 'Pro',
             'price_monthly' => 49,
             'boxes_per_month' => 2,
@@ -29,7 +29,7 @@ class PlanSeeder extends Seeder
             'vip_support' => true,
         ]);
 
-        Plan::create([
+        Plan::updateOrCreate(['name' => 'VIP'], [
             'name' => 'VIP',
             'price_monthly' => 89,
             'boxes_per_month' => 3,

@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <x-navbar activePage="plans"></x-navbar>
+    <x-navbar activePage="dashboard"></x-navbar>
 
     <div class="page-header">
         <div class="container position-relative">

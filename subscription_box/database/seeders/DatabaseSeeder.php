@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Database\Seeders\PlanSeeder;
+use Database\Seeders\BoxSeeder;
+use Database\Seeders\RewardItemSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PlanSeeder::class,
+            BoxSeeder::class,
+            RewardItemSeeder::class,
         ]);
     }
 }
