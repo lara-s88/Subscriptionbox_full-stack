@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
-    
+
 </head>
 
 <body>
@@ -29,7 +29,7 @@
         $subscriptionPaused = ($currentSubscription?->status ?? 'active') === 'paused';
     @endphp
 
-    <div class="page-header">
+    <div class="dash-header">
         <div class="container position-relative">
             <div class="d-flex align-items-center gap-3 mb-3">
                 <div
@@ -43,15 +43,15 @@
             </div>
             <div class="d-flex gap-2 flex-wrap" id="headerBadges">
                 @if ($isAdminDashboard)
-                    <span class="admin-pill">Admin account</span>
-                    <span class="admin-pill">Orders in view</span>
-                    <span class="admin-pill">Shipping batches</span>
+                    <span class="admin-badge">Admin account</span>
+                    <span class="admin-badge">Orders in view</span>
+                    <span class="admin-badge">Shipping batches</span>
                 @else
                     @if ($currentPlan ?? null)
-                        <span class="admin-pill">{{ $currentPlan->name }}</span>
+                        <span class="admin-badge">{{ $currentPlan->name }}</span>
                     @endif
                     @if ($memberSinceDate)
-                        <span class="admin-pill">Member since {{ $memberSinceDate }}</span>
+                        <span class="admin-badge">Member since {{ $memberSinceDate }}</span>
                     @endif
                 @endif
             </div>
@@ -73,7 +73,7 @@
                 </div>
             @endif
 
-            <div id="emptyState" class="surface-card p-5 text-center" style="display:none;">
+            <div id="emptyState" class="content-card p-5 text-center" style="display:none;">
                 <div class="mb-3"><i class="bi bi-shield-lock fs-1 text-primary"></i></div>
                 <h4 class="fw-bold mb-2">Sign in to open the portal</h4>
                 <p class="text-muted mb-4">Customers can manage subscriptions here, and admins can review orders,
@@ -82,7 +82,7 @@
             </div>
 
             <section id="customerDashboard" @if($isAdminDashboard) style="display:none;" @endif>
-                
+
                 <div class="row g-4">
                     <div class="col-lg-8">
                         <div class="card border-0 rounded-4 shadow-sm mb-4 overflow-hidden" id="upcomingBoxes">
@@ -92,7 +92,7 @@
                                     <h6 class="fw-bold mb-0"><i class="bi bi-box-seam text-primary me-2"></i>Upcoming
                                         Boxes</h6>
                                     @if (($upcomingOrders ?? collect())->count())
-                                        <span class="status-pill" id="customerDeliveryPill"
+                                        <span class="status-badge" id="customerDeliveryPill"
                                             style="background:#fef9c3;color:#854d0e;">{{ ($upcomingOrders ?? collect())->count() }} Active</span>
                                     @endif
                                 </div>
@@ -229,11 +229,11 @@
                             <div class="card-body p-4">
                                 <div class="row g-3">
                                     <div class="col-6">
-                                        
+
                                     </div>
                                     <div class="col-6">
-                                        <a class="quick-action-card text-decoration-none text-body" href="{{ route('subscriptions') }}">
-                                            <div class="quick-action-icon"
+                                        <a class="action-card text-decoration-none text-body" href="{{ route('subscriptions') }}">
+                                            <div class="action-icon"
                                                 style="background:linear-gradient(135deg,rgba(139,92,246,.12),rgba(139,92,246,.06));">
                                                 <i class="bi bi-arrow-up-circle" style="color:#8b5cf6;"></i>
                                             </div>
@@ -241,8 +241,8 @@
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a class="quick-action-card text-decoration-none text-body" href="{{ route('reward') }}">
-                                            <div class="quick-action-icon"
+                                        <a class="action-card text-decoration-none text-body" href="{{ route('reward') }}">
+                                            <div class="action-icon"
                                                 style="background:linear-gradient(135deg,rgba(245,158,11,.12),rgba(245,158,11,.06));">
                                                 <i class="bi bi-gift" style="color:#f59e0b;"></i>
                                             </div>
@@ -250,8 +250,8 @@
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a class="quick-action-card text-decoration-none text-body" href="{{ route('cart') }}">
-                                            <div class="quick-action-icon"
+                                        <a class="action-card text-decoration-none text-body" href="{{ route('cart') }}">
+                                            <div class="action-icon"
                                                 style="background:linear-gradient(135deg,rgba(59,130,246,.12),rgba(59,130,246,.06));">
                                                 <i class="bi bi-cart3" style="color:#2563eb;"></i>
                                             </div>
@@ -262,8 +262,8 @@
                                         @if ($subscriptionPaused)
                                             <form action="{{ route('subscription.resume') }}" method="POST" class="m-0">
                                                 @csrf
-                                                <button class="quick-action-card border-0 w-100 bg-transparent text-body" type="submit">
-                                                    <div class="quick-action-icon"
+                                                <button class="action-card border-0 w-100 bg-transparent text-body" type="submit">
+                                                    <div class="action-icon"
                                                         style="background:linear-gradient(135deg,rgba(16,185,129,.12),rgba(16,185,129,.06));">
                                                         <i id="pauseResumeIcon" class="bi bi-play-circle"
                                                             style="color:#10b981;"></i>
@@ -272,8 +272,8 @@
                                                 </button>
                                             </form>
                                         @else
-                                            <button class="quick-action-card border-0 w-100 bg-transparent text-body" type="button" data-bs-toggle="modal" data-bs-target="#pauseModal" @disabled(! ($currentSubscription ?? null))>
-                                                <div class="quick-action-icon"
+                                            <button class="action-card border-0 w-100 bg-transparent text-body" type="button" data-bs-toggle="modal" data-bs-target="#pauseModal" @disabled(! ($currentSubscription ?? null))>
+                                                <div class="action-icon"
                                                     style="background:linear-gradient(135deg,rgba(239,68,68,.12),rgba(239,68,68,.06));">
                                                     <i id="pauseResumeIcon" class="bi bi-pause-circle"
                                                         style="color:#ef4444;"></i>
@@ -283,8 +283,8 @@
                                         @endif
                                     </div>
                                     <div class="col-6">
-                                        <a class="quick-action-card text-decoration-none text-body" href="{{ route('boxes') }}">
-                                            <div class="quick-action-icon"
+                                        <a class="action-card text-decoration-none text-body" href="{{ route('boxes') }}">
+                                            <div class="action-icon"
                                                 style="background:linear-gradient(135deg,rgba(14,165,233,.12),rgba(14,165,233,.06));">
                                                 <i class="bi bi-grid" style="color:#0ea5e9;"></i>
                                             </div>
@@ -326,14 +326,13 @@
                                         <i class="bi bi-star-fill text-warning fs-3"></i>
                                     </div>
                                 @endif
-                                
+
                                 <a href="{{ route('subscriptions') }}" class="btn btn-outline-primary w-100 btn-sm">
                                     {{ ($currentPlan ?? null) ? 'Update Plan' : 'Choose Plan' }}
                                 </a>
                             </div>
                         </div>
 
-                     
                 </div>
             </section>
 
@@ -374,7 +373,7 @@
                 </div>
                 <div class="row g-4">
                     <div class="col-xl-8">
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-truck text-primary me-2"></i>Account Orders &
                                     Tracking</h5>
@@ -409,7 +408,7 @@
                             </div>
                         </div>
 
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i
                                         class="bi bi-arrow-counterclockwise text-primary me-2"></i>Returned Orders</h5>
@@ -429,7 +428,7 @@
                             </div>
                         </div>
 
-                        <div class="surface-card p-4">
+                        <div class="content-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-diagram-3 text-primary me-2"></i>Shipping
                                     Package Batching</h5>
@@ -459,7 +458,7 @@
                     </div>
 
                     <div class="col-xl-4">
-                        <div class="surface-card p-4 mb-4 upload-panel">
+                        <div class="content-card p-4 mb-4 upload-box">
                             <h5 class="fw-bold mb-2"><i class="bi bi-cloud-upload text-primary me-2"></i>Upload Themes
                             </h5>
                             <p class="text-muted small mb-4">Admins can add next-month theme data here now, then
@@ -500,7 +499,7 @@
                             </form>
                         </div>
 
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i
                                         class="bi bi-exclamation-triangle text-warning me-2"></i>Stock Threshold</h5>
@@ -520,7 +519,7 @@
                             </div>
                         </div>
 
-                        <div class="surface-card p-4">
+                        <div class="content-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-palette text-primary me-2"></i>Theme Library
                                 </h5>
@@ -577,9 +576,9 @@
     </div>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+        <div id="msg-toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <div class="toast-body fw-semibold" id="toast-text">Message</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto"
                     data-bs-dismiss="toast"></button>
             </div>
@@ -592,7 +591,7 @@
                 <div class="col-lg-4">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -601,18 +600,18 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                        <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
+                        <li id="footer-reward-link"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footer-login-link">Login</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
@@ -628,8 +627,7 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  
-    
+
 </body>
 
 </html>

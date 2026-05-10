@@ -1,7 +1,44 @@
-.friend-item { display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:12px; transition:var(--transition); }
-.friend-item:hover { background:rgba(16,185,129,.05); }
-.friend-avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; flex-shrink:0; }
-.reward-item { background:white; border-radius:var(--radius); padding:18px; box-shadow:var(--card-shadow); transition:var(--transition); border:2px solid transparent; }
-.reward-item:hover { border-color:var(--primary); transform:translateY(-3px); box-shadow:var(--card-shadow-md); }
-body.dark-mode .reward-item { background:#1e293b !important; color:#e2e8f0 !important; }
-body.dark-mode .friend-item:hover { background:rgba(16,185,129,.08); }
+.friend-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: var(--transition);
+}
+
+.friend-row:hover {
+  background: rgba(16,185,129,.05);
+}
+
+.friend-pic {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.reward-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--card-shadow);
+  transition: var(--transition);
+  border: 2px solid transparent;
+}
+
+.reward-card:hover {
+  border-color: var(--primary);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-md);
+}
+
+body.dark-mode .reward-card {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+}
+
+body.dark-mode .friend-row:hover {
+  background: rgba(16,185,129,.08);
+}

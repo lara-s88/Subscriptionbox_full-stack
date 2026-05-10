@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
 
-   
 </head>
 
 <body>
@@ -25,7 +24,7 @@
     <x-navbar activePage="sports"></x-navbar>
 
     <!-- ===== Hero Section ===== -->
-    <section class="hero-section">
+    <section class="main-hero">
         <div class="container position-relative">
             <div class="row align-items-center">
                 <div class="col-lg-8">
@@ -51,27 +50,26 @@
         <div class="container">
 
             <!-- Filter Tabs -->
-           
 
             <!-- Search -->
             <div class="row justify-content-center mb-4">
                 <div class="col-md-6">
-                    <div class="search-bar-wrap">
+                    <div class="search-box">
                         <i class="bi bi-search"></i>
                         <input type="text" class="form-control" placeholder="Search sports or boxes…"
-                            id="searchInput">
+                            id="search-input">
                     </div>
                 </div>
             </div>
 
             <!-- Dynamic section header -->
-            <div class="mb-4" id="sectionHeader">
+            <div class="mb-4" id="section-title">
                 <h4 class="fw-bold mb-1">All Sports</h4>
-                
+
             </div>
 
             <!-- Skeleton (shown briefly on load) -->
-            <div class="row g-4" id="skeletonGrid"></div>
+            <div class="row g-4" id="skeleton-grid"></div>
 
             <!-- Main grid -->
             <div class="row g-4" id="sports-grid">
@@ -123,9 +121,9 @@
                         </div>
                     </a>
                 </div>
-                                            
+
                 <p class="card-text text-muted small mb-3"></p>
-                            
+
                         </div>
                     </a>
                 </div>
@@ -143,25 +141,25 @@
     </section>
 
     <!-- ===== Box Detail Modal ===== -->
-    <div class="modal fade" id="boxModal" tabindex="-1">
+    <div class="modal fade" id="box-modal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content rounded-4 border-0">
                 <div class="modal-header border-0 pb-0">
-                    <h5 class="modal-title fw-bold" id="modalTitle">Box Details</h5>
+                    <h5 class="modal-title fw-bold" id="modal-title">Box Details</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <div class="row g-3">
                         <div class="col-md-5">
-                            <img id="modalImage" src="" alt="" class="w-100 rounded-3 shadow-sm"
+                            <img id="modal-image" src="" alt="" class="w-100 rounded-3 shadow-sm"
                                 style="height:240px;object-fit:cover;">
                         </div>
                         <div class="col-md-7">
-                            <h4 class="fw-bold mb-1" id="modalBoxTitle"></h4>
-                            <div class="h4 fw-bold text-primary mb-3" id="modalPrice"></div>
-                            <div class="mb-4" id="modalItems"></div>
+                            <h4 class="fw-bold mb-1" id="modal-box-title"></h4>
+                            <div class="h4 fw-bold text-primary mb-3" id="modal-price"></div>
+                            <div class="mb-4" id="modal-items"></div>
                             <div class="d-flex gap-2">
-                                <a id="customizeBtn" href="{{ route('customize') }}" class="btn btn-primary">
+                                <a id="customize-btn" href="{{ route('customize') }}" class="btn btn-primary">
                                     <i class="bi bi-pencil-square me-1"></i>Customize Box
                                 </a>
                                 <button class="btn btn-outline-primary" type="button">
@@ -177,9 +175,9 @@
 
     <!-- Toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+        <div id="msg-toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <div class="toast-body fw-semibold" id="toast-text">Message</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto"
                     data-bs-dismiss="toast"></button>
             </div>
@@ -193,7 +191,7 @@
                 <div class="col-lg-4">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -202,18 +200,18 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                        <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
+                        <li id="footer-reward-link"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footer-login-link">Login</a></li>
                         <li><a href="{{ route('register') }}">Register</a></li>
                     </ul>
                 </div>

@@ -13,7 +13,7 @@
 <body>
     <x-navbar activePage="cart"></x-navbar>
 
-    <div class="hero-section-sm">
+    <div class="page-hero">
         <div class="container position-relative">
             <h1 class="display-6 fw-bold mb-2"><i class="bi bi-cart3 me-2"></i>Customer Cart</h1>
             <p class="lead mb-0" style="opacity:.88;">Review pending boxes and confirm shipping.</p>
@@ -70,7 +70,7 @@
                 <div class="col-lg-4">
                     <div class="cart-card">
                         <h5 class="fw-bold mb-3">Shipping Summary</h5>
-                        <div class="shipping-note p-3 mb-4">
+                        <div class="shipping-info p-3 mb-4">
                             <div class="fw-semibold text-primary mb-1">Confirm shipment</div>
                             <div class="small text-muted">Shipping details are saved to your customer account.</div>
                         </div>
@@ -126,8 +126,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-list"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-list"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">
             <p class="text-center mb-0" style="font-size:.85rem;">&copy; 2026 SportBox. All rights reserved.</p>

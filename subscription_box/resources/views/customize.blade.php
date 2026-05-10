@@ -18,7 +18,7 @@
         $imageSrc = \Illuminate\Support\Str::startsWith($image, ['http://', 'https://']) ? $image : asset($image);
     @endphp
 
-    <div class="hero-section-sm">
+    <div class="page-hero">
         <div class="container position-relative">
             <div class="d-flex gap-2 flex-wrap mb-3">
                 <a href="{{ route('boxes') }}" class="btn btn-sm btn-outline-light px-3"><i class="bi bi-arrow-left me-1"></i>Back to Boxes</a>
@@ -50,7 +50,7 @@
                                 <div class="d-flex flex-column gap-2">
                                     @forelse ($box->items as $boxItem)
                                         @if ($boxItem->inventoryItem)
-                                            <div class="custom-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-3 border">
+                                            <div class="box-item d-flex align-items-center justify-content-between gap-3 p-3 rounded-3 border">
                                                 <div class="d-flex align-items-center gap-3">
                                                     <i class="bi bi-check-circle text-primary"></i>
                                                     <span class="fw-semibold small">{{ $boxItem->inventoryItem->name }}</span>
@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="col-lg-5">
-                        <div class="summary-card">
+                        <div class="order-summary">
                             <div class="mb-3">
                                 <div class="overflow-hidden rounded-3 mb-3" style="height:160px;">
                                     <img src="{{ $imageSrc }}" alt="{{ $box->name }}" class="w-100 h-100" style="object-fit:cover;">
@@ -156,8 +156,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-list"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-list"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">
             <p class="text-center mb-0" style="font-size:.85rem;">&copy; 2026 SportBox. All rights reserved.</p>

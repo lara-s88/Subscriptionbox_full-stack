@@ -1,9 +1,8 @@
-/* Page-specific overrides */
-.hero-section {
+.main-hero {
     padding: 130px 0 90px;
 }
 
-.trust-badge {
+.trust-tag {
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -16,7 +15,7 @@
     border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.testimonial-card {
+.review-card {
     background: white;
     border-radius: var(--radius-lg);
     padding: 28px 24px;
@@ -25,12 +24,12 @@
     height: 100%;
 }
 
-.testimonial-card:hover {
+.review-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--hover-shadow);
 }
 
-.how-step-icon {
+.step-icon {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -41,13 +40,13 @@
     margin-bottom: 1.25rem;
 }
 
-body.dark-mode .testimonial-card {
+body.dark-mode .review-card {
     background: #1e293b !important;
     color: #e2e8f0;
 }
 
 @media (max-width: 768px) {
-    .hero-section {
+    .main-hero {
         padding: 100px 0 70px;
     }
 }

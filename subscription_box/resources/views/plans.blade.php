@@ -15,7 +15,7 @@
 <body>
     <x-navbar activePage="dashboard"></x-navbar>
 
-    <div class="page-header">
+    <div class="dash-header">
         <div class="container position-relative">
             <div class="d-flex align-items-center gap-3 mb-3">
                 <div style="width:60px;height:60px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <span class="admin-pill">Create & edit plans</span>
-                <span class="admin-pill">Manage features</span>
-                <span class="admin-pill">Set pricing</span>
+                <span class="admin-badge">Create & edit plans</span>
+                <span class="admin-badge">Manage features</span>
+                <span class="admin-badge">Set pricing</span>
             </div>
         </div>
     </div>
@@ -61,16 +61,16 @@
             <div class="row g-4">
                 <!-- Form Section -->
                 <div class="col-lg-5">
-                    <div class="surface-card p-4 mb-4">
+                    <div class="content-card p-4 mb-4">
                         <h5 class="fw-bold mb-3"><i class="bi bi-plus-circle text-primary me-2"></i>Create New Plan</h5>
                         <p class="text-muted small mb-4">Add a new subscription plan with custom features and pricing.</p>
                         <form method="POST" action="{{ route('admin.plans.create') }}">
                             @csrf
-                            
+
                             <!-- Plan Name -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold small">Plan Name <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" 
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                                     placeholder="e.g., Premium Box" value="{{ old('name') }}" required>
                                 @error('name')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -82,8 +82,8 @@
                                 <label class="form-label fw-semibold small">Monthly Price <span class="text-danger">*</span></label>
                                 <div class="input-group">
                                     <span class="input-group-text">$</span>
-                                    <input type="number" class="form-control @error('price_monthly') is-invalid @enderror" 
-                                        name="price_monthly" placeholder="29.99" step="0.01" min="0" 
+                                    <input type="number" class="form-control @error('price_monthly') is-invalid @enderror"
+                                        name="price_monthly" placeholder="29.99" step="0.01" min="0"
                                         value="{{ old('price_monthly') }}" required>
                                 </div>
                                 @error('price_monthly')
@@ -94,7 +94,7 @@
                             <!-- Boxes Per Month -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold small">Boxes Per Month</label>
-                                <input type="number" class="form-control @error('boxes_per_month') is-invalid @enderror" 
+                                <input type="number" class="form-control @error('boxes_per_month') is-invalid @enderror"
                                     name="boxes_per_month" placeholder="1" min="1" value="{{ old('boxes_per_month') }}">
                                 <small class="text-muted">How many boxes are delivered per month</small>
                                 @error('boxes_per_month')
@@ -105,7 +105,7 @@
                             <!-- Swap Limit -->
                             <div class="mb-3">
                                 <label class="form-label fw-semibold small">Swap Limit</label>
-                                <input type="number" class="form-control @error('swap_limit') is-invalid @enderror" 
+                                <input type="number" class="form-control @error('swap_limit') is-invalid @enderror"
                                     name="swap_limit" placeholder="0" min="0" value="{{ old('swap_limit') }}">
                                 <small class="text-muted">Number of items that can be swapped per box</small>
                                 @error('swap_limit')
@@ -119,7 +119,7 @@
 
                                 <!-- Express Shipping -->
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" name="express_shipping" 
+                                    <input class="form-check-input" type="checkbox" name="express_shipping"
                                         id="express_shipping" value="1" {{ old('express_shipping') ? 'checked' : '' }}>
                                     <label class="form-check-label small" for="express_shipping">
                                         <i class="bi bi-lightning text-warning me-1"></i>Express Shipping
@@ -128,7 +128,7 @@
 
                                 <!-- Early Access -->
                                 <div class="form-check mb-2">
-                                    <input class="form-check-input" type="checkbox" name="early_access" 
+                                    <input class="form-check-input" type="checkbox" name="early_access"
                                         id="early_access" value="1" {{ old('early_access') ? 'checked' : '' }}>
                                     <label class="form-check-label small" for="early_access">
                                         <i class="bi bi-clock text-info me-1"></i>Early Access to Items
@@ -137,7 +137,7 @@
 
                                 <!-- VIP Support -->
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="vip_support" 
+                                    <input class="form-check-input" type="checkbox" name="vip_support"
                                         id="vip_support" value="1" {{ old('vip_support') ? 'checked' : '' }}>
                                     <label class="form-check-label small" for="vip_support">
                                         <i class="bi bi-star text-primary me-1"></i>VIP Support
@@ -154,7 +154,7 @@
 
                 <!-- Plans Table Section -->
                 <div class="col-lg-7">
-                    <div class="surface-card p-4">
+                    <div class="content-card p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="fw-bold mb-0"><i class="bi bi-list-ul text-primary me-2"></i>Active Plans</h5>
                             <span class="badge rounded-pill" style="background:rgba(16,185,129,.1);color:#059669;">
@@ -214,7 +214,7 @@
                                                     </div>
                                                 </td>
                                                 <td class="text-center">
-                                                    <form action="{{ route('admin.plans.delete', $plan->id) }}" method="POST" style="display:inline;" 
+                                                    <form action="{{ route('admin.plans.delete', $plan->id) }}" method="POST" style="display:inline;"
                                                         onsubmit="return confirm('Are you sure you want to delete this plan?');">
                                                         @csrf
                                                         @method('DELETE')
@@ -248,7 +248,7 @@
                 <div class="col-lg-4">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -257,7 +257,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
@@ -266,7 +266,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
                         <li><a href="{{ route('admin.plans') }}">Plans</a></li>
                     </ul>

@@ -1,5 +1,5 @@
 
-        .page-header {
+        .dash-header {
             background: var(--gradient);
             color: white;
             padding: 100px 0 40px;
@@ -7,21 +7,21 @@
             overflow: hidden;
         }
 
-        .page-header::before {
+        .dash-header::before {
             content: '';
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
         }
 
-        .status-pill {
+        .status-badge {
             padding: 4px 14px;
             border-radius: 20px;
             font-size: 0.78rem;
             font-weight: 600;
         }
 
-        .surface-card {
+        .content-card {
             background: white;
             border-radius: var(--radius-lg);
             box-shadow: var(--card-shadow-md);
@@ -35,28 +35,28 @@
             color: #6b7280;
         }
 
-        .admin-pill {
+        .admin-badge {
             padding: 6px 12px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.14);
             font-size: 0.82rem;
         }
 
-        .upload-panel {
+        .upload-box {
             background: linear-gradient(135deg, rgba(16, 185, 129, .08), rgba(15, 118, 110, .03));
             border: 1px dashed rgba(16, 185, 129, .35);
         }
 
-        body.dark-mode .surface-card {
+        body.dark-mode .content-card {
             background: #1e293b;
             color: #e2e8f0;
         }
 
-        body.dark-mode .page-header {
+        body.dark-mode .dash-header {
             background: linear-gradient(135deg, #065f46, #0f766e);
         }
 
-        body.dark-mode .upload-panel {
+        body.dark-mode .upload-box {
             background: rgba(16, 185, 129, .06);
             border-color: rgba(16, 185, 129, .25);
         }

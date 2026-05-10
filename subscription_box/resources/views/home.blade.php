@@ -25,7 +25,7 @@
     <x-navbar activePage="home"></x-navbar>
 
     <!-- ===== Hero Section ===== -->
-    <section id="home" class="hero-section">
+    <section id="home" class="main-hero">
         <div class="container position-relative">
             <div class="row align-items-center g-5">
                 <div class="col-lg-6">
@@ -45,9 +45,9 @@
                         <a href="{{ route('subscriptions') }}" class="btn btn-outline-light btn-lg px-4">View Plans</a>
                     </div>
                     <div class="d-flex flex-wrap gap-3">
-                        <div class="trust-badge"><i class="bi bi-star-fill text-warning"></i>4.9 Rating</div>
-                        <div class="trust-badge"><i class="bi bi-people-fill"></i>10K+ Athletes</div>
-                        <div class="trust-badge"><i class="bi bi-shield-check-fill"></i>30-Day Guarantee</div>
+                        <div class="trust-tag"><i class="bi bi-star-fill text-warning"></i>4.9 Rating</div>
+                        <div class="trust-tag"><i class="bi bi-people-fill"></i>10K+ Athletes</div>
+                        <div class="trust-tag"><i class="bi bi-shield-check-fill"></i>30-Day Guarantee</div>
                     </div>
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
@@ -122,7 +122,7 @@
             <div class="row g-4">
                 <div class="col-lg-4">
                     <div class="text-center p-4">
-                        <div class="how-step-icon">
+                        <div class="step-icon">
                             <i class="bi bi-1-circle-fill fs-1 text-primary"></i>
                         </div>
                         <h4 class="fw-bold mb-2">Pick Your Sport</h4>
@@ -132,7 +132,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-center p-4">
-                        <div class="how-step-icon">
+                        <div class="step-icon">
                             <i class="bi bi-2-circle-fill fs-1 text-primary"></i>
                         </div>
                         <h4 class="fw-bold mb-2">Customize Your Box</h4>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="text-center p-4">
-                        <div class="how-step-icon">
+                        <div class="step-icon">
                             <i class="bi bi-3-circle-fill fs-1 text-primary"></i>
                         </div>
                         <h4 class="fw-bold mb-2">Get It Delivered</h4>
@@ -306,7 +306,7 @@
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="testimonial-card">
+                    <div class="review-card">
                         <div class="d-flex mb-3">
                             <i class="bi bi-star-fill text-warning"></i><i
                                 class="bi bi-star-fill text-warning ms-1"></i><i
@@ -327,7 +327,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="testimonial-card">
+                    <div class="review-card">
                         <div class="d-flex mb-3">
                             <i class="bi bi-star-fill text-warning"></i><i
                                 class="bi bi-star-fill text-warning ms-1"></i><i
@@ -348,7 +348,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="testimonial-card">
+                    <div class="review-card">
                         <div class="d-flex mb-3">
                             <i class="bi bi-star-fill text-warning"></i><i
                                 class="bi bi-star-fill text-warning ms-1"></i><i
@@ -398,7 +398,7 @@
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered. Premium sports gear
                         tailored to your passion.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -407,18 +407,18 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
-                        <li id="footerRewardItem"><a href="{{ route('reward') }}">Rewards</a></li>
+                        <li id="footer-reward-link"><a href="{{ route('reward') }}">Rewards</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footer-login-link">Login</a></li>
                         <li id="footerRegisterItem"><a href="{{ route('register') }}">Register</a></li>
                     </ul>
                 </div>
@@ -438,9 +438,9 @@
 
     <!-- Toast -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+        <div id="msg-toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <div class="toast-body fw-semibold" id="toast-text">Message</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto"
                     data-bs-dismiss="toast"></button>
             </div>

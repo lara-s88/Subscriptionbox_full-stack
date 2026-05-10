@@ -14,7 +14,7 @@
     <x-navbar activePage="reward"></x-navbar>
     @php($isAdminReward = ($rewardMode ?? 'customer') === 'admin')
 
-    <div class="hero-section-sm text-center">
+    <div class="page-hero text-center">
         <div class="container position-relative">
             <h1 class="display-5 fw-bold mb-3"><i class="bi bi-gift me-3"></i>Referral &amp; Rewards</h1>
             <p class="lead mb-0" style="opacity:.88;">Rewards and admin-created themes from the database.</p>
@@ -138,8 +138,8 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4"><h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5><p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-links"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
-                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-links"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Quick Links</h6><ul class="footer-list"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('sports') }}">Sports</a></li><li><a href="{{ route('subscriptions') }}">Subscriptions</a></li></ul></div>
+                <div class="col-lg-2 col-6"><h6 class="fw-bold mb-3">Account</h6><ul class="footer-list"><li><a href="{{ route('dashboard') }}">Dashboard</a></li><li><a href="{{ route('cart') }}">Cart</a></li></ul></div>
             </div>
             <hr class="my-4" style="border-color:#1e293b;">
             <p class="text-center mb-0" style="font-size:.85rem;">&copy; 2026 SportBox. All rights reserved.</p>

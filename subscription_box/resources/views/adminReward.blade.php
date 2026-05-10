@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/reward.css') }}">
     <style>
-        .reward-admin-shell {
+        .admin-reward-wrap {
             padding-top: 76px;
         }
 
@@ -27,14 +27,14 @@
 <body>
     <x-navbar activePage="reward"></x-navbar>
 
-    <div class="hero-section-sm text-center reward-admin-shell">
+    <div class="page-hero text-center admin-reward-wrap">
         <div class="container position-relative">
             <h1 class="display-5 fw-bold mb-3"><i class="bi bi-award me-3"></i>Customer Rewards Monitor</h1>
             <p class="lead mb-0" style="opacity:.88;">Admin view of each customer account and its current reward points.</p>
         </div>
     </div>
 
-    <section class="py-5" id="adminRewardsView">
+    <section class="py-5" id="admin-rewards-section">
         <div class="container">
             @php
                 $accounts = $rewardAccounts ?? collect();
@@ -108,7 +108,7 @@
                                                 {{ $account->tier_name ?? 'Bronze' }}
                                             </span>
                                         </td>
-                                        
+
                                     </tr>
                                 @empty
                                     <tr>
@@ -167,9 +167,9 @@
     </section>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+        <div id="msg-toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <div class="toast-body fw-semibold" id="toast-text">Message</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
@@ -181,7 +181,7 @@
                 <div class="col-lg-4">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -190,7 +190,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
@@ -199,9 +199,9 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footer-login-link">Login</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">

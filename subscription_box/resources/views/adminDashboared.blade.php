@@ -15,7 +15,7 @@
 <body>
     <x-navbar activePage="dashboard"></x-navbar>
 
-    <div class="page-header">
+    <div class="dash-header">
         <div class="container position-relative">
             <div class="d-flex align-items-center gap-3 mb-3">
                 <div style="width:60px;height:60px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -27,9 +27,9 @@
                 </div>
             </div>
             <div class="d-flex gap-2 flex-wrap">
-                <span class="admin-pill">Admin account</span>
-                <span class="admin-pill">Orders in view</span>
-                <span class="admin-pill">Shipping batches</span>
+                <span class="admin-badge">Admin account</span>
+                <span class="admin-badge">Orders in view</span>
+                <span class="admin-badge">Shipping batches</span>
             </div>
         </div>
     </div>
@@ -101,7 +101,7 @@
                 <div class="row g-4">
                     <div class="col-xl-8">
                         <!-- Inventory Management Section -->
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-box-seam text-primary me-2"></i>Inventory Items</h5>
                                 <span class="badge rounded-pill" style="background:rgba(16,185,129,.1);color:#059669;">
@@ -194,7 +194,7 @@
                             @endif
                         </div>
 
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                  <h5 class="fw-bold mb-0"><i class="bi bi-people text-primary me-2"></i>Users Table</h5>
                                  <span class="small text-muted">{{ count($users ?? []) }} users</span>
@@ -227,7 +227,7 @@
                             </div>
                         </div>
 
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-arrow-counterclockwise text-primary me-2"></i>Returned Orders</h5>
                                 <span class="small text-muted">Customer return visibility for support follow-up</span>
@@ -246,7 +246,7 @@
                             </div>
                         </div>
 
-                        <div class="surface-card p-4">
+                        <div class="content-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-diagram-3 text-primary me-2"></i>Shipping Package Batching</h5>
                                 <span class="small text-muted">Grouped batches from the shipping system</span>
@@ -275,7 +275,7 @@
                     </div>
 
                     <div class="col-xl-4">
-                         <div class="surface-card p-4 mb-4">
+                         <div class="content-card p-4 mb-4">
                              <h5 class="fw-bold mb-2"><i class="bi bi-plus-circle text-primary me-2"></i>Add Inventory Item</h5>
                              <p class="text-muted small mb-4">Add a new item to your inventory.</p>
                              <form method="POST" action="{{ route('admin.items.add') }}">
@@ -322,7 +322,7 @@
                              </form>
                          </div>
 
-                         <div class="surface-card p-4 mb-4 upload-panel">
+                         <div class="content-card p-4 mb-4 upload-box">
                              <h5 class="fw-bold mb-2"><i class="bi bi-cloud-upload text-primary me-2"></i>Upload Themes</h5>
                             <p class="text-muted small mb-4">Create a new monthly theme for subscription boxes.</p>
                             <form method="POST" action="{{ route('admin.themes.create') }}">
@@ -361,7 +361,7 @@
                             </form>
                         </div>
 
-                        <div class="surface-card p-4 mb-4">
+                        <div class="content-card p-4 mb-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                  <h5 class="fw-bold mb-0"><i class="bi bi-exclamation-triangle text-warning me-2"></i>Stock Threshold</h5>
                                  <span class="badge rounded-pill" style="background:rgba(245,158,11,.15);color:#b45309;">
@@ -391,7 +391,7 @@
                             @endif
                         </div>
 
-                        <div class="surface-card p-4">
+                        <div class="content-card p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5 class="fw-bold mb-0"><i class="bi bi-palette text-primary me-2"></i>Theme Library</h5>
                                 <span class="small text-muted">Latest uploads</span>
@@ -416,9 +416,9 @@
     </main>
 
     <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1100">
-        <div id="mainToast" class="toast align-items-center border-0" role="alert">
+        <div id="msg-toast" class="toast align-items-center border-0" role="alert">
             <div class="d-flex">
-                <div class="toast-body fw-semibold" id="toastMsg">Message</div>
+                <div class="toast-body fw-semibold" id="toast-text">Message</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
@@ -430,7 +430,7 @@
                 <div class="col-lg-4">
                     <h5 class="fw-bold mb-3"><i class="bi bi-box-seam-fill text-primary me-2"></i>SportBox</h5>
                     <p class="mb-3" style="font-size:.9rem;">Your Sport. Your Box. Delivered.</p>
-                    <div class="social-links d-flex gap-2">
+                    <div class="social-icons d-flex gap-2">
                         <a href="#"><i class="bi bi-facebook"></i></a>
                         <a href="#"><i class="bi bi-instagram"></i></a>
                         <a href="#"><i class="bi bi-twitter-x"></i></a>
@@ -439,7 +439,7 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Quick Links</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('home') }}">Home</a></li>
                         <li><a href="{{ route('sports') }}">Sports</a></li>
                         <li><a href="{{ route('subscriptions') }}">Subscriptions</a></li>
@@ -448,9 +448,9 @@
                 </div>
                 <div class="col-lg-2 col-6">
                     <h6 class="fw-bold mb-3">Account</h6>
-                    <ul class="footer-links">
+                    <ul class="footer-list">
                         <li><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('login') }}" id="footerAuthLink">Login</a></li>
+                        <li><a href="{{ route('login') }}" id="footer-login-link">Login</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4">
