@@ -72,7 +72,7 @@
                         <img src="https://images.pexels.com/photos/274422/pexels-photo-274422.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Football" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-2">Football</h5>
-                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-0"></p>
                         </div>
                     </a>
                 </div>
@@ -81,7 +81,7 @@
                         <img src="https://images.pexels.com/photos/1752757/pexels-photo-1752757.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Basketball" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-2">Basketball</h5>
-                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-0"></p>
                         </div>
                     </a>
                 </div>
@@ -90,7 +90,7 @@
                         <img src="https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Gym/Fitness" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-2">Gym/Fitness</h5>
-                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-0"></p>
                         </div>
                     </a>
                 </div>
@@ -99,7 +99,7 @@
                         <img src="https://images.pexels.com/photos/209977/pexels-photo-209977.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Tennis" style="height:200px;object-fit:cover;">
                         <div class="card-body p-4">
                             <h5 class="card-title fw-bold mb-2">Tennis</h5>
-                            <p class="card-text text-muted small mb-0">Backend description goes here.</p>
+                            <p class="card-text text-muted small mb-0"></p>
                         </div>
                     </a>
                 </div>

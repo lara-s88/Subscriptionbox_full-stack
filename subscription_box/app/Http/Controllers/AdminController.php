@@ -270,33 +270,7 @@ class AdminController extends Controller
         });
     }
 
-    // Redeem points from a user's reward account (admin action)
-    public function redeemRewardPoints(Request $request, $userId)
-    {
-        $request->validate([
-            'points_to_redeem' => 'required|integer|min:1',
-        ]);
 
-        $rewardAccount = RewardAccount::where('user_id', $userId)->firstOrFail();
-
-        if ($rewardAccount->points < $request->points_to_redeem) {
-            return redirect()->back()->with('error', 'Insufficient reward points.');
-        }
-
-        $rewardAccount->decrement('points', $request->points_to_redeem);
-        $rewardAccount->refresh();
-
-        $this->updateRewardTier($rewardAccount);
-
-        $transactionData = ['user_id' => $userId, 'points_used' => $request->points_to_redeem];
-        if (Schema::hasColumn('reward_transactions', 'type')) {
-            $transactionData['type'] = 'redeemed';
-        }
-
-        RewardTransaction::create($transactionData);
-
-        return redirect()->back()->with('success', 'Points redeemed successfully.');
-    }
 
     // Update the reward tier (Bronze / Silver / Gold) based on total points
     private function updateRewardTier(RewardAccount $rewardAccount): void

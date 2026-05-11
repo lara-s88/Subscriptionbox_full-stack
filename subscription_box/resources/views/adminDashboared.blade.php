@@ -390,25 +390,6 @@
                                 </div>
                             @endif
                         </div>
-
-                        <div class="content-card p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold mb-0"><i class="bi bi-palette text-primary me-2"></i>Theme Library</h5>
-                                <span class="small text-muted">Latest uploads</span>
-                            </div>
-                            <div class="d-flex flex-column gap-3">
-                                <div class="border rounded-4 p-3">
-                                    <div class="d-flex justify-content-between align-items-start gap-3">
-                                        <div>
-                                            <div class="fw-semibold">Theme name</div>
-                                            <div class="small text-muted">Month</div>
-                                        </div>
-                                        <span class="badge rounded-pill px-3" style="background:rgba(16,185,129,.1);color:#059669;">Status</span>
-                                    </div>
-                                    <div class="small text-muted mt-2">0 items</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>

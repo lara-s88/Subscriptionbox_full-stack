@@ -16,6 +16,22 @@ class BoxOrder extends Model
         'status',
         'total_amount'
     ];
+     
+protected static function booted(): void
+    {
+        static::creating(function (BoxOrder $order) {
+            if ((!$order->box_name || !$order->total_amount) && $order->box_id) {
+                $box = Box::find($order->box_id);
+
+                if ($box) {
+                    $order->box_name = $order->box_name ?: $box->name;
+                    $order->total_amount = $order->total_amount ?: $box->base_price;
+                }
+            }
+        });
+    }
+
+
 
     public function user()
     {

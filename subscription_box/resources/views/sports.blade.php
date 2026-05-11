@@ -122,8 +122,83 @@
                     </a>
                 </div>
 
-                <p class="card-text text-muted small mb-3"></p>
-
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('boxes') }}?sport=yoga" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/3822622/pexels-photo-3822622.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Yoga" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-flower1 text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Yoga</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3"></p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('boxes') }}?sport=running" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/2402777/pexels-photo-2402777.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Running" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-lightning-charge-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Running</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3"></p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('boxes') }}?sport=tennis" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/5739118/pexels-photo-5739118.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Tennis" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-circle-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Tennis</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3"></p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('boxes') }}?sport=swimming" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/863988/pexels-photo-863988.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Swimming" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-water text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Swimming</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3"></p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <a href="{{ route('boxes') }}?sport=boxing" class="sport-card h-100 text-decoration-none text-body d-block">
+                        <img src="https://images.pexels.com/photos/4761792/pexels-photo-4761792.jpeg?auto=compress&cs=tinysrgb&w=800" class="card-img-top" alt="Boxing" style="height:200px;object-fit:cover;">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-shield-fill text-primary fs-5"></i>
+                                <h5 class="card-title fw-bold mb-0">Boxing</h5>
+                            </div>
+                            <p class="card-text text-muted small mb-3"></p>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="text-muted small">Boxes</span>
+                                <span class="text-primary fw-semibold small">Browse <i class="bi bi-arrow-right ms-1"></i></span>
+                            </div>
                         </div>
                     </a>
                 </div>

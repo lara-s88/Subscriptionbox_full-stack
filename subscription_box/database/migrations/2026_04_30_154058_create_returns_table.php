@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('reason');
 
             $table->enum('status', [
+                'pending',
                 'requested',
                 'approved',
                 'rejected',

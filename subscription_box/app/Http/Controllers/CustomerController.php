@@ -82,7 +82,7 @@ class CustomerController extends Controller
             return $this->subscriptionResponse($request, false, 'Subscription is already paused.');
         }
 
-        $months = $validated['months'] ?? 1;
+        $months = (int) ($validated['months'] ?? 1);
         $subscription->update([
             'status'      => 'paused',
             'pause_until' => now()->addMonths($months)->toDateString(),
