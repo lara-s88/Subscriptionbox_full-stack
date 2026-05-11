@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-//Models
+// Models
 use App\Models\Plan;
 use App\Models\InventoryItem;
 use App\Models\Themes as Theme;
@@ -17,155 +17,126 @@ use App\Models\RewardAccount;
 use App\Models\RewardItem;
 use App\Models\RewardTransaction;
 use App\Models\Returns;
-use App\Models\ShippingBatch;
 
 class AdminController extends Controller
 {
-     /* =========================
-        0. DASHBOARD
-     ========================= */
-     public function dashboard()
-     {
-         $items = InventoryItem::all();
-         $users = User::with(['customer', 'subscription.plan', 'rewardAccount'])->get();
-         $thresholdItems = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
-         $orders = BoxOrder::with(['user.customer', 'box'])->latest()->get();
-         $batches = $orders->where('status', 'packed')
-             ->groupBy(fn ($order) => $order->user?->customer?->city ?: 'Unassigned')
-             ->map(function ($orders) {
-                 $firstOrder = $orders->first();
-                 $region = $firstOrder->user?->customer?->city ?: 'Unassigned';
+    /* =========================
+       0. DASHBOARD
+    ========================= */
 
-                 return [
-                     'batch_id' => $region,
-                     'region' => $region,
-                     'orders_count' => $orders->count(),
-                 ];
-             });
-         $returns = Returns::with('order')->get();
-         $themes = Theme::with('items.inventoryItem')->get();
+    // Load all data needed for the admin dashboard view
+    public function dashboard()
+    {
+        $items         = InventoryItem::all();
+        $users         = User::with(['customer', 'subscription.plan', 'rewardAccount'])->get();
+        $thresholdItems = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
+        $orders        = BoxOrder::with(['user.customer', 'box'])->latest()->get();
+        $returns       = Returns::with('order')->get();
+        $themes        = Theme::with('items.inventoryItem')->get();
 
-         return view('adminDashboared', compact(
-             'items',
-             'users',
-             'thresholdItems',
-             'orders',
-             'batches',
-             'returns',
-             'themes'
-         ));
-     }
+        // Group packed orders by city to form shipping batches
+        $batches = $orders->where('status', 'packed')
+            ->groupBy(fn($order) => $order->user?->customer?->city ?: 'Unassigned')
+            ->map(fn($orders, $region) => [
+                'batch_id'     => $region,
+                'region'       => $region,
+                'orders_count' => $orders->count(),
+            ]);
 
-     public function showDashboard()
-     {
-         return $this->dashboard();
-     }
+        return view('adminDashboared', compact(
+            'items', 'users', 'thresholdItems',
+            'orders', 'batches', 'returns', 'themes'
+        ));
+    }
 
-     /* =========================
-        1. PLAN MANAGEMENT
-     ========================= */
+    /* =========================
+       1. PLAN MANAGEMENT
+    ========================= */
 
-
-      // Create a new plan
-public function createPlan(Request $request)
+    // Create a new subscription plan
+    public function createPlan(Request $request)
     {
         $request->validate([
-            'name'           => 'required|string|unique:plans,name',
-            'price_monthly'  => 'required|numeric|min:0',
-            'boxes_per_month'=> 'nullable|integer|min:1',
-            'swap_limit'     => 'nullable|integer|min:0',
-            'express_shipping'=> 'nullable|boolean',
-            'early_access'   => 'nullable|boolean',
-            'vip_support'    => 'nullable|boolean',
+            'name'            => 'required|string|unique:plans,name',
+            'price_monthly'   => 'required|numeric|min:0',
+            'boxes_per_month' => 'nullable|integer|min:1',
+            'swap_limit'      => 'nullable|integer|min:0',
+            'express_shipping' => 'nullable|boolean',
+            'early_access'    => 'nullable|boolean',
+            'vip_support'     => 'nullable|boolean',
         ]);
-        $plan = Plan::create($request->all());
 
-        return redirect()->back()
-         ->with('success', 'Plan created successfully.');
+        Plan::create($request->all());
 
+        return redirect()->back()->with('success', 'Plan created successfully.');
     }
-    
-     // Delete a plan by ID
-       public function deletePlan($planId){
-        $plan = Plan::findOrFail($planId);
-        $plan->delete();
 
-        return redirect()->back()
-            ->with('success', 'Plan deleted successfully');
-       }
-     
-    // Get all plans
+    // Delete a plan by its ID
+    public function deletePlan($planId)
+    {
+        Plan::findOrFail($planId)->delete();
+
+        return redirect()->back()->with('success', 'Plan deleted successfully.');
+    }
+
+    // Show all plans
     public function getAllPlans()
     {
-        $plans = Plan::all();
-
-        return view('plans', compact('plans'));
+        return view('plans', ['plans' => Plan::all()]);
     }
-
 
     /* =========================
        2. INVENTORY MANAGEMENT
     ========================= */
-          // Add a new inventory item
-    public function addItem(Request $request){
+
+    // Add a new item to inventory
+    public function addItem(Request $request)
+    {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'category'   => 'required|string|max:80',
-            'unit_price' => 'required|numeric|min:1',
-            'stock_qty'  => 'required|integer|min:1',
-            'safety_threshold' => 5,
-            'weight_kg'  => 'nullable|numeric|min:1',
+            'name'             => 'required|string|max:255',
+            'category'         => 'required|string|max:80',
+            'unit_price'       => 'required|numeric|min:1',
+            'stock_qty'        => 'required|integer|min:1',
+            'safety_threshold' => 'nullable|integer|min:0',
+            'weight_kg'        => 'nullable|numeric|min:0',
         ]);
-        $item = InventoryItem::create($request->all());
 
-        return redirect()->back()
-         ->with('success', 'Item added successfully.');
+        InventoryItem::create($request->all());
 
+        return redirect()->back()->with('success', 'Item added successfully.');
     }
-      
-    // Delete an inventory item by ID
-      public function deleteItem($itemId){
-        $item = InventoryItem::findorFail($itemId);
-        $item->delete();
 
-        return redirect()->back()
-         ->with('success', 'Item deleted successfully.');   
-      }
+    // Delete an inventory item by its ID
+    public function deleteItem($itemId)
+    {
+        InventoryItem::findOrFail($itemId)->delete();
 
-    // Get all inventory items
-    public function getAllItems(){
-        $items = InventoryItem::all();
-
-        return view('items', compact('items'));
+        return redirect()->back()->with('success', 'Item deleted successfully.');
     }
-   
 
-    // Update the stock quantity of an item
-     public function updateStock(Request $request, $itemId){
+    // Show all inventory items
+    public function getAllItems()
+    {
+        return view('items', ['items' => InventoryItem::all()]);
+    }
+
+    // Update the stock quantity of a specific item
+    public function updateStock(Request $request, $itemId)
+    {
         $request->validate([
-            'stock_qty' => 'required|integer',
+            'stock_qty' => 'required|integer|min:0',
         ]);
-        $item = InventoryItem::findOrFail($itemId);
-        $item->stock_qty = $request->stock_qty;
-        $item->save();
 
-        return redirect()->back()
-         ->with('success', 'Stock updated successfully.');
-     }
+        InventoryItem::findOrFail($itemId)->update(['stock_qty' => $request->stock_qty]);
 
-     // Get items that are below or equal to their safety threshold
-       public function getThresholdItems(){
-         $items = InventoryItem::whereColumn('stock_qty', '<=', 'safety_threshold')->get();
+        return redirect()->back()->with('success', 'Stock updated successfully.');
+    }
 
-        return view('adminDashboared', compact('items'));
-       }
-
-
-       /* =========================
+    /* =========================
        3. THEME (MONTHLY BOX)
     ========================= */
 
-    // Create a new theme  
+    // Create a new monthly box theme
     public function createTheme(Request $request)
     {
         $request->validate([
@@ -175,26 +146,24 @@ public function createPlan(Request $request)
             'image_url'   => 'nullable|string',
         ]);
 
-        $theme = Theme::create($request->all());
-        return redirect()->back()
-         ->with('success', 'Theme created successfully.');
-         
-         }
+        Theme::create($request->all());
 
-    // Delete a theme by ID
+        return redirect()->back()->with('success', 'Theme created successfully.');
+    }
+
+    // Delete a theme by its ID
     public function deleteTheme($themeId)
     {
-        $theme = Theme::findOrFail($themeId);
-        $theme->delete();
-        return redirect()->back()
-         ->with('success', 'Theme deleted successfully.');
-     }
+        Theme::findOrFail($themeId)->delete();
 
-    // Assign an item to a theme
-       public function assignItemToTheme(Request $request)
+        return redirect()->back()->with('success', 'Theme deleted successfully.');
+    }
+
+    // Assign an inventory item to a theme (no duplicates allowed)
+    public function assignItemToTheme(Request $request)
     {
         $request->validate([
-            'theme_id'=> 'required|exists:themes,id',
+            'theme_id'          => 'required|exists:themes,id',
             'inventory_item_id' => 'required|exists:inventory_items,id',
         ]);
 
@@ -203,268 +172,167 @@ public function createPlan(Request $request)
             ->exists();
 
         if ($alreadyExists) {
-            return redirect()->back()
-                ->with('error', 'Item is already assigned to this theme');
+            return redirect()->back()->with('error', 'Item is already assigned to this theme.');
         }
 
-        ThemesItem::create([
-            'theme_id'=> $request->theme_id,
-            'inventory_item_id' => $request->inventory_item_id,
-        ]);
-         
-        return redirect()->back()
-         ->with('success', 'Item assigned to theme successfully.');
-         }
+        ThemesItem::create($request->only('theme_id', 'inventory_item_id'));
 
+        return redirect()->back()->with('success', 'Item assigned to theme successfully.');
+    }
 
-         // Remove an inventory item from a theme
-
-          public function removeItemFromTheme($themeId, $itemId)
-        {
-        $themeItem = ThemesItem::where('theme_id', $themeId)
+    // Remove an inventory item from a theme
+    public function removeItemFromTheme($themeId, $itemId)
+    {
+        ThemesItem::where('theme_id', $themeId)
             ->where('inventory_item_id', $itemId)
-            ->firstOrFail();
+            ->firstOrFail()
+            ->delete();
 
-        $themeItem->delete();
-
-        return redirect()->back()
-            ->with('success', 'Item removed from theme successfully');
-        }
+        return redirect()->back()->with('success', 'Item removed from theme successfully.');
+    }
 
     /* =========================
        4. ORDERS & FULFILLMENT
     ========================= */
-    // Get all orders
-    public function getAllOrders()
-    {
-        $orders = BoxOrder::with(['user', 'box'])->get();
 
-        return view('adminDashboared', compact('orders'));
-    }
-
-    // Get a single order by ID
-    public function getOrder($orderId)
-    {
-        $order = BoxOrder::with(['user', 'box'])->findOrFail($orderId);
-
-        return redirect()->back()
-         ->with('success', 'Order retrieved successfully.');
-}
-
-    // Update the status of an order
+    // Update the status of a specific order
     public function updateOrderStatus(Request $request, $orderId)
     {
         $request->validate([
             'status' => 'required|in:pending,packed,shipped,out_for_delivery,delivered,returned',
         ]);
 
-        $order = BoxOrder::findOrFail($orderId);
-        $order->status = $request->status;
-        $order->save();
-        return redirect()->back()
-         ->with('success', 'Order status updated successfully.');
+        BoxOrder::findOrFail($orderId)->update(['status' => $request->status]);
 
-}
-     // get orders Batching
-     public function getOrdersForBatching()
-{
-    $batches = BoxOrder::where('status', 'packed')
-        ->whereHas('shipment.batch')
-        ->with(['shipment.batch'])
-        ->get()
-        ->groupBy(fn ($order) => $order->shipment->batch->id)
-        ->map(function ($orders) {
+        return redirect()->back()->with('success', 'Order status updated successfully.');
+    }
 
-            $firstOrder = $orders->first();
-            $batch = $firstOrder->shipment->batch;
-
-            return [
-                'batch_id' => $batch->id,
-                'region' => $batch->city,
-                'orders_count' => $orders->count(),
-            ];
-        });
-
-    return view('adminDashboared', compact('batches'));
-}
-
-/* =========================
+    /* =========================
        5. USER MANAGEMENT
     ========================= */
 
-// Get all users
-    public function getAllUsers()
-    {
-        $users = User::all();
-
-        return view('adminDashboared', compact('users'));
-    }
-   // Get a single user by ID
+    // Get a single user with their profile, subscription, and favourite theme
     public function getUserById($userId)
     {
-    
-        $user = User::with(['customer', 'subscription','favorite_theme'])->findOrFail($userId);
+        $user = User::with(['customer', 'subscription', 'favorite_theme'])->findOrFail($userId);
 
         return view('adminDashboared', compact('user'));
     }
 
-
-/* =========================
+    /* =========================
        6. REWARDS
     ========================= */
 
-    // Show all reward accounts and their points
+    // Show all reward accounts and available reward items
     public function getAllRewardAccounts()
     {
         $rewardAccounts = RewardAccount::with(['user', 'transactions'])->get();
-        $rewardItems = RewardItem::orderBy('points')->get();
+        $rewardItems    = RewardItem::orderBy('points')->get();
 
         return view('adminReward', compact('rewardAccounts', 'rewardItems'));
     }
 
-    //add reward points for an order
-
+    // Manually trigger reward points for a specific order (called from the admin panel)
     public function addRewardPointsForOrder($orderId)
-{
-    $order = BoxOrder::findOrFail($orderId);
-    $this->awardRewardPointsForOrder($order);
+    {
+        $order = BoxOrder::findOrFail($orderId);
+        $this->awardRewardPointsForOrder($order);
 
-    return redirect()->back()
-        ->with('success', 'Reward points added successfully.');
-}
+        return redirect()->back()->with('success', 'Reward points added successfully.');
+    }
 
-public function awardRewardPointsForOrder(BoxOrder $order, int $points = 10): RewardAccount
-{
-    return DB::transaction(function () use ($order, $points) {
-        $rewardAccount = RewardAccount::firstOrCreate(
-            ['user_id' => $order->user_id],
-            ['points' => 0, 'tier_name' => 'Bronze']
-        );
+    // Award points to a user's reward account for a completed order.
+    // Also creates a transaction record and updates the user's tier.
+    // This is public so CustomerController can call it when confirming shipping.
+    public function awardRewardPointsForOrder(BoxOrder $order, int $points = 10): RewardAccount
+    {
+        return DB::transaction(function () use ($order, $points) {
+            // Get or create the reward account for this user
+            $rewardAccount = RewardAccount::firstOrCreate(
+                ['user_id' => $order->user_id],
+                ['points' => 0, 'tier_name' => 'Bronze']
+            );
 
-        $rewardAccount->increment('points', $points);
+            $rewardAccount->increment('points', $points);
+            $rewardAccount->refresh();
+
+            $this->updateRewardTier($rewardAccount);
+
+            // Build transaction data (handle optional 'type' column)
+            $transactionData = ['user_id' => $order->user_id, 'points_used' => $points];
+            if (Schema::hasColumn('reward_transactions', 'type')) {
+                $transactionData['type'] = 'earned';
+            }
+
+            RewardTransaction::create($transactionData);
+
+            return $rewardAccount;
+        });
+    }
+
+    // Redeem points from a user's reward account (admin action)
+    public function redeemRewardPoints(Request $request, $userId)
+    {
+        $request->validate([
+            'points_to_redeem' => 'required|integer|min:1',
+        ]);
+
+        $rewardAccount = RewardAccount::where('user_id', $userId)->firstOrFail();
+
+        if ($rewardAccount->points < $request->points_to_redeem) {
+            return redirect()->back()->with('error', 'Insufficient reward points.');
+        }
+
+        $rewardAccount->decrement('points', $request->points_to_redeem);
         $rewardAccount->refresh();
 
         $this->updateRewardTier($rewardAccount);
 
-        $transactionData = [
-            'user_id' => $order->user_id,
-            'points_used' => $points,
-        ];
-
+        $transactionData = ['user_id' => $userId, 'points_used' => $request->points_to_redeem];
         if (Schema::hasColumn('reward_transactions', 'type')) {
-            $transactionData['type'] = 'earned';
+            $transactionData['type'] = 'redeemed';
         }
 
         RewardTransaction::create($transactionData);
 
-        return $rewardAccount;
-    });
-}
-
-private function updateRewardTier(RewardAccount $rewardAccount): void
-{
-    if ($rewardAccount->points >= 500) {
-        $rewardAccount->tier_name = 'Gold';
-    }
-    elseif ($rewardAccount->points >= 100) {
-        $rewardAccount->tier_name = 'Silver';
-    }
-    else {
-        $rewardAccount->tier_name = 'Bronze';
+        return redirect()->back()->with('success', 'Points redeemed successfully.');
     }
 
-    $rewardAccount->save();
-}
+    // Update the reward tier (Bronze / Silver / Gold) based on total points
+    private function updateRewardTier(RewardAccount $rewardAccount): void
+    {
+        $rewardAccount->tier_name = match(true) {
+            $rewardAccount->points >= 500 => 'Gold',
+            $rewardAccount->points >= 100 => 'Silver',
+            default                       => 'Bronze',
+        };
 
-
-// Redeem reward points
-public function redeemRewardPoints(Request $request, $userId)
-{
-    $request->validate([
-        'points_to_redeem' => 'required|integer|min:1'
-    ]);
-
-    $rewardAccount = RewardAccount::where('user_id', $userId)
-        ->firstOrFail();
-
-    // Check if enough points exist
-    if ($rewardAccount->points < $request->points_to_redeem) {
-        return redirect()->back()
-            ->with('error', 'Insufficient reward points.');
+        $rewardAccount->save();
     }
 
-    // Decrease points
-    $rewardAccount->decrement('points', $request->points_to_redeem);
-
-    // Refresh updated values
-    $rewardAccount->refresh();
-
-    $this->updateRewardTier($rewardAccount);
-
-    // Record transaction
-    $transactionData = [
-        'user_id' => $userId,
-        'points_used' => $request->points_to_redeem,
-    ];
-
-    if (Schema::hasColumn('reward_transactions', 'type')) {
-        $transactionData['type'] = 'redeemed';
-    }
-
-    RewardTransaction::create($transactionData);
-
-    return redirect()->back()
-        ->with('success', 'Points redeemed successfully.');
-}
-
-     /* =========================
+    /* =========================
        7. RETURNS
     ========================= */
 
-    // Get all return requests
-    public function getAllReturns()
-    {
-        $returns = Returns::with('order')->get();
-
-        return view('adminDashboared', compact('returns'));
-    
-    }
-    
-    // Get a single return request by ID
-    public function getReturnById($returnsId)
-    {
-        $return = Returns::with('order')->findOrFail($returnsId);
-
-        return view('adminDashboared', compact('return'));
-    }
-    //Approve or reject a return request
+    // Approve or reject a pending return request
     public function handleReturn(Request $request, $returnsId)
-          {
-    $return = Returns::findOrFail($returnsId);
+    {
+        $return = Returns::findOrFail($returnsId);
 
-    if ($return->status != 'pending') {
-        return redirect()->back()
-            ->with('error', 'This return request was already processed.');
+        if ($return->status !== 'pending') {
+            return redirect()->back()->with('error', 'This return request was already processed.');
+        }
+
+        if (!$return->image) {
+            return redirect()->back()->with('error', 'No proof image uploaded.');
+        }
+
+        $request->validate([
+            'action' => 'required|in:approved,rejected',
+        ]);
+
+        $return->update(['status' => $request->action]);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Return request updated successfully.');
     }
-
-    if (!$return->image) {
-        return redirect()->back()
-            ->with('error', 'No proof image uploaded.');
-    }
-
-    $request->validate([
-        'action' => 'required|in:approved,rejected',
-    ]);
-
-    $return->status = $request->action;
-
-    $return->save();
-
-    return redirect()->route('admin.dashboard', $returnsId)
-        ->with('success', 'Return request updated successfully.');
 }
-
-}
- 
-
- 

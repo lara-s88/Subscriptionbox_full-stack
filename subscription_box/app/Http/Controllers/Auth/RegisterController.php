@@ -12,63 +12,75 @@ use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
+    // Show the registration page
     public function index()
     {
         return view('auth.register');
     }
 
+    // Handle registration for both customers and admins
     public function register(Request $request)
     {
+        // Validate shared fields first
         $base = $request->validate([
             'account_type' => ['required', 'in:customer,admin'],
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'password' => ['required', 'string', 'min:8'],
+            'first_name'   => ['required', 'string', 'max:255'],
+            'last_name'    => ['required', 'string', 'max:255'],
+            'password'     => ['required', 'string', 'min:8'],
         ]);
 
-        $emailRules = ['required', 'email'];
+        // Build email uniqueness rules depending on account type
+        $emailRules = ['required', 'email', Rule::unique('users', 'email')];
+
         if ($base['account_type'] === 'admin') {
-            if (! Schema::hasTable('admins')) {
+            if (!Schema::hasTable('admins')) {
                 return back()->withErrors(['email' => 'Admin registration is not available.']);
             }
-
             $emailRules[] = Rule::unique('admins', 'email');
-            $emailRules[] = Rule::unique('users', 'email');
-        } else {
-            $emailRules[] = Rule::unique('users', 'email');
-            if (Schema::hasTable('admins')) {
-                $emailRules[] = Rule::unique('admins', 'email');
-            }
+        } elseif (Schema::hasTable('admins')) {
+            $emailRules[] = Rule::unique('admins', 'email');
         }
 
-        $emailValidated = $request->validate([
-            'email' => $emailRules,
-        ]);
+        $emailValidated = $request->validate(['email' => $emailRules]);
+
+        $fullData = array_merge($base, $emailValidated);
 
         if ($base['account_type'] === 'admin') {
-            $admin = new Admin();
-            $admin->first_name = $base['first_name'];
-            $admin->last_name = $base['last_name'];
-            $admin->email = $emailValidated['email'];
-            $admin->password = Hash::make($base['password']);
-            $admin->save();
-
-            return redirect()
-                ->route('login')
-                ->with('status', 'Admin account created. Sign in as Admin with your credentials.');
+            return $this->createAdmin($fullData);
         }
 
-        $data = array_merge($base, $emailValidated);
+        return $this->createCustomer($fullData);
+    }
 
-        $user = new User();
-        $user->first_name = $data['first_name'];
-        $user->last_name = $data['last_name'];
-        $user->email = $data['email'];
-        $user->password = Hash::make($data['password']);
-        $user->save();
+    /* =========================
+       PRIVATE HELPERS
+    ========================= */
 
-        return redirect()
-            ->route('login')
+    // Create a new admin account and redirect to login
+    private function createAdmin(array $data)
+    {
+        Admin::create([
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'password'   => Hash::make($data['password']),
+        ]);
+
+        return redirect()->route('login')
+            ->with('status', 'Admin account created. Sign in as Admin with your credentials.');
+    }
+
+    // Create a new customer account and redirect to login
+    private function createCustomer(array $data)
+    {
+        User::create([
+            'first_name' => $data['first_name'],
+            'last_name'  => $data['last_name'],
+            'email'      => $data['email'],
+            'password'   => Hash::make($data['password']),
+        ]);
+
+        return redirect()->route('login')
             ->with('status', 'Account created successfully. Sign in as Customer with your credentials.');
     }
 }
